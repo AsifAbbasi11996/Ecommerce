@@ -1,0 +1,122 @@
+.view-products,
+.view-users {
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+  .head {
+    display: flex;
+    align-items: center;
+    column-gap: 0.5rem;
+
+    svg {
+      font-size: 18px;
+    }
+  }
+
+  h2 {
+    font-size: 1.1rem;
+    text-align: center;
+  }
+
+  .filters {
+    display: flex;
+    column-gap: 2rem;
+    margin: 20px 0;
+    justify-content: center;
+
+    .search-bar,
+    .filter-select {
+      padding: 10px;
+      font-size: 14px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      flex: 1;
+    }
+
+    input:focus {
+      outline: none;
+    }
+
+    select:focus {
+      outline: none;
+    }
+  }
+
+  .products-table,
+  .users-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    border: 1px solid #ddd;
+  }
+
+  /* Example styles for the product images */
+  .product-image {
+    width: 50px;
+    /* Adjust the size of the image */
+    height: auto;
+    border-radius: 5px;
+  }
+
+  .products-table th,
+  .products-table td {
+    padding: 12px;
+    text-align: left;
+    border: 1px solid #ddd;
+  }
+
+  .users-table th,
+  .users-table td {
+    padding: 12px;
+    text-align: left;
+    border: 1px solid #ddd;
+  }
+
+  .products-table th {
+    background-color: #f4f4f4;
+  }
+
+  .products-table tr:hover {
+    background-color: #f1f1f1;
+  }
+
+  .users-table th {
+    background-color: #f4f4f4;
+  }
+
+  .users-table tr:hover {
+    background-color: #f1f1f1;
+  }
+
+  .action-links {
+    a {
+      color: white;
+      border: none;
+      padding: 6px 12px;
+      cursor: pointer;
+      border-radius: 4px;
+      text-decoration: none;
+    }
+
+    .btn-edit {
+      background-color: #4caf50;
+      margin: 0 10px;
+    }
+
+    .btn-details {
+      background-color: #594caf;
+    }
+
+    .btn-delete {
+      background-color: #d90000;
+    }
+  }
+
+  .toast-container {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+  }
+}

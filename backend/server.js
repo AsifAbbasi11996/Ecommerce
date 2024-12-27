@@ -4,6 +4,11 @@ import bodyParser from 'body-parser'
 import cors from 'cors'
 import connectDB from './database/db.js'
 import userRoutes from './routes/user.routes.js'
+import adminUserRoutes from './routes/adminUser.routes.js'
+import productRoutes from './routes/product.routes.js'
+import sliderRoutes from './routes/slider.routes.js'
+import categoryRoutes from './routes/category.routes.js'
+import itemRoutes from './routes/item.routes.js'
 
 dotenv.config()
 
@@ -21,6 +26,11 @@ connectDB()
 
 // Routes
 app.use('/user', userRoutes)
+app.use('/admin', adminUserRoutes)
+app.use('/product', productRoutes)
+app.use('/slider', sliderRoutes)
+app.use('/category', categoryRoutes)
+app.use('/item', itemRoutes)
 
 app.get('/api', (req, res) => {
   res.send('API is running')

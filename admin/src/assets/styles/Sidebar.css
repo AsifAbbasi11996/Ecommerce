@@ -1,0 +1,126 @@
+.sidebar {
+  width: 250px;
+  height: 91vh;
+  background-color: #333;
+  color: white;
+  transition: all 0.3s ease;
+  z-index: 100;
+
+  /* Sidebar content, including items and toggle button */
+  .sidebar-content {
+    padding-left: 20px;
+    padding-right: 20px;
+    height: 93.5vh;
+
+    /* Head section of sidebar with title and toggle button */
+    .head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 10px 0;
+      /* Adding some space below the heading */
+    }
+
+    /* Toggle button styling */
+    .toggle-btn {
+      background-color: #333;
+      color: white;
+      font-size: 24px;
+      border: none;
+      padding: 5px 10px;
+      cursor: pointer;
+      border-radius: 4px;
+      transition: all 0.3s ease;
+    }
+
+    .toggle-btn:hover {
+      background-color: #444;
+    }
+
+    ul {
+      a {
+        text-decoration: none;
+        color: #fff;
+      }
+    }
+
+    /* Sidebar items styling */
+    .sidebar-item {
+      display: flex;
+      align-items: center;
+      padding: 10px 0;
+      padding-left: 10px;
+      font-size: 16px;
+      cursor: pointer;
+      position: relative;
+      transition: background-color 0.3s ease;
+    }
+
+    /* Hover effect for sidebar items */
+    .sidebar-item:hover {
+      background-color: #444;
+      border-radius: 5px;
+    }
+
+    /* Icon styling */
+    .sidebar-icon {
+      font-size: 20px;
+      margin-right: 10px;
+    }
+
+    /* Text styling for sidebar items */
+    .sidebar-text {
+      display: inline-block;
+      font-size: 18px;
+      white-space: nowrap;
+    }
+
+    /* Dropdown styling */
+    .dropdown {
+      list-style-type: none;
+      margin-top: 5px;
+      padding: 10px;
+      border-radius: 5px;
+      background-color: #444;
+      border-radius: 4px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+      position: absolute;
+      top: 0;
+      left: 100%;
+      min-width: 180px;
+      z-index: 10;
+    }
+
+    .dropdown-item {
+      padding: 8px;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .dropdown-item:hover {
+      background-color: #555;
+      border-radius: 5px;
+    }
+  }
+}
+
+/* Sidebar collapsed state (narrow sidebar) */
+.sidebar.collapsed {
+  width: 70px;
+}
+
+.sidebar.collapsed .head {
+  h3 {
+    display: none;
+  }
+}
+
+.sidebar.collapsed .sidebar-content {
+  padding-right: 0;
+}
+
+/* Hide text when sidebar is collapsed */
+.sidebar.collapsed .sidebar-text {
+  display: none;
+}

@@ -1,0 +1,8 @@
+.main {
+  padding: 2rem 8rem;
+
+  hr {
+    margin: 3rem ;
+    border: 1px solid #d8d8d8;
+  }
+}

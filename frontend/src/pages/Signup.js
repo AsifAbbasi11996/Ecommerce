@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { createUser } from '../api/userApi.js' // Assuming createUser is in a file under the api folder
 import '../assets/styles/Signup.css' // Include your CSS file for styling
@@ -7,6 +7,10 @@ import 'react-toastify/dist/ReactToastify.css' // Importing Toastify CSS styles
 import image from '../assets/images/cart_phone.jpeg'
 
 const Signup = () => {
+  
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [])
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',

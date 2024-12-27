@@ -1,18 +1,20 @@
-/* Basic styling for the nav */
 nav {
   display: flex;
   align-items: center;
   justify-content: space-around;
   position: sticky;
   top: 0;
+  width: 100%;
   padding: 2rem;
   background-color: #fff;
   z-index: 1000;
+  border-bottom: 1px solid #ccc;
 }
 
 .logo {
   font-size: 24px;
   font-weight: 700;
+  cursor: pointer;
 }
 
 .nav-links {
@@ -23,8 +25,12 @@ nav {
   a {
     text-decoration: none;
     font-size: 16px;
-    font-weight: 550;
+    font-weight: 500;
     color: #1b1b1b;
+  }
+
+  a.active {
+    border-bottom: 2px solid #db4444;
   }
 }
 
@@ -57,6 +63,47 @@ nav {
 
   svg {
     font-size: 1.5rem;
+  }
+
+  .account {
+    position: relative;
+  }
+
+  .account:active {
+    background: #db4444;
+    color: #fff;
+  }
+
+  .dropdown {
+    position: absolute;
+    border-radius: 5px;
+    background-color: black;
+    top: 50px;
+    right: 0;
+    width: max-content;
+    padding: 0 0.8rem;
+
+    li {
+      list-style-type: none;
+      margin: 0.8rem 0;
+
+      a {
+        display: flex;
+        align-items: center;
+        column-gap: 0.5rem;
+        text-decoration: none;
+        color: #fff;
+
+        svg {
+          font-size: 1.3rem;
+          font-weight: normal;
+        }
+      }
+
+      a.active{
+        color: #db4444;
+      }
+    }
   }
 }
 

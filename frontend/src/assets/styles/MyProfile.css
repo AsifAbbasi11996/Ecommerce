@@ -1,0 +1,67 @@
+.editprofile {
+  padding: 2rem 4rem;
+  width: 800px;
+
+  p {
+    color: #db4444;
+    font-size: 1.2rem;
+    font-weight: 550;
+    margin-bottom: 1.5rem;
+  }
+
+  .two {
+    display: flex;
+    column-gap: 1rem;
+  }
+
+  .form-group {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+
+    label {
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+    }
+
+    input {
+      padding: 8px;
+      border: none;
+      border-radius: 4px;
+      font-weight: 500;
+      width: 100%;
+      font-size: 0.9rem;
+      background: #f5f5f5;
+      margin-bottom: 1rem;
+    }
+
+    input:focus {
+      outline: none;
+    }
+
+    input::placeholder {
+      color: #b6b6b6;
+    }
+  }
+
+  .btns {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    column-gap: 1rem;
+  }
+
+  button {
+    cursor: pointer;
+    border: none;
+    color: #000;
+    background: transparent;
+    padding: 0.75rem 1.5rem;
+  }
+
+  button[type='submit'] {
+    background: #db4444;
+    color: #fff;
+    border-radius: 4px;
+  }
+}
