@@ -14,6 +14,7 @@ import AddCategoryForm from './components/AddCategoryForm'
 import UpdateCategoryForm from './components/UpdateCategoryForm'
 import ViewProduct from './components/ViewProduct'
 import AddItem from './components/AddItem'
+import Checkout from './components/Checkout'
 
 function App () {
   return (
@@ -30,6 +31,7 @@ function App () {
         <Route path='/contact' element={<Contact />} />
         <Route path='/myaccount' element={<MyAccount />} />
         <Route path='/v/:id' element={<ViewProduct />} />
+        <Route path='/checkout' element={<Checkout />} />
         <Route path='/additem' element={<AddItem />} />
       </Routes>
       <Footer />

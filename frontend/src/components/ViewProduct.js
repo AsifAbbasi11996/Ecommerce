@@ -16,6 +16,7 @@ const ViewProduct = () => {
   const [error, setError] = useState(null) // Error state
   const [quantity, setQuantity] = useState(1) // State to store selected quantity
   const [relatedProducts, setRelatedProducts] = useState([]) // State to store related products
+  const [selectedImage, setSelectedImage] = useState(null) // State to store selected image for large view
 
   const navigate = useNavigate()
 
@@ -25,6 +26,7 @@ const ViewProduct = () => {
       try {
         const fetchedProduct = await getItemById(id)
         setProduct(fetchedProduct)
+        setSelectedImage(fetchedProduct.images[0]) // Set the first image as the default large image
         if (fetchedProduct.category) {
           fetchRelatedProducts(fetchedProduct.category) // Fetch related products by category
         }
@@ -99,7 +101,12 @@ const ViewProduct = () => {
   const handleBuyNow = () => {
     // Proceed to checkout logic here
     console.log('Proceeding to buy', product, 'Quantity:', quantity)
-    navigate('/checkout') // Navigate to checkout page
+    navigate('/checkout', { state: { product, quantity, selectedImage } }) // Pass product and quantity to checkout page
+  }
+
+  // Function to handle image click from sm_img
+  const handleImageClick = image => {
+    setSelectedImage(image) // Set the clicked image as the large image
   }
 
   return (
@@ -121,12 +128,13 @@ const ViewProduct = () => {
                   key={index} // Adding a unique key for each image
                   src={formatImageUrl(image)} // Use the formatImageUrl to ensure the correct path
                   alt={`${product.itemName} - Image ${index + 1}`} // Add an appropriate alt text for each image
+                  onClick={() => handleImageClick(image)} // Click handler to update the large image
                 />
               ))}
             </div>
             <div className='lg_img'>
               <img
-                src={formatImageUrl(product.images[0])}
+                src={formatImageUrl(selectedImage)} // Display the selected image
                 alt={product.itemName}
               />
             </div>
