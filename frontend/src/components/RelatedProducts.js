@@ -45,6 +45,7 @@ const RelatedProducts = ({ products }) => {
             >
               <div className='card'>
                 <div className='card-product'>
+                <p className='discount'>-{product.discount.percentage}%</p>
                   <div className='card-image'>
                     {/* Use the first image of the product */}
                     <img

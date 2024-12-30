@@ -8,8 +8,13 @@ import { BsCart } from 'react-icons/bs'
 import { formatImageUrl } from '../utils/formatImage'
 import { formatPrice } from '../utils/formatPrice.js'
 import RelatedProducts from './RelatedProducts'
+import Loader from './Loader.js'
 
 const ViewProduct = () => {
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [])
+
   const { id } = useParams() // Get product ID from URL
   const [product, setProduct] = useState(null) // State to store product data
   const [loading, setLoading] = useState(true) // Loading state
@@ -17,6 +22,7 @@ const ViewProduct = () => {
   const [quantity, setQuantity] = useState(1) // State to store selected quantity
   const [relatedProducts, setRelatedProducts] = useState([]) // State to store related products
   const [selectedImage, setSelectedImage] = useState(null) // State to store selected image for large view
+  const [selectedColor, setSelectedColor] = useState(null)
 
   const navigate = useNavigate()
 
@@ -81,7 +87,7 @@ const ViewProduct = () => {
 
   // Loading and error handling
   if (loading) {
-    return <div>Loading...</div>
+    return <Loader />
   }
 
   if (error) {
@@ -89,24 +95,51 @@ const ViewProduct = () => {
   }
 
   const handleAddToCart = () => {
-    // Add product to cart logic here
-    console.log('Added to cart', product, 'Quantity:', quantity)
+    if (product.color && product.color.length > 0 && !selectedColor) {
+      alert('Please select a color before adding to the cart') // Alert if no color is selected
+      return // Prevent adding to cart if no color is selected
+    }
+    console.log(
+      'Added to cart',
+      product,
+      'Quantity:',
+      quantity,
+      'Color:',
+      selectedColor
+    )
   }
 
   const handleAddToWishlist = () => {
-    // Add product to wishlist logic here
-    console.log('Added to wishlist', product)
+    console.log('Added to wishlist', product, 'Color:', selectedColor)
   }
 
   const handleBuyNow = () => {
-    // Proceed to checkout logic here
-    console.log('Proceeding to buy', product, 'Quantity:', quantity)
-    navigate('/checkout', { state: { product, quantity, selectedImage } }) // Pass product and quantity to checkout page
+    if (product.color && product.color.length > 0 && !selectedColor) {
+      alert('Please select a color before proceeding to buy') // Alert if no color is selected
+      return // Prevent proceeding if no color is selected
+    }
+
+    console.log(
+      'Proceeding to buy',
+      product,
+      'Quantity:',
+      quantity,
+      'Color:',
+      selectedColor
+    )
+    navigate('/checkout', {
+      state: { product, quantity, selectedImage, selectedColor }
+    }) // Pass selectedColor to checkout
   }
 
   // Function to handle image click from sm_img
   const handleImageClick = image => {
     setSelectedImage(image) // Set the clicked image as the large image
+  }
+
+  // Handle color selection
+  const handleColorSelect = color => {
+    setSelectedColor(color)
   }
 
   return (
@@ -150,13 +183,20 @@ const ViewProduct = () => {
             <p className='price'>
               <span className='sp'>{formatPrice(product.sp)}</span>
               <span className='mrp'>{formatPrice(product.mrp)}</span>
+              <span className='discount'>({product.discount.percentage}% off)</span>
             </p>
-            <p>{product.itemdetail}</p>
-            <hr />
             <p className='colors'>
               Colors
               {product.color.map((col, index) => (
-                <button key={index}>
+                <button
+                  key={index}
+                  onClick={() => handleColorSelect(col)} // Update the color selection
+                  style={{
+                    backgroundColor:
+                      selectedColor === col ? '#db4444' : 'white',
+                    color: selectedColor === col ? 'white' : 'black'
+                  }}
+                >
                   {col}
                   {index < product.color.length - 1 && ', '}
                 </button>
@@ -186,6 +226,13 @@ const ViewProduct = () => {
               <button onClick={handleBuyNow} className='btn-buy'>
                 Buy Now
               </button>
+            </div>
+            <hr />
+            <div className='item-details'>
+              {product.itemdetail &&
+                product.itemdetail.map((detail, index) => (
+                  <p key={index}>{detail}</p>
+                ))}
             </div>
           </div>
         </div>

@@ -1,8 +1,29 @@
 .main {
-  padding: 2rem 8rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  .component{
+    padding: 2rem;
+  }
 
   hr {
-    margin: 3rem ;
+    margin: 3rem;
     border: 1px solid #d8d8d8;
+  }
+}
+
+@media only screen and (max-width:425px) {
+  .main {
+    
+    .component{
+      padding: 1rem;
+      
+    }
+
+    .imageslider{
+      padding: 0rem;
+    }
   }
 }

@@ -1,0 +1,81 @@
+/* AddItem.css */
+
+.add-item-form {
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+
+  h2 {
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #333;
+  }
+
+  .form-group {
+    margin-bottom: 15px;
+  }
+
+  .form-group label {
+    display: block;
+    margin-bottom: 5px;
+  }
+
+  .form-group input,
+  .form-group textarea {
+    width: 100%;
+    padding: 8px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+
+  .form-group input[type='file'] {
+    padding: 0;
+  }
+}
+
+.add-item-form button {
+  background-color: #3498db;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.add-item-form button:hover {
+  background-color: #2980b9;
+}
+
+.add-item-form p {
+  font-size: 14px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.add-item-form p[style*='color: red'] {
+  color: red;
+}
+
+.add-item-form p[style*='color: green'] {
+  color: green;
+}
+
+@media (max-width: 768px) {
+  .add-item-form {
+    padding: 15px;
+  }
+
+  .add-item-form h2 {
+    font-size: 22px;
+  }
+
+  .add-item-form input,
+  .add-item-form textarea,
+  .add-item-form button {
+    font-size: 14px;
+  }
+}

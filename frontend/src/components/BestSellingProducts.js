@@ -7,6 +7,7 @@ import { BsEye } from 'react-icons/bs'
 import { FaStar, FaStarHalf } from 'react-icons/fa' // Import FaStarHalf instead of FaStarHalfAlt
 import { formatImageUrl } from '../utils/formatImage'
 import { formatPrice } from '../utils/formatPrice'
+import Loader from './Loader.js'
 
 const BestSellingProducts = () => {
   const [products, setProducts] = useState([]) // State to hold fetched products
@@ -30,7 +31,7 @@ const BestSellingProducts = () => {
   }, [])
 
   if (loading) {
-    return <div>Loading...</div> // Show loading state
+    return <Loader />
   }
 
   if (error) {
@@ -71,6 +72,7 @@ const BestSellingProducts = () => {
           <Link to={`/v/${product._id}`} className='view-details'>
             <div className='card' key={product._id}>
               <div className='card-product'>
+                <p className='discount'>-{product.discount.percentage}%</p>
                 <div className='card-image'>
                   {/* Use the first image of the first color */}
                   <img

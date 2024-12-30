@@ -1,4 +1,5 @@
 .view-products,
+.view-items,
 .view-users {
   padding: 20px;
   background-color: #fff;
@@ -45,6 +46,7 @@
   }
 
   .products-table,
+  .items-table,
   .users-table {
     width: 100%;
     border-collapse: collapse;
@@ -53,7 +55,8 @@
   }
 
   /* Example styles for the product images */
-  .product-image {
+  .product-image,
+  .item-image {
     width: 50px;
     /* Adjust the size of the image */
     height: auto;
@@ -62,6 +65,12 @@
 
   .products-table th,
   .products-table td {
+    padding: 12px;
+    text-align: left;
+    border: 1px solid #ddd;
+  }
+  .items-table th,
+  .items-table td {
     padding: 12px;
     text-align: left;
     border: 1px solid #ddd;
@@ -77,8 +86,14 @@
   .products-table th {
     background-color: #f4f4f4;
   }
+  .items-table th {
+    background-color: #f4f4f4;
+  }
 
   .products-table tr:hover {
+    background-color: #f1f1f1;
+  }
+  .items-table tr:hover {
     background-color: #f1f1f1;
   }
 

@@ -1,12 +1,7 @@
 import React, { useEffect } from 'react'
-// import Home from '../components/Home'
-// import FlashSales from '../components/FlashSales'
 import Category from '../components/Category'
 import '../assets/styles/Homepage.css'
 import BestSellingProducts from '../components/BestSellingProducts'
-// import Banner from '../components/Banner'
-// import OurProducts from '../components/OurProducts'
-// import NewArrival from '../components/NewArrival'
 import Policy from '../components/Policy'
 import ImageSlider from '../components/ImageSlider'
 
@@ -17,20 +12,19 @@ const Homepage = () => {
 
   return (
     <div className='main'>
-      {/* <Home /> */}
       <ImageSlider />
-      {/* <FlashSales /> */}
       <hr />
-      <Category />
+      <div className='component'>
+        <Category />
+      </div>
       <hr />
-      <BestSellingProducts />
-      {/* <hr /> */}
-      {/* <Banner /> */}
-      {/* <hr /> */}
-      {/* <OurProducts /> */}
+      <div className='component'>
+        <BestSellingProducts />
+      </div>
       <hr />
-      {/* <NewArrival /> */}
-      <Policy />
+      <div className='component'>
+        <Policy />
+      </div>
     </div>
   )
 }

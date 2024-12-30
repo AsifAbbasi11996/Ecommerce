@@ -6,6 +6,8 @@
   .footer_content {
     display: flex;
     justify-content: space-around;
+    gap: 2rem;
+    flex-wrap: wrap;
 
     .list {
       h3 {
@@ -58,6 +60,55 @@
   .footer_bottom {
     p {
       text-align: center;
+    }
+  }
+}
+
+@media only screen and (max-width: 853px) {
+  .footer_container {
+    .footer_content {
+      justify-content: flex-start;
+    }
+  }
+}
+
+@media only screen and (max-width: 426px) {
+  .footer_container {
+
+    .footer_content{
+      gap: 1rem 2rem;
+
+      .list{
+        h2{
+          font-size: 1.2rem;
+          font-weight: 550;
+        }
+
+        p{
+          font-size: 0.8rem;
+        }
+
+        .social_icons{
+          a{
+            font-size: 16px;
+          }
+        }
+
+        h3{
+          font-size: 1rem;
+          font-weight: 500;
+        }
+
+        li a {
+          font-size: 0.8rem;
+        }
+      }
+    }
+
+    .footer_bottom{
+      p{
+        font-size: 0.8rem;
+      }
     }
   }
 }

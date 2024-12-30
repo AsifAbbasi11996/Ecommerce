@@ -1,0 +1,128 @@
+.edit-item-container {
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+  .head {
+    display: flex;
+    align-items: center;
+    column-gap: 0.5rem;
+
+    a {
+      text-decoration: none;
+      color: #000;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    svg {
+      font-size: 18px;
+    }
+  }
+
+  h2 {
+    text-align: center;
+    font-size: 2rem;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 30px;
+  }
+
+  .edit-item-form {
+    display: flex;
+    flex-direction: column;
+    padding: 0 1rem;
+  }
+
+  .three,
+  .four {
+    display: flex;
+    column-gap: 1.5rem;
+
+    .form-group {
+      flex: 1;
+    }
+  }
+
+  .form-group {
+    margin-bottom: 15px;
+
+    .image-preview {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+
+      .image-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        .image {
+          width: 100px;
+          height: 100px;
+
+          img {
+            width: 100%;
+            height: 100%;
+          }
+        }
+
+        /* Add this to EditItem.css */
+        .delete-image-btn {
+          background-color: red;
+          color: white;
+          border: none;
+          padding: 5px;
+          margin-top: 10px;
+          cursor: pointer;
+          font-size: 0.8rem;
+        }
+
+        .delete-image-btn:hover {
+          background-color: darkred;
+        }
+      }
+    }
+  }
+
+  .form-group label {
+    font-weight: bold;
+  }
+
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    width: 100%;
+    padding: 8px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin: 10px 0;
+  }
+
+  input:focus,
+  textarea:focus,
+  select:focus {
+    outline: none;
+  }
+
+  textarea {
+    height: 100px;
+  }
+
+  button {
+    background-color: #4c57af;
+    border-radius: 4px;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+  }
+
+  button:hover {
+    background-color: #5a45a0;
+  }
+}

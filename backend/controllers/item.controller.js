@@ -118,36 +118,66 @@ const getItemById = async (req, res) => {
 const updateItemById = async (req, res) => {
   try {
     const { id } = req.params
-    const updates = req.body
+    const item = await Item.findById(id)
 
-    // Ensure MRP > SP if both are being updated
-    if (updates.mrp && updates.sp && updates.mrp <= updates.sp) {
-      return res.status(400).json({
-        error: 'Invalid MRP and SP values. MRP must be greater than SP.'
-      })
+    if (!item) {
+      return res.status(404).json({ message: 'Item not found.' })
     }
 
-    // Update discount percentage if MRP and SP are updated
-    if (updates.mrp && updates.sp) {
-      updates.discount = {
-        ...updates.discount,
-        percentage: Math.round(((updates.mrp - updates.sp) / updates.mrp) * 100)
+    const {
+      itemName,
+      brand,
+      category,
+      color,
+      mrp,
+      sp,
+      itemdetail,
+      discount,
+      rating,
+      stock,
+      status
+    } = req.body
+
+    // Update fields if they are provided
+    if (itemName) item.itemName = itemName
+    if (brand) item.brand = brand
+    if (category) item.category = category
+    if (color) item.color = color
+    if (mrp) item.mrp = mrp
+    if (sp) item.sp = sp
+    if (itemdetail) item.itemdetail = itemdetail
+    if (rating) item.rating = rating
+    if (stock) item.stock = stock
+    if (status) item.status = status
+
+    // Automatically calculate and set discount percentage based on MRP and SP
+    if (mrp && sp) {
+      const discountPercentage = ((mrp - sp) / mrp) * 100
+      item.discount = {
+        percentage: Math.round(discountPercentage),
+        startDate: discount?.startDate || item.discount.startDate,
+        endDate: discount?.endDate || item.discount.endDate
       }
     }
 
-    // Handle color update if provided
-    if (updates.color) {
-      updates.color = updates.color.split(',')
+    // Handle the discount object update if provided (only update dates if provided)
+    if (discount) {
+      if (discount.startDate) {
+        item.discount.startDate = discount.startDate
+      }
+      if (discount.endDate) {
+        item.discount.endDate = discount.endDate
+      }
     }
 
-    const updatedItem = await Item.findByIdAndUpdate(id, updates, {
-      new: true,
-      runValidators: true
-    })
-
-    if (!updatedItem) {
-      return res.status(404).json({ message: 'Item not found' })
+    // Handle image update
+    if (req.files && req.files.length > 0) {
+      const imagePaths = req.files.map(file => file.path) // Extract file paths of uploaded images
+      item.images = imagePaths // Replace images array with new ones
     }
+
+    // Save the updated item to the database
+    const updatedItem = await item.save()
 
     res
       .status(200)
@@ -161,24 +191,36 @@ const updateItemById = async (req, res) => {
 // Delete a single image from the images array
 const deleteImageFromItem = async (req, res) => {
   try {
-    const { id } = req.params
-    const { imagePath } = req.body
+    const { id, imagePath } = req.params
 
+    // Normalize the image path (replace backslashes with forward slashes)
+    const normalizedImagePath = imagePath.replace(/\\+/g, '/')
+
+    if (!normalizedImagePath) {
+      return res.status(400).json({ message: 'Image path is required' })
+    }
+
+    // Find the item by ID
     const item = await Item.findById(id)
 
     if (!item) {
       return res.status(404).json({ message: 'Item not found' })
     }
 
-    const updatedImages = item.images.filter(image => image !== imagePath)
+    // Check if the image path exists in the item's images array
+    const imageIndex = item.images.indexOf(normalizedImagePath)
 
-    if (updatedImages.length === item.images.length) {
+    if (imageIndex === -1) {
       return res.status(400).json({ message: 'Image not found in item' })
     }
 
-    item.images = updatedImages
+    // Remove the image from the images array
+    item.images.splice(imageIndex, 1)
+
+    // Save the updated item
     await item.save()
 
+    // Respond with the updated item and success message
     res.status(200).json({ message: 'Image removed successfully', item })
   } catch (error) {
     console.error('Error removing image:', error)

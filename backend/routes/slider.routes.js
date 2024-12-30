@@ -54,14 +54,22 @@ router.delete('/del/:id', deleteSliderById)
 // Add a new slider
 router.post(
   '/add',
-  upload.fields([{ name: 'image' }, { name: 'smallimage' }]),
+  upload.fields([
+    { name: 'image' },
+    { name: 'smallimage' },
+    { name: 'mobileImage' }
+  ]),
   addSlider
 )
 
 // Update slider by id
 router.put(
   '/update/:id',
-  upload.fields([{ name: 'image' }, { name: 'smallimage' }]),
+  upload.fields([
+    { name: 'image' },
+    { name: 'smallimage' },
+    { name: 'mobileImage' }
+  ]),
   updateSliderById
 )
 

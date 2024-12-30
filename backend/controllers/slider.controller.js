@@ -56,7 +56,7 @@ const deleteSliderById = async (req, res) => {
 
 // Add a new slider with image upload handling
 const addSlider = async (req, res) => {
-  const { image, smallimage } = req.files ? req.files : {} // Handle multiple file fields
+  const { image, smallimage, mobileImage } = req.files ? req.files : {} // Handle multiple file fields
   const { link, smalltext, bigtext } = req.body
 
   // Ensure image exists
@@ -67,6 +67,7 @@ const addSlider = async (req, res) => {
   const newSlider = new Slider({
     image: image[0].path, // Multer returns an array of files in `req.files`
     smallimage: smallimage ? smallimage[0].path : null,
+    mobileImage: mobileImage ? mobileImage[0].path : null,
     link,
     smalltext,
     bigtext
@@ -81,61 +82,83 @@ const addSlider = async (req, res) => {
   }
 }
 
-// Update a slider by ID (only image and text)
+// Update a slider by ID (dynamically update fields)
 const updateSliderById = async (req, res) => {
   const { id } = req.params
-  const { image, smallimage } = req.files ? req.files : {} // Handle multiple file fields
-  const { link, smalltext, bigtext } = req.body
+  const { image, smallimage, mobileImage } = req.files ? req.files : {} // Handle file uploads
+  const { link, smalltext, bigtext } = req.body // Handle body data (text fields)
 
   try {
+    // Find the slider by ID
     const slider = await Slider.findById(id)
     if (!slider) {
       return res.status(404).json({ message: 'Slider not found' })
     }
 
-    // Handle image
+    // Dynamically update fields if they exist in the request
+
+    // Handle image upload
     if (image) {
-      // Delete the old image if necessary
+      // Delete old image if it exists
       if (slider.image) {
         const oldImagePath = path.join(__dirname, '..', slider.image)
         if (fs.existsSync(oldImagePath)) {
           fs.unlinkSync(oldImagePath)
         }
       }
-      slider.image = image[0].path
+      slider.image = image[0].path // Set new image path
     }
 
-    // Handle smallimage
+    // Handle smallimage upload
     if (smallimage) {
-      // Delete the old smallimage if necessary
+      // Delete old smallimage if it exists
       if (slider.smallimage) {
         const oldSmallImagePath = path.join(__dirname, '..', slider.smallimage)
         if (fs.existsSync(oldSmallImagePath)) {
           fs.unlinkSync(oldSmallImagePath)
         }
       }
-      slider.smallimage = smallimage[0].path
+      slider.smallimage = smallimage[0].path // Set new smallimage path
     }
 
+    // Handle mobileImage upload
+    if (mobileImage) {
+      // Delete old mobileImage if it exists
+      if (slider.mobileImage) {
+        const oldMobileImagePath = path.join(
+          __dirname,
+          '..',
+          slider.mobileImage
+        )
+        if (fs.existsSync(oldMobileImagePath)) {
+          fs.unlinkSync(oldMobileImagePath)
+        }
+      }
+      slider.mobileImage = mobileImage[0].path // Set new mobileImage path
+    }
+
+    // Handle text fields
     if (link) {
-      slider.link = link
+      slider.link = link // Update the link if provided
     }
 
     if (smalltext) {
-      slider.smalltext = smalltext // Update the smalltext if provided
+      slider.smalltext = smalltext // Update smalltext if provided
     }
 
     if (bigtext) {
-      slider.bigtext = bigtext // Update the bigtext if provided
+      slider.bigtext = bigtext // Update bigtext if provided
     }
 
+    // Save the updated slider
     const updatedSlider = await slider.save()
-    res.status(200).json(updatedSlider)
+    res.status(200).json(updatedSlider) // Respond with the updated slider
   } catch (error) {
     console.error('Error updating slider:', error.message)
     res.status(500).json({ message: 'Server error', error: error.message })
   }
 }
+
 
 // Delete a single image from a slider by ID
 const deleteSliderImage = async (req, res) => {

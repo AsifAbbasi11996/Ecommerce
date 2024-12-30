@@ -9,6 +9,9 @@ const SliderSchema = new mongoose.Schema(
     smallimage: {
       type: String
     },
+    mobileImage: {
+      type: String
+    },
     link: {
       type: String
     },

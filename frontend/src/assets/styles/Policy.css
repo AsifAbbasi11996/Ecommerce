@@ -1,7 +1,8 @@
 .policy_container {
   display: flex;
   justify-content: space-around;
-  padding: 5rem 0;
+  gap: 2rem;
+  width: 100%;
 
   .services {
     display: flex;
@@ -22,7 +23,6 @@
 
       svg {
         color: #fff;
-        font-size: 1.2rem;
       }
     }
 
@@ -37,5 +37,25 @@
       font-size: 0.8rem;
       font-weight: normal;
     }
+  }
+}
+
+@media only screen and (max-width: 759px) {
+  .policy_container {
+    .services {
+      p {
+        font-size: 0.8rem;
+      }
+
+      p:last-child {
+        font-size: 0.6rem;
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 620px) {
+  .policy_container {
+    flex-wrap: wrap;
   }
 }

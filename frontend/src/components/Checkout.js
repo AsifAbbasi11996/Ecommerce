@@ -11,6 +11,7 @@ const Checkout = () => {
   // Get the product details from location state
   const product = location.state?.product || {}
   const selectedImage = location.state?.selectedImage || product.images[0]
+  const selectedColor = location.state?.selectedColor || 'Not selected'
   const [quantity, setQuantity] = useState(location.state?.quantity || 1)
   const [name, setName] = useState('')
   const [address, setAddress] = useState('')
@@ -52,9 +53,9 @@ const Checkout = () => {
       <div className='nav'>
         <Link to='/'>Home</Link>
         <p>/</p>
-        <Link to='/v'>Product</Link>
+        <Link>Product</Link>
         <p>/</p>
-        <Link to='/v/:id'>View Product</Link>
+        <Link>View Product</Link>
         <p>/</p>
         <Link>Checkout</Link>
       </div>
@@ -113,12 +114,12 @@ const Checkout = () => {
             <div className='product-details'>
               <div className='product-info'>
                 <img src={formatImageUrl(selectedImage)} />
-                <p>{product.itemName}</p>
+                <p className='name'>{product.itemName}</p>
                 <p>x({quantity})</p>
+                <p>{selectedColor}</p>
               </div>
               <p>{formatPrice(product.sp)}</p>
             </div>
-            {/* <p>Qty: {quantity}</p> */}
             <div className='totals'>
               <p>
                 <span>Subtotal:</span>

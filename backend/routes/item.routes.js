@@ -59,13 +59,13 @@ const upload = multer({
 })
 
 // Define routes
-router.post('/add', upload.array('images', 10), addItem) // Add a new item
+router.post('/add', upload.array('images', 5), addItem) // Add a new item
 router.get('/all', getAllItems) // Get all items
 router.get('/get/:id', getItemById) // Get a single item by ID
-router.put('/update/:id', upload.array('images', 10), updateItemById) // Update an item by ID
+router.put('/update/:id', upload.array('images', 5), updateItemById) // Update an item by ID
 router.delete('/del/:id', deleteItemById) // Delete an item by ID
-router.delete('del/:id/images', deleteImageFromItem) // Delete a single image from the images array
-router.put('add/:id/images', upload.array('images', 10), addImagesToItem) // Add images to the images array
-router.get('/items/related/:category', getRelatedItemsByCategory);
+router.delete('/del/:id/:imagePath', deleteImageFromItem) // Delete a single image from the images array
+router.put('/add/:id/images', upload.array('images', 5), addImagesToItem) // Add images to the images array
+router.get('/items/related/:category', getRelatedItemsByCategory)
 
 export default router

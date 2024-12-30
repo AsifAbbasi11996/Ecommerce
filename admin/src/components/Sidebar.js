@@ -92,7 +92,6 @@ const Sidebar = () => {
           >
             <AiFillProduct className='sidebar-icon' />
             {!collapsed && <span className='sidebar-text'>Products</span>}
-            {/* Show dropdown if products is active */}
             {!collapsed && activeDropdown === 'products' && (
               <ul className='dropdown'>
                 <Link to='/viewproducts'>
@@ -100,6 +99,21 @@ const Sidebar = () => {
                 </Link>
                 <Link to='/addproduct'>
                   <li className='dropdown-item'>Add Product</li>
+                </Link>
+              </ul>
+            )}
+          </li>
+
+          <li className='sidebar-item' onClick={() => handleItemClick('items')}>
+            <AiFillProduct className='sidebar-icon' />
+            {!collapsed && <span className='sidebar-text'>Items</span>}
+            {!collapsed && activeDropdown === 'items' && (
+              <ul className='dropdown'>
+                <Link to='/viewitems'>
+                  <li className='dropdown-item'>View Items</li>
+                </Link>
+                <Link to='/additem'>
+                  <li className='dropdown-item'>Add Item</li>
                 </Link>
               </ul>
             )}
