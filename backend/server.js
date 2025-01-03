@@ -9,6 +9,8 @@ import productRoutes from './routes/product.routes.js'
 import sliderRoutes from './routes/slider.routes.js'
 import categoryRoutes from './routes/category.routes.js'
 import itemRoutes from './routes/item.routes.js'
+import cartRoutes from './routes/cart.routes.js'
+import wishlistRoutes from './routes/wishlist.routes.js'
 
 dotenv.config()
 
@@ -31,6 +33,8 @@ app.use('/product', productRoutes)
 app.use('/slider', sliderRoutes)
 app.use('/category', categoryRoutes)
 app.use('/item', itemRoutes)
+app.use('/cart', cartRoutes)
+app.use('/wishlist', wishlistRoutes)
 
 app.get('/api', (req, res) => {
   res.send('API is running')

@@ -12,6 +12,10 @@ const MyAccount = () => {
 
   const [selectedSection, setSelectedSection] = useState('profile') // Default to 'profile'
 
+  // Get user data from localStorage
+  const firstName = localStorage.getItem('firstName')
+  const lastName = localStorage.getItem('lastName')
+
   // Function to handle sidebar clicks
   const handleSidebarClick = section => {
     setSelectedSection(section)
@@ -31,7 +35,7 @@ const MyAccount = () => {
           <Link>My Account</Link>
         </div>
         <p>
-          Welcome! <span>Asif Abbasi</span>
+          Welcome! <span>{firstName} {lastName}</span>
         </p>
       </div>
 

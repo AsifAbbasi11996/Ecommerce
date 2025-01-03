@@ -1,13 +1,21 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { CiHeart } from 'react-icons/ci'
-import { BsEye } from 'react-icons/bs'
+import { useCart } from '../context/CartContext'
+import { BsCart, BsHeart } from 'react-icons/bs'
 import { FaStar, FaStarHalf } from 'react-icons/fa' // Import FaStarHalf for half-star rendering
 import { formatImageUrl } from '../utils/formatImage' // Assuming you have this utility to format image URLs
 import { formatPrice } from '../utils/formatPrice' // Assuming you have this utility to format price
 import '../assets/styles/BestSellingProducts.css'
+import { ToastContainer, toast } from 'react-toastify' // Import toast and ToastContainer
+import 'react-toastify/dist/ReactToastify.css' // Import toast styles
+import { useWishlist } from '../context/WishlistContext'
 
 const RelatedProducts = ({ products }) => {
+  const { handleAddToCart } = useCart() // Access handleAddToCart function from context
+  const { handleAddToWishlist } = useWishlist()
+
+  const userId = localStorage.getItem('userId')
+
   // Function to render stars based on the rating
   const renderStars = rating => {
     const fullStars = Math.floor(rating) // Full stars (integer part)
@@ -31,57 +39,97 @@ const RelatedProducts = ({ products }) => {
     })
   }
 
+  // Handle adding product to cart
+  const handleAddToCartClick = product => {
+    if (!userId) {
+      toast.error('Please log in to add items to the cart.')
+      return
+    }
+
+    handleAddToCart(userId, product._id) // Add the product to the global cart state
+    toast.success('Added to Cart!', {
+      position: 'top-right',
+      autoClose: 3000,
+      hideProgressBar: false,
+      draggable: false
+    })
+  }
+
+  // Function to handle adding product to the wishlist
+  const handleAddToWishlistClick = product => {
+    if (!userId) {
+      toast.error('Please log in to add items to the cart.')
+      return
+    }
+    handleAddToWishlist(userId, product._id) // Add the product to the wishlist
+    toast.success('Added to Wishlist!', {
+      position: 'top-right', // Position at the top-right
+      autoClose: 3000, // Duration of 3 seconds
+      hideProgressBar: false, // Hide the progress bar
+      draggable: false // Non-draggable
+    })
+  }
+
   return (
     <div className='related-products_container'>
       <h3>Related Products</h3>
       <div className='related-products'>
         {products.length > 0 ? (
           products.map(product => (
-            <Link
-              to={`/v/${product._id}`}
-              key={product._id}
-              className='related-product_item'
-              onClick={handleScrollToTop}
-            >
-              <div className='card'>
-                <div className='card-product'>
-                <p className='discount'>-{product.discount.percentage}%</p>
-                  <div className='card-image'>
-                    {/* Use the first image of the product */}
-                    <img
-                      src={formatImageUrl(product.images[0])}
-                      alt={product.itemName}
-                    />
+            <div className='product'>
+              <Link
+                to={`/v/${product._id}`}
+                key={product._id}
+                className='related-product_item'
+                onClick={handleScrollToTop}
+              >
+                <div className='card'>
+                  <div className='card-product'>
+                    <p className='discount'>-{product.discount.percentage}%</p>
+                    <div className='card-image'>
+                      {/* Use the first image of the product */}
+                      <img
+                        src={formatImageUrl(product.images[0])}
+                        alt={product.itemName}
+                      />
+                    </div>
                   </div>
-                  <div className='icons'>
-                    <div className='icon'>
-                      <CiHeart /> {/* Add the heart icon for wishlist */}
-                    </div>
-                    <div className='icon'>
-                      <BsEye /> {/* Add the eye icon for view */}
-                    </div>
+                  <div className='card-content'>
+                    <p>{product.itemName}</p>
+                    <p className='price'>
+                      {/* Display the sale price */}
+                      <span className='sp'>{formatPrice(product.sp)}</span>
+                      {/* Display the MRP */}
+                      <span className='mrp'>{formatPrice(product.mrp)}</span>
+                    </p>
+                    <p className='rating'>
+                      {/* Render full and half stars */}
+                      {renderStars(product.rating)}
+                    </p>
                   </div>
                 </div>
-                <div className='card-content'>
-                  <p>{product.itemName}</p>
-                  <p className='price'>
-                    {/* Display the sale price */}
-                    <span className='sp'>{formatPrice(product.sp)}</span>
-                    {/* Display the MRP */}
-                    <span className='mrp'>{formatPrice(product.mrp)}</span>
-                  </p>
-                  <p className='rating'>
-                    {/* Render full and half stars */}
-                    {renderStars(product.rating)}
-                  </p>
+              </Link>
+              <div className='icons'>
+                <div
+                  className='icon'
+                  onClick={() => handleAddToWishlistClick(product)} // Pass the event to stop propagation
+                >
+                  <BsHeart />
+                </div>
+                <div
+                  className='icon'
+                  onClick={() => handleAddToCartClick(product)} // Pass the event to stop propagation
+                >
+                  <BsCart />
                 </div>
               </div>
-            </Link>
+            </div>
           ))
         ) : (
           <p>No related products found.</p>
         )}
       </div>
+      <ToastContainer />
     </div>
   )
 }

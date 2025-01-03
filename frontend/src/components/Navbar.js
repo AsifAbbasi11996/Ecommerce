@@ -12,23 +12,25 @@ import '../assets/styles/Navbar.css'
 import { LuShoppingBag } from 'react-icons/lu'
 import { MdOutlineCancel } from 'react-icons/md'
 import { getAllItems } from '../api/itemApi'
+import { ToastContainer, toast } from 'react-toastify' // Import toast and ToastContainer
+import 'react-toastify/dist/ReactToastify.css' // Import toast styles
 
 const Navbar = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false) // Track whether the menu is open or closed
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isShow, setIsShow] = useState(false)
-  const [isSearchBarOpen, setIsSearchBarOpen] = useState(false) // Track if the search bar outside is open
-  const [screenWidth, setScreenWidth] = useState(window.innerWidth) // Track the screen width
-  const [searchTerm, setSearchTerm] = useState('') // State for the search term
-  const [products, setProducts] = useState([]) // State to store fetched products
-  const [suggestions, setSuggestions] = useState([]) // State to store filtered suggestions
+  const [isSearchBarOpen, setIsSearchBarOpen] = useState(false)
+  const [screenWidth, setScreenWidth] = useState(window.innerWidth)
+  const [searchTerm, setSearchTerm] = useState('')
+  const [products, setProducts] = useState([])
+  const [suggestions, setSuggestions] = useState([])
   const navigate = useNavigate()
 
   // Fetch all products from the API
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await getAllItems() // Fetch items from the API
-        setProducts(response) // Set the fetched products
+        const response = await getAllItems()
+        setProducts(response)
       } catch (error) {
         console.error('Error fetching the items:', error.message)
       }
@@ -82,7 +84,7 @@ const Navbar = () => {
 
   // Function to toggle the search bar visibility outside
   const toggleSearchBarOutside = () => {
-    if (screenWidth <= 768) {
+    if (screenWidth <= 946) {
       setIsSearchBarOpen(!isSearchBarOpen)
     }
   }
@@ -100,12 +102,45 @@ const Navbar = () => {
         product.category.toLowerCase().includes(query.toLowerCase())
       )
     })
-    setSuggestions(filteredSuggestions) // Update the suggestions state
+    setSuggestions(filteredSuggestions)
+  }
+
+  // Function to handle logout
+  const handleLogout = () => {
+    // Clear all credentials from localStorage
+    localStorage.removeItem('userId')
+    localStorage.removeItem('firstName')
+    localStorage.removeItem('lastName')
+    localStorage.removeItem('token')
+
+    // Show toast message after logout
+    toast.success('Logged out successfully!', {
+      position: 'top-right', // Position at the top-right
+      autoClose: 5000, // Duration of 5 seconds
+      hideProgressBar: false, // Hide the progress bar
+      draggable: false // Non-draggable
+    })
+
+    // Optionally, navigate to the login page after logout
+    setTimeout(() => {
+      navigate('/login')
+    }, 2000) // Adding a slight delay before navigation
   }
 
   const handleClose = () => {
     setSuggestions(false)
-    
+  }
+
+  const navigateToWishlist = () => {
+    navigate('/wishlist')
+  }
+
+  const navigteToCart = () => {
+    navigate('/cart')
+  }
+
+  const handleNavlinkClose = () => {
+    setIsMenuOpen(false)
   }
 
   return (
@@ -121,30 +156,42 @@ const Navbar = () => {
 
       <div className={`nav-links ${isMenuOpen ? 'active' : ''}`}>
         <Link
-          to='/'
-          className={selectedLink === 'home' ? 'active' : ''}
-          onClick={() => handleLinkClick('home')}
+          to='/kitchens'
+          className={selectedLink === 'kitchens' ? 'active' : ''}
+          onClick={() => {
+            handleLinkClick('kitchens')
+            handleNavlinkClose()
+          }}
         >
-          Home
+          Kitchens
         </Link>
         <Link
-          to='/contact'
-          className={selectedLink === 'contact' ? 'active' : ''}
-          onClick={() => handleLinkClick('contact')}
+          to='/electronics'
+          className={selectedLink === 'electronics' ? 'active' : ''}
+          onClick={() => {
+            handleLinkClick('electronics')
+            handleNavlinkClose()
+          }}
         >
-          Contact
+          Electronics
         </Link>
         <Link
-          to='/about'
-          className={selectedLink === 'about' ? 'active' : ''}
-          onClick={() => handleLinkClick('about')}
+          to='/bags'
+          className={selectedLink === 'bags' ? 'active' : ''}
+          onClick={() => {
+            handleLinkClick('bags')
+            handleNavlinkClose()
+          }}
         >
-          About
+          Bags
         </Link>
         <Link
           to='/signup'
           className={selectedLink === 'signup' ? 'active' : ''}
-          onClick={() => handleLinkClick('signup')}
+          onClick={() => {
+            handleLinkClick('signup')
+            handleNavlinkClose()
+          }}
         >
           Sign Up
         </Link>
@@ -156,27 +203,14 @@ const Navbar = () => {
             type='text'
             placeholder='What are you looking for?'
             value={searchTerm}
-            onChange={handleSearchChange} // Handle search input change
+            onChange={handleSearchChange}
           />
           <CiSearch />
-
-          {/* Suggestions */}
-          {searchTerm && suggestions.length > 0 && (
-            <div className='suggestions'>
-              {suggestions.map(product => (
-                <Link to={`/v/${product._id}`} onClick={handleClose}>
-                  <div key={product._id} className='suggestion-item'>
-                    <p>{product.itemName}</p>
-                  </div>
-                </Link>
-              ))}
-            </div>
-          )}
         </div>
-        <div className='wishlist'>
+        <div className='wishlist' onClick={navigateToWishlist}>
           <CiHeart />
         </div>
-        <div className='cart'>
+        <div className='cart' onClick={navigteToCart}>
           <CiShoppingCart />
         </div>
         <div className='account' onClick={showDropdown}>
@@ -216,7 +250,7 @@ const Navbar = () => {
                   My Cancellations
                 </Link>
               </li>
-              <li>
+              <li onClick={handleLogout}>
                 <Link>
                   <CiLogout /> Logout
                 </Link>
@@ -226,11 +260,32 @@ const Navbar = () => {
         </div>
       </div>
 
-      {isSearchBarOpen && screenWidth <= 768 && (
+      {isSearchBarOpen && screenWidth <= 946 && (
         <div className='search_bar'>
-          <input type='text' placeholder='What are you looking for?' />
+          <input
+            type='text'
+            placeholder='What are you looking for?'
+            value={searchTerm}
+            onChange={handleSearchChange}
+          />
         </div>
       )}
+
+      {/* Suggestions */}
+      {searchTerm && suggestions.length > 0 && (
+        <div className='suggestions'>
+          {suggestions.map(product => (
+            <Link to={`/v/${product._id}`} onClick={handleClose}>
+              <div key={product._id} className='suggestion-item'>
+                <p>{product.itemName}</p>
+              </div>
+            </Link>
+          ))}
+        </div>
+      )}
+
+      {/* ToastContainer to display toast messages */}
+      <ToastContainer />
     </nav>
   )
 }

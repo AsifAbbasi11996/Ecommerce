@@ -27,7 +27,6 @@ const ImageSlider = () => {
     const fetchSliders = async () => {
       try {
         const response = await getAllSliders()
-        console.log(response) // Check the response structure here
         setImages(response)
         setLoading(false) // Set loading to false once data is fetched
       } catch (error) {

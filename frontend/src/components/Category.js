@@ -10,7 +10,6 @@ const Category = () => {
     const fetchCategories = async () => {
       try {
         const category = await getAllCategories()
-        console.log(category)
         setCategories(category)
       } catch (error) {
         console.error('Error fetching category: ', error)

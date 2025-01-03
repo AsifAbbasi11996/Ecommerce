@@ -9,11 +9,18 @@ import { formatImageUrl } from '../utils/formatImage'
 import { formatPrice } from '../utils/formatPrice.js'
 import RelatedProducts from './RelatedProducts'
 import Loader from './Loader.js'
+import { ToastContainer, toast } from 'react-toastify' // Import toast and ToastContainer
+import 'react-toastify/dist/ReactToastify.css' // Import toast styles
+import { useCart } from '../context/CartContext.js'
+import { useWishlist } from '../context/WishlistContext.js'
 
 const ViewProduct = () => {
   useEffect(() => {
     window.scrollTo(0, 0)
   }, [])
+
+  const { handleAddToCart } = useCart() // Access handleAddToCart function from context
+  const { handleAddToWishlist } = useWishlist()
 
   const { id } = useParams() // Get product ID from URL
   const [product, setProduct] = useState(null) // State to store product data
@@ -23,6 +30,7 @@ const ViewProduct = () => {
   const [relatedProducts, setRelatedProducts] = useState([]) // State to store related products
   const [selectedImage, setSelectedImage] = useState(null) // State to store selected image for large view
   const [selectedColor, setSelectedColor] = useState(null)
+  const userId = localStorage.getItem('userId')
 
   const navigate = useNavigate()
 
@@ -94,39 +102,45 @@ const ViewProduct = () => {
     return <div>{error}</div>
   }
 
-  const handleAddToCart = () => {
-    if (product.color && product.color.length > 0 && !selectedColor) {
-      alert('Please select a color before adding to the cart') // Alert if no color is selected
-      return // Prevent adding to cart if no color is selected
+  const productId = product._id
+
+  // Handle adding product to cart
+  const handleAddToCartClick = product => {
+    if (!userId) {
+      toast.error('Please log in to add items to the cart.')
+      return
     }
-    console.log(
-      'Added to cart',
-      product,
-      'Quantity:',
-      quantity,
-      'Color:',
-      selectedColor
-    )
+
+    handleAddToCart(userId, productId) // Add the product to the global cart state
+    toast.success('Added to Cart!', {
+      position: 'top-right',
+      autoClose: 3000,
+      hideProgressBar: false,
+      draggable: false
+    })
   }
 
-  const handleAddToWishlist = () => {
-    console.log('Added to wishlist', product, 'Color:', selectedColor)
+  const handleAddToWishlistClick = () => {
+    if (!userId) {
+      toast.error('Please log in to add items to the cart.')
+      return
+    }
+    handleAddToWishlist(userId, productId) // Add the product to the wishlist
+    toast.success('Added to Wishlist!', {
+      position: 'top-right', // Position at the top-right
+      autoClose: 3000, // Duration of 3 seconds
+      hideProgressBar: false, // Hide the progress bar
+      draggable: false // Non-draggable
+    })
   }
 
   const handleBuyNow = () => {
+    // Check if the product has color options, and if so, whether a color is selected
     if (product.color && product.color.length > 0 && !selectedColor) {
       alert('Please select a color before proceeding to buy') // Alert if no color is selected
       return // Prevent proceeding if no color is selected
     }
 
-    console.log(
-      'Proceeding to buy',
-      product,
-      'Quantity:',
-      quantity,
-      'Color:',
-      selectedColor
-    )
     navigate('/checkout', {
       state: { product, quantity, selectedImage, selectedColor }
     }) // Pass selectedColor to checkout
@@ -183,25 +197,30 @@ const ViewProduct = () => {
             <p className='price'>
               <span className='sp'>{formatPrice(product.sp)}</span>
               <span className='mrp'>{formatPrice(product.mrp)}</span>
-              <span className='discount'>({product.discount.percentage}% off)</span>
+              <span className='discount'>
+                ({product.discount.percentage}% off)
+              </span>
             </p>
-            <p className='colors'>
-              Colors
-              {product.color.map((col, index) => (
-                <button
-                  key={index}
-                  onClick={() => handleColorSelect(col)} // Update the color selection
-                  style={{
-                    backgroundColor:
-                      selectedColor === col ? '#db4444' : 'white',
-                    color: selectedColor === col ? 'white' : 'black'
-                  }}
-                >
-                  {col}
-                  {index < product.color.length - 1 && ', '}
-                </button>
-              ))}
-            </p>
+            {/* Conditionally render Colors section */}
+            {product.color && product.color.length > 0 && (
+              <p className='colors'>
+                Colors
+                {product.color.map((col, index) => (
+                  <button
+                    key={index}
+                    onClick={() => handleColorSelect(col)} // Update the color selection
+                    style={{
+                      backgroundColor:
+                        selectedColor === col ? '#db4444' : 'white',
+                      color: selectedColor === col ? 'white' : 'black'
+                    }}
+                  >
+                    {col}
+                  </button>
+                ))}
+              </p>
+            )}
+
             <div className='qty_cart'>
               <div className='quantity-selector'>
                 <button onClick={decreaseQuantity} disabled={quantity <= 1}>
@@ -215,12 +234,15 @@ const ViewProduct = () => {
                   +
                 </button>
               </div>
-              <button onClick={handleAddToCart} className='btn-cart'>
+              <button onClick={handleAddToCartClick} className='btn-cart'>
                 <BsCart /> Add to Cart
               </button>
             </div>
             <div className='buttons'>
-              <button onClick={handleAddToWishlist} className='btn-wishlist'>
+              <button
+                onClick={handleAddToWishlistClick}
+                className='btn-wishlist'
+              >
                 <CiHeart /> Add to Wishlist
               </button>
               <button onClick={handleBuyNow} className='btn-buy'>
@@ -240,6 +262,8 @@ const ViewProduct = () => {
 
       {/* Related Products section */}
       <RelatedProducts products={relatedProducts} />
+
+      <ToastContainer />
     </div>
   )
 }

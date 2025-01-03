@@ -2,24 +2,31 @@ import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { getAllItems } from '../api/itemApi.js' // Import the API function
 import '../assets/styles/BestSellingProducts.css'
-import { CiHeart } from 'react-icons/ci'
-import { BsEye } from 'react-icons/bs'
+import { BsHeart } from 'react-icons/bs'
 import { FaStar, FaStarHalf } from 'react-icons/fa' // Import FaStarHalf instead of FaStarHalfAlt
 import { formatImageUrl } from '../utils/formatImage'
 import { formatPrice } from '../utils/formatPrice'
 import Loader from './Loader.js'
+import { ToastContainer, toast } from 'react-toastify' // Import toast and ToastContainer
+import 'react-toastify/dist/ReactToastify.css' // Import toast styles
+import { useCart } from '../context/CartContext.js'
+import { useWishlist } from '../context/WishlistContext.js'
+import { PiShoppingCartSimple } from 'react-icons/pi'
 
 const BestSellingProducts = () => {
-  const [products, setProducts] = useState([]) // State to hold fetched products
+  const { handleAddToCart } = useCart()
+  const { handleAddToWishlist } = useWishlist()
+  const [items, setItems] = useState([]) // State to hold fetched products
   const [loading, setLoading] = useState(true) // State to handle loading state
   const [error, setError] = useState(null) // State to handle any errors
+  const userId = localStorage.getItem('userId')
 
   // Fetch products from API when the component mounts
   useEffect(() => {
     const fetchProducts = async () => {
       try {
         const fetchedProducts = await getAllItems() // Fetch the data
-        setProducts(fetchedProducts) // Set the products in state
+        setItems(fetchedProducts) // Set the products in state
       } catch (err) {
         setError('Error fetching products') // Handle any errors
       } finally {
@@ -53,6 +60,38 @@ const BestSellingProducts = () => {
     )
   }
 
+
+  // Function to handle adding product to the cart
+  const handleAddToCartClick = product => {
+    if (!userId) {
+      toast.error('Please log in to add items to the cart.')
+      return
+    }
+
+    handleAddToCart(userId, product._id) // Add the product to the global cart state
+    toast.success('Added to Cart!', {
+      position: 'top-right',
+      autoClose: 3000,
+      hideProgressBar: false,
+      draggable: false
+    })
+  }
+
+  // Function to handle adding product to the wishlist
+  const handleAddToWishlistClick = product => {
+    if (!userId) {
+      toast.error('Please log in to add items to the cart.')
+      return
+    }
+    handleAddToWishlist(userId, product._id) // Add the product to the wishlist
+    toast.success('Added to Wishlist!', {
+      position: 'top-right', // Position at the top-right
+      autoClose: 3000, // Duration of 3 seconds
+      hideProgressBar: false, // Hide the progress bar
+      draggable: false // Non-draggable
+    })
+  }
+
   return (
     <div className='best_selling_products_container'>
       <div className='best_selling_products_title'>
@@ -67,44 +106,58 @@ const BestSellingProducts = () => {
       </div>
 
       <div className='best_selling_products'>
-        {/* Loop through the products and render each one */}
-        {products.map(product => (
-          <Link to={`/v/${product._id}`} className='view-details'>
-            <div className='card' key={product._id}>
-              <div className='card-product'>
-                <p className='discount'>-{product.discount.percentage}%</p>
-                <div className='card-image'>
-                  {/* Use the first image of the first color */}
-                  <img
-                    src={formatImageUrl(product.images[0])}
-                    alt={product.itemName}
-                  />
+        {/* Loop through the items and render each one */}
+        {items.map(product => (
+          <div className='product'>
+            <Link
+              to={`/v/${product._id}`}
+              className='view-details'
+              key={product._id}
+            >
+              <div className='card'>
+                <div className='card-product'>
+                  <p className='discount'>-{product.discount.percentage}%</p>
+                  <div className='card-image'>
+                    {/* Use the first image of the first color */}
+                    <img
+                      src={formatImageUrl(product.images[0])}
+                      alt={product.itemName}
+                    />
+                  </div>
                 </div>
-                <div className='icons'>
-                  <div className='icon'>
-                    <CiHeart />
-                  </div>
-                  <div className='icon'>
-                    <BsEye />
-                  </div>
+                <div className='card-content'>
+                  <p>{product.itemName}</p>
+                  <p className='price'>
+                    {/* Display the sale price and the MRP */}
+                    <span className='sp'>{formatPrice(product.sp)}</span>
+                    <span className='mrp'>{formatPrice(product.mrp)}</span>
+                  </p>
+                  <p className='rating'>
+                    {renderStars(product.rating)}{' '}
+                    {/* Render full and half stars */}
+                  </p>
                 </div>
               </div>
-              <div className='card-content'>
-                <p>{product.itemName}</p>
-                <p className='price'>
-                  {/* Display the sale price and the MRP */}
-                  <span className='sp'>{formatPrice(product.sp)}</span>
-                  <span className='mrp'>{formatPrice(product.mrp)}</span>
-                </p>
-                <p className='rating'>
-                  {renderStars(product.rating)}{' '}
-                  {/* Render full and half stars */}
-                </p>
+            </Link>
+            <div className='icons'>
+              <div
+                className='icon'
+                onClick={() => handleAddToWishlistClick(product)} // Pass the event to stop propagation
+              >
+                <BsHeart />
+              </div>
+              <div
+                className='icon'
+                onClick={() => handleAddToCartClick(product)} // Pass the event to stop propagation
+              >
+                <PiShoppingCartSimple />
               </div>
             </div>
-          </Link>
+          </div>
         ))}
       </div>
+
+      <ToastContainer />
     </div>
   )
 }

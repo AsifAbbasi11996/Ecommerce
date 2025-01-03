@@ -105,7 +105,7 @@ const userLogin = async (req, res) => {
       lastName: user.lastName,
       email: user.email,
       image: user.image,
-      id: user.id
+      userId: user.id
     })
   } catch (error) {
     console.error('Error logging in user:', error)

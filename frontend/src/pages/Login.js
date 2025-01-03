@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { loginUser } from '../api/userApi.js' // Assuming you have an api file with loginUser function
 import '../assets/styles/Signup.css' // Include your CSS file for styling
 import { ToastContainer, toast } from 'react-toastify' // Import toast and ToastContainer
@@ -17,6 +17,7 @@ const Login = () => {
   })
   const [pending, setPending] = useState(false) // For loading state
   const [showPassword, setShowPassword] = useState(false)
+  const navigate = useNavigate()
 
   const handleChange = e => {
     const { name, value } = e.target
@@ -33,7 +34,7 @@ const Login = () => {
       toast.error('Please fill in all fields.', {
         position: 'top-right', // Position the toast at the top-right
         autoClose: 5000, // Duration the toast stays visible
-        hideProgressBar: true, // Hide progress bar
+        hideProgressBar: false, // Hide progress bar
         draggable: false // Make the toast non-draggable
       })
       setPending(false) // Reset pending state
@@ -43,23 +44,25 @@ const Login = () => {
     try {
       // Call the loginUser function to submit form data to the backend
       const response = await loginUser(formData)
-
+      const { token, userId, firstName, lastName } = response
+      localStorage.setItem('userId', userId)
+      localStorage.setItem('firstName', firstName)
+      localStorage.setItem('lastName', lastName)
       // If login is successful, store the JWT token
-      localStorage.setItem('authToken', response.token) // You can also store in cookies or sessionStorage
+      localStorage.setItem('token', token) // You can also store in cookies or sessionStorage
 
       // Display success toast message
       toast.success('Successfully logged in!', {
         position: 'top-right', // Position the toast at the top-right
-        autoClose: 5000, // Duration the toast stays visible
+        autoClose: 3000, // Duration the toast stays visible
         hideProgressBar: true, // Hide progress bar
         draggable: false // Make the toast non-draggable
       })
 
-      console.log('User logged in:', response)
-
-      // Optionally, redirect the user or handle successful login behavior here
-      // Example: redirect to a dashboard page after successful login
-      // window.location.href = "/";
+      // Wait for 3 seconds before navigating
+      setTimeout(() => {
+        navigate('/')
+      }, 3000) // 3 seconds delay before navigating to the home page
     } catch (error) {
       // If an error occurs during login
       console.error('Error logging in:', error)

@@ -88,7 +88,7 @@ export const addImagesToItem = async (id, formData) => {
 // Function to fetch related products by category
 export const getRelatedProductsByCategory = async category => {
   try {
-    const response = await axios.get(`${API_URL}/items/related/${category}`)
+    const response = await axios.get(`${API_URL}/related/${category}`)
     return response.data
   } catch (error) {
     console.error('Error fetching related products:', error.message)

@@ -1,18 +1,25 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { formatPrice } from '../utils/formatPrice'
 import '../assets/styles/Checkout.css'
 import { formatImageUrl } from '../utils/formatImage'
+import phonepe from '../assets/images/phonepe.webp'
+import gpay from '../assets/images/gpay.webp'
+import paytm from '../assets/images/paytm.webp'
+import amazonpay from '../assets/images/amazonpay.webp'
+import { GiPayMoney } from 'react-icons/gi'
+import { FaAmazonPay } from 'react-icons/fa'
 
 const Checkout = () => {
   const location = useLocation()
   const navigate = useNavigate()
 
-  // Get the product details from location state
+  // Retrieve data passed from either Cart.js or ViewProduct.js
+  const cartItems = location.state?.cartItems || []
   const product = location.state?.product || {}
-  const selectedImage = location.state?.selectedImage || product.images[0]
-  const selectedColor = location.state?.selectedColor || 'Not selected'
-  const [quantity, setQuantity] = useState(location.state?.quantity || 1)
+  const selectedImage = location.state?.selectedImage || ''
+  const selectedColor = location.state?.selectedColor || ''
+  const quantity = location.state?.quantity || 1
   const [name, setName] = useState('')
   const [address, setAddress] = useState('')
   const [apartment, setApartment] = useState('')
@@ -22,7 +29,13 @@ const Checkout = () => {
   const [paymentMethod, setPaymentMethod] = useState('COD') // Default to COD
   const [discount, setDiscount] = useState('')
 
-  const subtotal = product.sp * quantity
+  const subtotal =
+    cartItems.length > 0
+      ? cartItems.reduce(
+          (total, item) => total + item.item.sp * item.quantity,
+          0
+        )
+      : product.sp * quantity // Calculate subtotal for the single product if cartItems is empty
   const shipping = 50 // Flat shipping fee (can be dynamic)
   const discountAmount = discount ? subtotal * 0.1 : 0 // 10% discount
   const total = subtotal + shipping - discountAmount
@@ -111,15 +124,47 @@ const Checkout = () => {
           </div>
 
           <div className='order-summary'>
-            <div className='product-details'>
-              <div className='product-info'>
-                <img src={formatImageUrl(selectedImage)} />
-                <p className='name'>{product.itemName}</p>
-                <p>x({quantity})</p>
-                <p>{selectedColor}</p>
+            {cartItems.length > 0 ? (
+              <div className='product-details'>
+                {cartItems.map((item, index) => (
+                  <div className='product-info' key={index}>
+                    <div className='flex1'>
+                      <img
+                        src={formatImageUrl(item.selectedImage)}
+                        alt={item.item.itemName}
+                      />
+                      <p className='name'>{item.item.itemName}</p>
+                      <p>x({item.quantity})</p>
+                    </div>
+                    <div className='flex2'>
+                      <p>{item.selectedColor}</p>
+                    </div>
+                    <div className='flex3'>
+                      <p>{formatPrice(item.item.sp)}</p>
+                    </div>
+                  </div>
+                ))}
               </div>
-              <p>{formatPrice(product.sp)}</p>
-            </div>
+            ) : (
+              <div className='product-details'>
+                <div className='product-info'>
+                  <div className='flex1'>
+                    <img
+                      src={formatImageUrl(selectedImage)}
+                      alt={product.itemName}
+                    />
+                    <p className='name'>{product.itemName}</p>
+                    <p>x({quantity})</p>
+                  </div>
+                  <div className='flex2'>
+                    <p>{selectedColor}</p>
+                  </div>
+                  <div className='flex3'>
+                    <p>{formatPrice(product.sp)}</p>
+                  </div>
+                </div>
+              </div>
+            )}
             <div className='totals'>
               <p>
                 <span>Subtotal:</span>
@@ -144,24 +189,34 @@ const Checkout = () => {
 
             {/* Payment Options */}
             <div className='payment-options'>
-              <label>
-                <input
-                  type='radio'
-                  value='COD'
-                  checked={paymentMethod === 'COD'}
-                  onChange={e => setPaymentMethod(e.target.value)}
-                />
-                Cash on Delivery (COD)
-              </label>
-              <label>
-                <input
-                  type='radio'
-                  value='UPI'
-                  checked={paymentMethod === 'UPI'}
-                  onChange={e => setPaymentMethod(e.target.value)}
-                />
-                UPI
-              </label>
+              <div className='payment-method'>
+                <label>
+                  <input
+                    type='radio'
+                    value='COD'
+                    checked={paymentMethod === 'COD'}
+                    onChange={e => setPaymentMethod(e.target.value)}
+                  />
+                  Cash on Delivery (COD)
+                </label>
+              </div>
+              <div className='payment-method upi'>
+                <label>
+                  <input
+                    type='radio'
+                    value='UPI'
+                    checked={paymentMethod === 'UPI'}
+                    onChange={e => setPaymentMethod(e.target.value)}
+                  />
+                  UPI
+                </label>
+                <div className='multiple_upi'>
+                  <img src={phonepe} />
+                  <img src={gpay} />
+                  <img src={paytm} />
+                  <img src={amazonpay} />
+                </div>
+              </div>
             </div>
 
             {/* Discount */}
