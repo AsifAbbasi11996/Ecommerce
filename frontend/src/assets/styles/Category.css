@@ -22,6 +22,11 @@
     gap: 1.5rem;
     margin: 20px 0;
 
+    a{
+      text-decoration: none;
+      color: #333;
+    }
+
     .category {
       padding: 1rem;
       height: auto;

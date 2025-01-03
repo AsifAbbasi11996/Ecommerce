@@ -41,7 +41,7 @@ export const deleteUser = async userId => {
 // Update User Password
 export const updatePassword = async (userId, passwordData) => {
   const response = await axios.put(
-    `${API_URL}/updatePassword/${userId}`,
+    `${API_URL}/update/password/${userId}`,
     passwordData
   )
   return response.data

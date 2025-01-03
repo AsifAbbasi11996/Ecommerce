@@ -12,6 +12,7 @@ import { PiShoppingCartSimple } from 'react-icons/pi'
 import { ToastContainer, toast } from 'react-toastify' // Import toast and ToastContainer
 import 'react-toastify/dist/ReactToastify.css' // Import toast styles
 import { useCart } from '../context/CartContext'
+import { truncateText } from '../utils/formatText'
 
 const Wishlist = () => {
   useEffect(() => {
@@ -141,7 +142,11 @@ const Wishlist = () => {
                       </div>
 
                       <div className='wishlist_item_details'>
-                        <p className='item_name'>{item.item.itemName}</p>
+                        <p className='item_name'>
+                          {item.item
+                            ? truncateText(item.item.itemName)
+                            : 'Item name unavailable'}
+                        </p>
                         <p className='item_price'>
                           <span className='sp'>
                             {formatPrice(item.item.sp)}
@@ -178,17 +183,18 @@ const Wishlist = () => {
           </>
         ) : (
           <>
-            <div className='empty_Wishlist'>
+            <div className='empty_wishlist'>
               <p>
                 <FiHeart /> Your Wishlist is empty.
               </p>
               <button className='continue_shopping' onClick={handleNavigate}>
-                Continue Your Shopping
+                Add in your Wishlist
               </button>
             </div>
           </>
         )}
       </div>
+      <ToastContainer />
     </div>
   )
 }

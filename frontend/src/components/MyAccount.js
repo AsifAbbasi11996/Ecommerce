@@ -4,6 +4,7 @@ import MyProfile from './MyProfile' // Import the components
 import MyOrders from './MyOrders'
 import MyReturns from './MyReturns'
 import '../assets/styles/MyAccount.css'
+import Address from './Address'
 
 const MyAccount = () => {
   useEffect(() => {
@@ -35,7 +36,10 @@ const MyAccount = () => {
           <Link>My Account</Link>
         </div>
         <p>
-          Welcome! <span>{firstName} {lastName}</span>
+          Welcome!{' '}
+          <span>
+            {firstName} {lastName}
+          </span>
         </p>
       </div>
 
@@ -50,8 +54,8 @@ const MyAccount = () => {
               My Profile
             </li>
             <li
-              className={getActiveClass('addressBook')}
-              onClick={() => handleSidebarClick('addressBook')}
+              className={getActiveClass('address')}
+              onClick={() => handleSidebarClick('address')}
             >
               Address Book
             </li>
@@ -83,11 +87,11 @@ const MyAccount = () => {
               My Cancellations
             </li>
           </ul>
-          <p>My Wishlist</p>
         </div>
 
         <div className='right'>
           {selectedSection === 'profile' && <MyProfile />}
+          {selectedSection === 'address' && <Address />}
           {selectedSection === 'orders' && <MyOrders />}
           {selectedSection === 'returns' && <MyReturns />}
           {/* Add more conditions here for other sections */}

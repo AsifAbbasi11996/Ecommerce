@@ -6,9 +6,7 @@ import { formatImageUrl } from '../utils/formatImage'
 import phonepe from '../assets/images/phonepe.webp'
 import gpay from '../assets/images/gpay.webp'
 import paytm from '../assets/images/paytm.webp'
-import amazonpay from '../assets/images/amazonpay.webp'
-import { GiPayMoney } from 'react-icons/gi'
-import { FaAmazonPay } from 'react-icons/fa'
+import amazonpay from '../assets/images/amazonpay.png'
 
 const Checkout = () => {
   const location = useLocation()
@@ -24,6 +22,7 @@ const Checkout = () => {
   const [address, setAddress] = useState('')
   const [apartment, setApartment] = useState('')
   const [city, setCity] = useState('')
+  const [pincode, setPincode] = useState('')
   const [phone, setPhone] = useState('')
   const [email, setEmail] = useState('')
   const [paymentMethod, setPaymentMethod] = useState('COD') // Default to COD
@@ -47,6 +46,7 @@ const Checkout = () => {
       address,
       apartment,
       city,
+      pincode,
       phone,
       email,
       product,
@@ -104,6 +104,13 @@ const Checkout = () => {
                 type='text'
                 value={city}
                 onChange={e => setCity(e.target.value)}
+                required
+              />
+              <label>Pincode*</label>
+              <input
+                type='text'
+                value={pincode}
+                onChange={e => setPincode(e.target.value)}
                 required
               />
               <label>Phone Number*</label>
@@ -214,7 +221,7 @@ const Checkout = () => {
                   <img src={phonepe} />
                   <img src={gpay} />
                   <img src={paytm} />
-                  <img src={amazonpay} />
+                  <img src={amazonpay} className='amazonpay' />
                 </div>
               </div>
             </div>

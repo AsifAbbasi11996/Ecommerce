@@ -176,9 +176,12 @@ const Cart = () => {
                         )
                       </span>
                     </p>
-                    <p className='color'>
-                      <span className='color_name'>{item.item.color[0]}</span>
-                    </p>
+                    {item.item.color && item.item.color.length > 0 && (
+                      <p className='color'>
+                        Color :
+                        <span className='color_name'>{item.item.color[0]}</span>
+                      </p>
+                    )}
                     <div className='quantity-selector'>
                       <button
                         onClick={() => decreaseQuantity(item)} // Decrease quantity for specific item
@@ -226,7 +229,7 @@ const Cart = () => {
                 <FiShoppingCart /> Your cart is empty.
               </p>
               <button className='continue_shopping' onClick={handleNavigate}>
-                Continue Your Shopping
+                Add in your Cart
               </button>
             </div>
           </>

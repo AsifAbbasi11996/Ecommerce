@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import '../assets/styles/Category.css'
 import { getAllCategories } from '../api/categoryApi'
 import { formatImageUrl } from '../utils/formatImage'
+import { Link } from 'react-router-dom'
 
 const Category = () => {
   const [categories, setCategories] = useState([])
@@ -11,6 +12,7 @@ const Category = () => {
       try {
         const category = await getAllCategories()
         setCategories(category)
+        console.log(category)
       } catch (error) {
         console.error('Error fetching category: ', error)
       }
@@ -30,15 +32,21 @@ const Category = () => {
         <div className='categories'>
           {categories.length > 0 ? (
             categories.map(category => (
-              <div className='category' key={category._id}>
-                {/* Ensure the image path is accessible */}
-                <img
-                  src={formatImageUrl(category.image)} // Assuming the images are served from the backend
-                  alt={category.categoryName}
-                  className='category-image'
-                />
-                <p>{category.categoryName}</p>
-              </div>
+              <Link
+                to={category.link}
+                key={category._id}
+                className='category-link'
+              >
+                <div className='category'>
+                  {/* Ensure the image path is accessible */}
+                  <img
+                    src={formatImageUrl(category.image)} // Assuming the images are served from the backend
+                    alt={category.categoryName}
+                    className='category-image'
+                  />
+                  <p>{category.categoryName}</p>
+                </div>
+              </Link>
             ))
           ) : (
             <p>No categories found.</p>

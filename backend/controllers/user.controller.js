@@ -141,7 +141,7 @@ const getUserById = async (req, res) => {
 // Update user by ID
 const updateUserById = async (req, res) => {
   const { id } = req.params
-  const { firstName, lastName, email, phone, password } = req.body
+  const { firstName, lastName, email, phone } = req.body
   const image = req.file ? req.file.path : null
 
   try {
@@ -155,7 +155,6 @@ const updateUserById = async (req, res) => {
     if (lastName) user.lastName = lastName
     if (email) user.email = email
     if (phone) user.phone = phone
-    if (password) user.password = await bcrypt.hash(password, 10)
     if (image) user.image = image
 
     await user.save()
@@ -185,26 +184,41 @@ const updatePassword = async (req, res) => {
   const { id } = req.params
   const { currentPassword, newPassword, confirmNewPassword } = req.body
 
+  // Ensure that password fields are provided
+  if (!currentPassword || !newPassword || !confirmNewPassword) {
+    return res
+      .status(400)
+      .json({ message: 'Please provide all password fields' })
+  }
+
   try {
     const user = await Users.findById(id)
     if (!user) {
       return res.status(404).json({ message: 'User not found' })
     }
 
+    // Compare current password
     const isMatch = await bcrypt.compare(currentPassword, user.password)
     if (!isMatch) {
       return res.status(400).json({ message: 'Current password is incorrect' })
     }
 
+    // Check if new passwords match
     if (newPassword !== confirmNewPassword) {
       return res.status(400).json({ message: 'New passwords do not match' })
     }
 
+    // Hash new password
     user.password = await bcrypt.hash(newPassword, 10)
+
+    // Save user with updated password
+    user.updatedAt = new Date()
+
     await user.save()
 
     return res.status(200).json({ message: 'Password updated successfully' })
   } catch (error) {
+    console.error('Error updating password:', error)
     res.status(500).json({ message: 'Internal Server Error' })
   }
 }

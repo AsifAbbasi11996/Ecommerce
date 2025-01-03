@@ -1,7 +1,7 @@
 import express from 'express'
 import path from 'path'
 import multer from 'multer'
-import { createUser, deleteUserById, getAllUsers, getUserById, updateUserById, userLogin } from '../controllers/user.controller.js'
+import { createUser, deleteUserById, getAllUsers, getUserById, updatePassword, updateUserById, userLogin } from '../controllers/user.controller.js'
 
 const router = express.Router()
 
@@ -41,5 +41,6 @@ router.get('/all', getAllUsers)
 router.put('/update/:id', upload.single("image"), updateUserById)
 router.delete('/delete/:id', deleteUserById)
 router.get('/get/:id', getUserById)
+router.put('/update/password/:id', updatePassword)
 
 export default router

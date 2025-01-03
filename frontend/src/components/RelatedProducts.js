@@ -9,6 +9,7 @@ import '../assets/styles/BestSellingProducts.css'
 import { ToastContainer, toast } from 'react-toastify' // Import toast and ToastContainer
 import 'react-toastify/dist/ReactToastify.css' // Import toast styles
 import { useWishlist } from '../context/WishlistContext'
+import { truncateText } from '../utils/formatText'
 
 const RelatedProducts = ({ products }) => {
   const { handleAddToCart } = useCart() // Access handleAddToCart function from context
@@ -95,7 +96,7 @@ const RelatedProducts = ({ products }) => {
                     </div>
                   </div>
                   <div className='card-content'>
-                    <p>{product.itemName}</p>
+                    <p>{truncateText(product.itemName)}</p>
                     <p className='price'>
                       {/* Display the sale price */}
                       <span className='sp'>{formatPrice(product.sp)}</span>

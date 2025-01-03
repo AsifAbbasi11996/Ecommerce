@@ -12,6 +12,7 @@ import 'react-toastify/dist/ReactToastify.css' // Import toast styles
 import { useCart } from '../context/CartContext.js'
 import { useWishlist } from '../context/WishlistContext.js'
 import { PiShoppingCartSimple } from 'react-icons/pi'
+import { truncateText } from '../utils/formatText.js'
 
 const BestSellingProducts = () => {
   const { handleAddToCart } = useCart()
@@ -59,7 +60,6 @@ const BestSellingProducts = () => {
       </>
     )
   }
-
 
   // Function to handle adding product to the cart
   const handleAddToCartClick = product => {
@@ -126,7 +126,8 @@ const BestSellingProducts = () => {
                   </div>
                 </div>
                 <div className='card-content'>
-                  <p>{product.itemName}</p>
+                  <p className='name'>{truncateText(product.itemName)}</p>{' '}
+                  {/* Truncated product name */}
                   <p className='price'>
                     {/* Display the sale price and the MRP */}
                     <span className='sp'>{formatPrice(product.sp)}</span>

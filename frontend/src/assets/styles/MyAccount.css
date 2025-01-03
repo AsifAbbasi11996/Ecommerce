@@ -33,11 +33,16 @@
   }
 
   .myaccount_content {
-    padding: 3rem;
+    padding: 3rem 0 3rem 5rem;
     display: flex;
     justify-content: space-around;
+    position: relative;
+    min-height: 500px;
 
     .left {
+      position: absolute;
+      left: 5%;
+
       p {
         font-weight: 550;
         margin: 1rem 0;

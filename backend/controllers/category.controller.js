@@ -2,10 +2,11 @@ import Category from '../models/category.models.js'
 
 const addCategory = async (req, res) => {
   const image = req.file ? req.file.path : null
-  const { categoryName } = req.body
+  const { categoryName, link } = req.body
 
   const newCategory = new Category({
     categoryName,
+    link,
     image
   })
 
@@ -52,7 +53,7 @@ const getCategoryById = async (req, res) => {
 
 const updateCategoryById = async (req, res) => {
   const { id } = req.params
-  const { categoryName } = req.body
+  const { categoryName, link } = req.body
   const image = req.file ? req.file.path : null
 
   try {
@@ -64,6 +65,7 @@ const updateCategoryById = async (req, res) => {
 
     // Update the category
     category.categoryName = categoryName || category.categoryName
+    category.link = link || category.link
     category.image = image || category.image
 
     const updatedCategory = await category.save()
