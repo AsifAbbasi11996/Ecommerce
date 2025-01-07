@@ -38,6 +38,9 @@ const addItem = async (req, res) => {
     // Handle color field: convert it to an array if provided
     const colorArray = color ? color.split(',') : []
 
+    // Calculate initial sales value
+    const sales = sp * orderCount
+
     // Creating the item
     const newItem = new Item({
       itemName,
@@ -54,7 +57,9 @@ const addItem = async (req, res) => {
         ...discount,
         percentage: discountPercentage
       },
-      status: 'available'
+      status: 'available',
+      orderCount,
+      sales
     })
 
     // Save the item to the database
@@ -118,8 +123,8 @@ const getItemById = async (req, res) => {
 const updateItemById = async (req, res) => {
   try {
     const { id } = req.params
-    const item = await Item.findById(id)
 
+    const item = await Item.findById(id)
     if (!item) {
       return res.status(404).json({ message: 'Item not found.' })
     }
@@ -135,7 +140,9 @@ const updateItemById = async (req, res) => {
       discount,
       rating,
       stock,
-      status
+      status,
+      orderCount,
+      sales
     } = req.body
 
     // Update fields if they are provided
@@ -149,6 +156,8 @@ const updateItemById = async (req, res) => {
     if (rating) item.rating = rating
     if (stock) item.stock = stock
     if (status) item.status = status
+    if (orderCount) item.orderCount = orderCount
+    if (sales) item.sales = sales
 
     // Automatically calculate and set discount percentage based on MRP and SP
     if (mrp && sp) {

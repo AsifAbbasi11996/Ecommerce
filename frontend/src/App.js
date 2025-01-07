@@ -18,6 +18,7 @@ import ViewProduct from './components/ViewProduct'
 import Checkout from './components/Checkout'
 import Cart from './components/Cart'
 import Wishlist from './components/Wishlist'
+import TrackOrder from './components/TrackOrder'
 
 function App () {
   return (
@@ -39,6 +40,7 @@ function App () {
             <Route path='/checkout' element={<Checkout />} />
             <Route path='/cart' element={<Cart />} />
             <Route path='/wishlist' element={<Wishlist />} />
+            <Route path='/track/:orderId' element={<TrackOrder />} />
           </Routes>
           <Footer />
         </BrowserRouter>

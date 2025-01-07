@@ -36,13 +36,11 @@
     padding: 3rem 0 3rem 5rem;
     display: flex;
     justify-content: space-around;
-    position: relative;
     min-height: 500px;
+    width: 100%;
 
     .left {
-      position: absolute;
-      left: 5%;
-
+      width: 25%;
       p {
         font-weight: 550;
         margin: 1rem 0;
@@ -61,6 +59,10 @@
       li.active {
         color: #db4444;
       }
+    }
+
+    .right{
+      width: 70%;
     }
   }
 }

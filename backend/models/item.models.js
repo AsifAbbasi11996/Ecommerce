@@ -45,7 +45,7 @@ const itemSchema = new mongoose.Schema(
       required: true
     },
     stock: {
-      type: String
+      type: Number
     },
     discount: {
       percentage: {
@@ -70,7 +70,9 @@ const itemSchema = new mongoose.Schema(
       type: String,
       enum: ['available', 'out of stock', 'discontinued'],
       default: 'available' // Default product status
-    }
+    },
+    orderCount: { type: Number, default: 0 },
+    sales: { type: Number, default: 0 }
   },
   { timestamps: true }
 ) // Automatically adds createdAt and updatedAt fields

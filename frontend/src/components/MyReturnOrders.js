@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { getOrdersByUserId } from '../api/orderApi.js'
+import { getReturnedOrders } from '../api/orderApi.js'
 import { Link } from 'react-router-dom'
 import Loader from './Loader.js'
 import '../assets/styles/MyOrders.css'
@@ -18,7 +18,7 @@ const MyOrders = () => {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const response = await getOrdersByUserId(userId)
+        const response = await getReturnedOrders(userId)
         setOrders(response)
         setError(response.message)
         console.log(response)
@@ -47,7 +47,7 @@ const MyOrders = () => {
 
   return (
     <div className='orders_container'>
-      <p className='header_text'>My Orders</p>
+      <p className='header_text'>My Returned Orders</p>
 
       {/* Render orders if available */}
       <div className='orders_content'>
@@ -61,8 +61,8 @@ const MyOrders = () => {
                   <div className='order-card-header'>
                     <div className='order-status'>
                       <p>{order.orderStatus}</p>
-                      {order.deliveredDate && (
-                        <p>{formatDate(order.deliveredDate)}</p>
+                      {order.returnDate && (
+                        <p>{formatDate(order.returnDate)}</p>
                       )}
                     </div>
                     <div className='order-shipping-date'>
@@ -97,13 +97,6 @@ const MyOrders = () => {
 
                   <div className='order-summary'>
                     <p>Total Price: {formatPrice(order.total)}</p>
-                  </div>
-
-                  {/* Add button to view track status */}
-                  <div className='track-status'>
-                    <Link to={`/track/${order._id}`} className='track-button'>
-                      View Your Track Status
-                    </Link>
                   </div>
                 </li>
               ))}

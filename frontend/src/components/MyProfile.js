@@ -4,6 +4,7 @@ import '../assets/styles/MyProfile.css'
 import { ToastContainer, toast } from 'react-toastify' // Import toast and ToastContainer
 import 'react-toastify/dist/ReactToastify.css' // Import toast styles
 import Loader from './Loader'
+import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai'
 
 const MyProfile = () => {
   const userId = localStorage.getItem('userId') // Get the userId from localStorage
@@ -18,6 +19,12 @@ const MyProfile = () => {
     newPassword: '',
     confirmNewPassword: ''
   }) // Store form data (user changes)
+
+  const [passwordVisibility, setPasswordVisibility] = useState({
+    currentPassword: false,
+    newPassword: false,
+    confirmNewPassword: false
+  }) // State to manage visibility of passwords
 
   const [loading, setLoading] = useState(true) // Loading state while fetching data
   const [error, setError] = useState(null) // Error handling
@@ -161,6 +168,14 @@ const MyProfile = () => {
     }
   }
 
+  // Toggle password visibility
+  const togglePasswordVisibility = field => {
+    setPasswordVisibility(prevState => ({
+      ...prevState,
+      [field]: !prevState[field]
+    }))
+  }
+
   // Loading state: Show a loading message until the user data is fetched
   if (loading) {
     return (
@@ -231,27 +246,60 @@ const MyProfile = () => {
 
         <div className='form-group'>
           <label>Password Changes</label>
-          <input
-            type='password'
-            name='currentPassword'
-            value={updatedData.currentPassword}
-            onChange={handleChange} // Update state when input changes
-            placeholder='Current Password'
-          />
-          <input
-            type='password'
-            name='newPassword'
-            value={updatedData.newPassword}
-            onChange={handleChange} // Update state when input changes
-            placeholder='New Password'
-          />
-          <input
-            type='password'
-            name='confirmNewPassword'
-            value={updatedData.confirmNewPassword}
-            onChange={handleChange} // Update state when input changes
-            placeholder='Confirm New Password'
-          />
+          <div className='password'>
+            <input
+              type={passwordVisibility.currentPassword ? 'text' : 'password'}
+              name='currentPassword'
+              value={updatedData.currentPassword}
+              onChange={handleChange} // Update state when input changes
+              placeholder='Current Password'
+            />
+            {passwordVisibility.currentPassword ? (
+              <AiFillEyeInvisible
+                onClick={() => togglePasswordVisibility('currentPassword')}
+              />
+            ) : (
+              <AiFillEye
+                onClick={() => togglePasswordVisibility('currentPassword')}
+              />
+            )}
+          </div>
+          <div className='password'>
+            <input
+              type={passwordVisibility.newPassword ? 'text' : 'password'}
+              name='newPassword'
+              value={updatedData.newPassword}
+              onChange={handleChange} // Update state when input changes
+              placeholder='New Password'
+            />
+            {passwordVisibility.newPassword ? (
+              <AiFillEyeInvisible
+                onClick={() => togglePasswordVisibility('newPassword')}
+              />
+            ) : (
+              <AiFillEye
+                onClick={() => togglePasswordVisibility('newPassword')}
+              />
+            )}
+          </div>
+          <div className='password'>
+            <input
+              type={passwordVisibility.confirmNewPassword ? 'text' : 'password'}
+              name='confirmNewPassword'
+              value={updatedData.confirmNewPassword}
+              onChange={handleChange} // Update state when input changes
+              placeholder='Confirm New Password'
+            />
+            {passwordVisibility.confirmNewPassword ? (
+              <AiFillEyeInvisible
+                onClick={() => togglePasswordVisibility('confirmNewPassword')}
+              />
+            ) : (
+              <AiFillEye
+                onClick={() => togglePasswordVisibility('confirmNewPassword')}
+              />
+            )}
+          </div>
         </div>
 
         <div className='btns'>

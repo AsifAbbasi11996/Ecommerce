@@ -26,21 +26,34 @@ const Cart = () => {
     const fetchCartData = async () => {
       try {
         const cartData = await viewCart(userId) // Call the viewCart API
-        // Ensure each item has a quantity property, defaulting to 1
-        const updatedItems = cartData.cart.items.map(item => ({
-          ...item,
-          quantity: item.quantity || 1 // Set quantity to 1 if it's not set
-        }))
-        setFullCartItems(updatedItems) // Store the updated items with quantity
-        setLoading(false)
+
+        if (cartData && cartData.cart && cartData.cart.items) {
+          // If there are cart items, set them in the state
+          const updatedItems = cartData.cart.items.map(item => ({
+            ...item,
+            quantity: item.quantity || 1 // Ensure each item has a quantity
+          }))
+          setFullCartItems(updatedItems) // Set cart items
+        } else {
+          // If no items are present, set the cart as empty
+          setFullCartItems([])
+        }
+
+        setLoading(false) // Turn off loading after the API call
       } catch (err) {
-        setError(err.message) // Set the error message
-        setLoading(false)
+        // Handle any other errors, including 404
+        if (err.response && err.response.status === 404) {
+          setFullCartItems([]) // Set cart to empty on 404 error
+          setLoading(false)
+        } else {
+          setError(err.message) // Handle other types of errors
+          setLoading(false)
+        }
       }
     }
 
     if (userId) {
-      fetchCartData() // Fetch the cart data if userId is available
+      fetchCartData() // Fetch the cart data if the user is logged in
     }
   }, [userId])
 
@@ -84,6 +97,8 @@ const Cart = () => {
       selectedImage: item.item.images[0], // selected image (can be the first one in images array)
       selectedColor: item.item.color[0] // selected color
     }))
+
+    console.log(cartItems)
 
     // Navigate to Checkout page, passing the cart items as state
     navigate('/checkout', { state: { cartItems } })

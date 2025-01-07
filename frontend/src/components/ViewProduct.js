@@ -140,7 +140,6 @@ const ViewProduct = () => {
       alert('Please select a color before proceeding to buy') // Alert if no color is selected
       return // Prevent proceeding if no color is selected
     }
-
     navigate('/checkout', {
       state: { product, quantity, selectedImage, selectedColor }
     }) // Pass selectedColor to checkout

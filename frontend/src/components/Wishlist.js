@@ -32,15 +32,31 @@ const Wishlist = () => {
     const fetchWishlistData = async () => {
       try {
         const WishlistData = await viewWishlist(userId) // Call the viewWishlist API
-        // Ensure each item has a quantity property, defaulting to 1
-        const updatedItems = WishlistData.wishlist.items.map(item => ({
-          ...item
-        }))
-        setFullWishlistItems(updatedItems) // Store the updated items with quantity
+        // If the API returns an empty wishlist, handle it here
+        if (
+          WishlistData &&
+          WishlistData.wishlist &&
+          WishlistData.wishlist.items
+        ) {
+          const updatedItems = WishlistData.wishlist.items.map(item => ({
+            ...item
+          }))
+          setFullWishlistItems(updatedItems) // Store the updated items
+        } else {
+          // If there are no items, just set an empty array
+          setFullWishlistItems([])
+        }
         setLoading(false)
       } catch (err) {
-        setError(err.message) // Set the error message
-        setLoading(false)
+        if (err.response && err.response.status === 404) {
+          // If the API responds with 404, handle it as an empty wishlist
+          setFullWishlistItems([]) // Set the wishlist as empty
+          setLoading(false)
+        } else {
+          // Handle other errors
+          setError(err.message) // Set the error message
+          setLoading(false)
+        }
       }
     }
 

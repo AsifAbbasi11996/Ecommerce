@@ -1,5 +1,6 @@
-.editprofile, .address {
-  padding: 2rem 4rem;
+.editprofile,
+.address {
+  padding: 2rem 0rem;
   width: 800px;
 
   p {
@@ -7,6 +8,33 @@
     font-size: 1.2rem;
     font-weight: 550;
     margin-bottom: 1.5rem;
+  }
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+
+    button {
+      display: flex;
+      align-items: center;
+      column-gap: 0.5rem;
+      background: #86bb55;
+      font-size: 0.8rem;
+      color: #fff;
+      border-radius: 4px;
+      padding: 0.5rem 0.8rem;
+    }
+  }
+
+  .address-details{
+
+    p{
+      color: #000;
+      font-size: 1rem;
+      margin-bottom: 1rem;
+      font-weight: 500;
+    }
   }
 
   .two {
@@ -22,6 +50,10 @@
     label {
       margin-bottom: 0.5rem;
       font-weight: 500;
+    }
+
+    .password {
+      position: relative;
     }
 
     input {
@@ -41,6 +73,15 @@
 
     input::placeholder {
       color: #b6b6b6;
+    }
+
+    svg {
+      position: absolute;
+      right: 3%;
+      top: 20%;
+      color: #b6b6b6;
+      cursor: pointer;
+      font-size: 1.2rem;
     }
   }
 

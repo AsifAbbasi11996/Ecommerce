@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import MyProfile from './MyProfile' // Import the components
+import MyAddress from './MyAddress'
 import MyOrders from './MyOrders'
-import MyReturns from './MyReturns'
+import MyReturnOrders from './MyReturnOrders'
+import MyCancelOrders from './MyCancelOrders'
 import '../assets/styles/MyAccount.css'
-import Address from './Address'
 
 const MyAccount = () => {
   useEffect(() => {
@@ -59,12 +60,6 @@ const MyAccount = () => {
             >
               Address Book
             </li>
-            <li
-              className={getActiveClass('paymentOptions')}
-              onClick={() => handleSidebarClick('paymentOptions')}
-            >
-              My Payment Options
-            </li>
           </ul>
           <p>Manage My Orders</p>
           <ul>
@@ -91,9 +86,10 @@ const MyAccount = () => {
 
         <div className='right'>
           {selectedSection === 'profile' && <MyProfile />}
-          {selectedSection === 'address' && <Address />}
+          {selectedSection === 'address' && <MyAddress />}
           {selectedSection === 'orders' && <MyOrders />}
-          {selectedSection === 'returns' && <MyReturns />}
+          {selectedSection === 'returns' && <MyReturnOrders />}
+          {selectedSection === 'cancellations' && <MyCancelOrders />}
           {/* Add more conditions here for other sections */}
         </div>
       </div>

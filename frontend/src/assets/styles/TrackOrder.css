@@ -1,0 +1,68 @@
+.track-order-container {
+  padding: 20px;
+  max-width: 800px;
+  min-height: 400px;
+  margin: 0 auto;
+
+  h2{
+    text-align: center;
+    color: #db4444;
+    font-weight: 550;
+  }
+
+  .track-status {
+    margin: 20px 0;
+  }
+
+  .status-container {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+
+  .status-point {
+    width: 25%;
+    text-align: center;
+    font-weight: bold;
+  }
+
+  .status-point.completed .status-label {
+    background-color: green;
+    color: white;
+  }
+
+  .status-label {
+    display: inline-block;
+    padding: 10px;
+    border-radius: 20px;
+    font-weight: 550;
+    background-color: lightgray;
+    width: 80%;
+    transition: background-color 0.3s;
+    text-transform: capitalize;
+  }
+
+  .status-progress {
+    height: 10px;
+    background-color: lightgray;
+    width: 100%;
+    margin-top: 1rem;
+    border-radius: 10px;
+  }
+
+  .progress-bar {
+    height: 100%;
+    background-color: green;
+    border-radius: 10px 0 0 10px;
+    transition: width 0.5s ease-in-out;
+  }
+
+  .order-details {
+    margin-top: 20px;
+  }
+
+  .order-details p {
+    margin: 5px 0;
+    text-transform: capitalize;
+  }
+}
