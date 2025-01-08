@@ -67,17 +67,13 @@ const orderSchema = new mongoose.Schema(
     total: {
       type: Number
     },
-    shippingDate: {
+    deliveryDate: {
       type: Date,
       default: () => {
         const currentDate = new Date()
         currentDate.setDate(currentDate.getDate() + 7)
         return currentDate
       }
-    },
-    deliveredDate: {
-      type: Date,
-      required: false
     },
     orderStatus: {
       type: String,
@@ -90,6 +86,22 @@ const orderSchema = new mongoose.Schema(
         'returned'
       ],
       default: 'order placed'
+    },
+    orderplacedDate: {
+      type: Date,
+      required: false
+    },
+    shippedDate: {
+      type: Date,
+      required: false
+    },
+    outfordeliveryDate: {
+      type: Date,
+      required: false
+    },
+    deliveredDate: {
+      type: Date,
+      required: false
     },
     cancellationReason: {
       type: String,

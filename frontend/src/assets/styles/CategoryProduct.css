@@ -1,0 +1,129 @@
+.category_product_container {
+  padding: 2rem 4rem;
+
+  .category_product_header {
+    margin-bottom: 2rem;
+
+    .nav {
+      display: flex;
+      align-items: center;
+      column-gap: 0.7rem;
+
+      a {
+        text-decoration: none;
+        color: #6a6a6a;
+        font-size: 0.9rem;
+        font-weight: 500;
+        text-transform: capitalize;
+      }
+
+      a:last-child {
+        color: #000;
+      }
+    }
+  }
+
+  .category_product_list {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 2rem;
+
+    a {
+      text-decoration: none;
+      color: #000;
+    }
+
+    .product_item {
+      position: relative;
+      width: 220px;
+      height: 350px;
+
+      .card {
+        .card-product {
+          background: #f5f5f5;
+          padding: 0.8rem;
+          position: relative;
+          display: flex;
+
+          .discount {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: #db4444;
+            color: #fff;
+            padding: 0.2rem;
+            font-size: 0.8rem;
+            border-radius: 4px;
+          }
+
+          .card-image {
+            width: 190px;
+            height: 180px;
+            padding: 1rem;
+
+            img {
+              width: 100%;
+              height: 100%;
+              object-fit: contain;
+            }
+          }
+        }
+
+        .card-content {
+          padding: 10px 0;
+
+          p {
+            font-size: 15px;
+            font-weight: 500;
+            margin-bottom: 5px;
+
+            .sp {
+              color: #db4444;
+              font-size: 1.2rem;
+            }
+
+            .mrp {
+              color: #c3c3c3;
+              text-decoration: line-through;
+              margin-left: 10px;
+            }
+          }
+
+          .rating {
+            svg {
+              font-size: 0.8rem;
+              color: #ffad33;
+              margin-right: 5px;
+            }
+          }
+        }
+      }
+
+      .icons {
+        display: flex;
+        flex-direction: column;
+        row-gap: 0.5rem;
+        position: absolute;
+        top: 10px;
+        right: 10px;
+
+        .icon {
+          width: 30px;
+          height: 30px;
+          background: #fff;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+        }
+
+        .icon:hover {
+          color: #fff;
+          background: #db4444;
+        }
+      }
+    }
+  }
+}

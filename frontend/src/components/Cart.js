@@ -8,6 +8,7 @@ import { formatPrice } from '../utils/formatPrice'
 import Loader from './Loader'
 import { formatImageUrl } from '../utils/formatImage'
 import { FiShoppingCart } from 'react-icons/fi'
+import { formatItemNameForUrl } from '../utils/formatItemName'
 
 const Cart = () => {
   useEffect(() => {
@@ -152,7 +153,9 @@ const Cart = () => {
               {fullCartItems.map(item => (
                 <div key={item._id} className='cart_item'>
                   <Link
-                    to={`/v/${item.item._id}`}
+                    to={`/v/${item.item._id}/${formatItemNameForUrl(
+                      item.item.itemName
+                    )}`}
                     className='view-details'
                     key={item._id}
                   >
@@ -175,7 +178,9 @@ const Cart = () => {
 
                   <div className='cart_item_details'>
                     <Link
-                      to={`/v/${item.item._id}`}
+                      to={`/v/${item.item._id}/${formatItemNameForUrl(
+                        item.item.itemName
+                      )}`}
                       className='view-details'
                       key={item._id}
                     >

@@ -15,6 +15,7 @@ import {
 import { FaStar } from 'react-icons/fa'
 import { formatImageUrl } from '../utils/formatImageUrl'
 import { formatPrice } from '../utils/formatPrice'
+import { truncateText } from '../utils/formatText.js'
 
 const ViewItems = () => {
   const [items, setitems] = useState([])
@@ -74,7 +75,8 @@ const ViewItems = () => {
             placeholder='Search by name'
             className='filter-input'
           />
-        )
+        ),
+        Cell: ({ value }) => `${truncateText(value)}`
       },
       {
         Header: 'Brand',

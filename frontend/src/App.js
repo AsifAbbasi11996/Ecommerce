@@ -19,6 +19,12 @@ import Checkout from './components/Checkout'
 import Cart from './components/Cart'
 import Wishlist from './components/Wishlist'
 import TrackOrder from './components/TrackOrder'
+import MyOrders from './components/MyOrders'
+import MyProfile from './components/MyProfile'
+import MyAddress from './components/MyAddress'
+import MyReturnOrders from './components/MyReturnOrders'
+import MyCancelOrders from './components/MyCancelOrders'
+import CategoryProduct from './components/CategoryProduct'
 
 function App () {
   return (
@@ -35,12 +41,23 @@ function App () {
             <Route path='/addcategory' element={<AddCategoryForm />} />
             <Route path='/updatecategory' element={<UpdateCategoryForm />} />
             <Route path='/contact' element={<Contact />} />
+            <Route
+              path='/category/:categoryName'
+              element={<CategoryProduct />}
+            />
             <Route path='/myaccount' element={<MyAccount />} />
-            <Route path='/v/:id' element={<ViewProduct />} />
+            <Route path='/v/:id/:itemName' element={<ViewProduct />} />
             <Route path='/checkout' element={<Checkout />} />
             <Route path='/cart' element={<Cart />} />
             <Route path='/wishlist' element={<Wishlist />} />
             <Route path='/track/:orderId' element={<TrackOrder />} />
+            <Route path='/myaccount' element={<MyAccount />}>
+              <Route path='profile' element={<MyProfile />} />
+              <Route path='address' element={<MyAddress />} />
+              <Route path='orders' element={<MyOrders />} />
+              <Route path='returns' element={<MyReturnOrders />} />
+              <Route path='cancellations' element={<MyCancelOrders />} />
+            </Route>
           </Routes>
           <Footer />
         </BrowserRouter>

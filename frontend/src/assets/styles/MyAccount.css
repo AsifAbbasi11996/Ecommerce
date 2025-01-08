@@ -33,14 +33,14 @@
   }
 
   .myaccount_content {
-    padding: 3rem 0 3rem 5rem;
+    padding: 3rem 2rem;
     display: flex;
-    justify-content: space-around;
+    column-gap: 2rem;
     min-height: 500px;
-    width: 100%;
-
+    
     .left {
-      width: 25%;
+      width: 200px;
+      padding: 0 0.5rem;
       p {
         font-weight: 550;
         margin: 1rem 0;
@@ -61,8 +61,7 @@
       }
     }
 
-    .right{
-      width: 70%;
+    .right {
     }
   }
 }

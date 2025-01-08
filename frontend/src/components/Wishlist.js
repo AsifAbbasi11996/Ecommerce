@@ -13,6 +13,7 @@ import { ToastContainer, toast } from 'react-toastify' // Import toast and Toast
 import 'react-toastify/dist/ReactToastify.css' // Import toast styles
 import { useCart } from '../context/CartContext'
 import { truncateText } from '../utils/formatText'
+import { formatItemNameForUrl } from '../utils/formatItemName'
 
 const Wishlist = () => {
   useEffect(() => {
@@ -136,7 +137,9 @@ const Wishlist = () => {
               {fullWishlistItems.map(item => (
                 <div className='product'>
                   <Link
-                    to={`/v/${item.item._id}`}
+                    to={`/v/${item.item._id}/${formatItemNameForUrl(
+                      item.item.itemName
+                    )}`}
                     className='view-details'
                     key={item._id}
                   >

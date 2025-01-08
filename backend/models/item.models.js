@@ -11,14 +11,6 @@ const itemSchema = new mongoose.Schema(
     },
     category: {
       type: String,
-      enum: [
-        'Kitchens',
-        'Electronics',
-        'Mobiles',
-        'Perfumes',
-        'Gaming',
-        'Speakers'
-      ]
     },
     images: {
       type: [String],

@@ -6,6 +6,7 @@ import '../assets/styles/MyOrders.css'
 import { formatPrice } from '../utils/formatPrice.js'
 import { formatDate } from '../utils/formatDate.js'
 import { truncateText } from '../utils/formatText.js'
+import { formatItemNameForUrl } from '../utils/formatItemName.js'
 
 const MyOrders = () => {
   const [orders, setOrders] = useState([]) // State to store orders
@@ -60,14 +61,26 @@ const MyOrders = () => {
                 <li key={order._id} className='order-card'>
                   <div className='order-card-header'>
                     <div className='order-status'>
-                      <p>{order.orderStatus}</p>
-                      {order.deliveredDate && (
-                        <p>{formatDate(order.deliveredDate)}</p>
+                      <p>{order.orderStatus} date</p>
+                      {order.orderStatus === 'delivered' &&
+                        order.deliveredDate && (
+                          <p>{formatDate(order.deliveredDate)}</p>
+                        )}
+                      {order.orderStatus === 'shipped' && order.shippedDate && (
+                        <p>{formatDate(order.shippedDate)}</p>
                       )}
+                      {order.orderStatus === 'out for delivery' &&
+                        order.outfordeliveryDate && (
+                          <p>{formatDate(order.outfordeliveryDate)}</p>
+                        )}
+                      {order.orderStatus === 'order placed' &&
+                        order.orderplacedDate && (
+                          <p>{formatDate(order.orderplacedDate)}</p>
+                        )}
                     </div>
                     <div className='order-shipping-date'>
-                      <p>Ordered Date</p>
-                      <p>{formatDate(order.createdAt)}</p>
+                      <p>Delivery Date</p>
+                      <p>{formatDate(order.deliveryDate)}</p>
                     </div>
                   </div>
 
@@ -75,7 +88,11 @@ const MyOrders = () => {
                     <ul>
                       {order.orderDetails.map((item, index) => (
                         <li key={index}>
-                          <Link to={`/v/${item.itemId}`}>
+                          <Link
+                            to={`/v/${item.itemId}/${formatItemNameForUrl(
+                              item.itemName
+                            )}`}
+                          >
                             <div className='item-info'>
                               <img
                                 src={item.selectedImage}
@@ -97,13 +114,13 @@ const MyOrders = () => {
 
                   <div className='order-summary'>
                     <p>Total Price: {formatPrice(order.total)}</p>
-                  </div>
 
-                  {/* Add button to view track status */}
-                  <div className='track-status'>
-                    <Link to={`/track/${order._id}`} className='track-button'>
-                      View Your Track Status
-                    </Link>
+                    {/* Add button to view track status */}
+                    <div className='track-status'>
+                      <Link to={`/track/${order._id}`} className='track-button'>
+                        View Your Track Status
+                      </Link>
+                    </div>
                   </div>
                 </li>
               ))}

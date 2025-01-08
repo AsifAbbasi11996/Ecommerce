@@ -12,7 +12,6 @@ const Category = () => {
       try {
         const category = await getAllCategories()
         setCategories(category)
-        console.log(category)
       } catch (error) {
         console.error('Error fetching category: ', error)
       }
@@ -33,12 +32,11 @@ const Category = () => {
           {categories.length > 0 ? (
             categories.map(category => (
               <Link
-                to={category.link}
+                to={`/category/${category.categoryName}`} // Link to CategoryProduct.js with category name
                 key={category._id}
                 className='category-link'
               >
                 <div className='category'>
-                  {/* Ensure the image path is accessible */}
                   <img
                     src={formatImageUrl(category.image)} // Assuming the images are served from the backend
                     alt={category.categoryName}

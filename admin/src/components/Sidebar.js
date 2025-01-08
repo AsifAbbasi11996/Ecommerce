@@ -85,8 +85,23 @@ const Sidebar = () => {
             )}
           </li>
 
+          <li className='sidebar-item' onClick={() => handleItemClick('items')}>
+            <AiFillProduct className='sidebar-icon' />
+            {!collapsed && <span className='sidebar-text'>Items</span>}
+            {!collapsed && activeDropdown === 'items' && (
+              <ul className='dropdown'>
+                <Link to='/viewitems'>
+                  <li className='dropdown-item'>View Items</li>
+                </Link>
+                <Link to='/additem'>
+                  <li className='dropdown-item'>Add Item</li>
+                </Link>
+              </ul>
+            )}
+          </li>
+
           {/* Products Section with Dropdown */}
-          <li
+          {/* <li
             className='sidebar-item'
             onClick={() => handleItemClick('products')}
           >
@@ -102,22 +117,7 @@ const Sidebar = () => {
                 </Link>
               </ul>
             )}
-          </li>
-
-          <li className='sidebar-item' onClick={() => handleItemClick('items')}>
-            <AiFillProduct className='sidebar-icon' />
-            {!collapsed && <span className='sidebar-text'>Items</span>}
-            {!collapsed && activeDropdown === 'items' && (
-              <ul className='dropdown'>
-                <Link to='/viewitems'>
-                  <li className='dropdown-item'>View Items</li>
-                </Link>
-                <Link to='/additem'>
-                  <li className='dropdown-item'>Add Item</li>
-                </Link>
-              </ul>
-            )}
-          </li>
+          </li> */}
 
           <Link>
             <li className='sidebar-item' onClick={() => handleItemClick(null)}>

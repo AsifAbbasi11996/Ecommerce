@@ -11,11 +11,14 @@ import {
 import '../assets/styles/Navbar.css'
 import { LuShoppingBag } from 'react-icons/lu'
 import { MdOutlineCancel } from 'react-icons/md'
+import { getAllNavbar } from '../api/navbarApi'
 import { getAllItems } from '../api/itemApi'
-import { ToastContainer, toast } from 'react-toastify' // Import toast and ToastContainer
-import 'react-toastify/dist/ReactToastify.css' // Import toast styles
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
+import { truncateText } from '../utils/formatText'
 
 const Navbar = () => {
+  const [navbar, setNavbar] = useState([]) // Ensure navbar is initialized as an empty array
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isShow, setIsShow] = useState(false)
   const [isSearchBarOpen, setIsSearchBarOpen] = useState(false)
@@ -25,8 +28,17 @@ const Navbar = () => {
   const [suggestions, setSuggestions] = useState([])
   const navigate = useNavigate()
 
-  // Fetch all products from the API
+  // Fetch all products and navbar items from the API
   useEffect(() => {
+    const fetchNavbar = async () => {
+      try {
+        const navbarData = await getAllNavbar()
+        setNavbar(navbarData)
+      } catch (error) {
+        console.error('Error fetching navbar:', error)
+      }
+    }
+
     const fetchData = async () => {
       try {
         const response = await getAllItems()
@@ -36,6 +48,7 @@ const Navbar = () => {
       }
     }
 
+    fetchNavbar()
     fetchData()
   }, [])
 
@@ -69,7 +82,7 @@ const Navbar = () => {
     navigate('/')
   }
 
-  // Function to handle selected link
+  // Function to handle the selected link and its class
   const [selectedLink, setSelectedLink] = useState('home')
 
   const handleLinkClick = link => {
@@ -115,16 +128,16 @@ const Navbar = () => {
 
     // Show toast message after logout
     toast.success('Logged out successfully!', {
-      position: 'top-right', // Position at the top-right
-      autoClose: 5000, // Duration of 5 seconds
-      hideProgressBar: false, // Hide the progress bar
-      draggable: false // Non-draggable
+      position: 'top-right',
+      autoClose: 5000,
+      hideProgressBar: false,
+      draggable: false
     })
 
     // Optionally, navigate to the login page after logout
     setTimeout(() => {
       navigate('/login')
-    }, 2000) // Adding a slight delay before navigation
+    }, 2000)
   }
 
   const handleClose = () => {
@@ -135,7 +148,7 @@ const Navbar = () => {
     navigate('/wishlist')
   }
 
-  const navigteToCart = () => {
+  const navigateToCart = () => {
     navigate('/cart')
   }
 
@@ -155,36 +168,26 @@ const Navbar = () => {
       </div>
 
       <div className={`nav-links ${isMenuOpen ? 'active' : ''}`}>
-        <Link
-          to='/kitchens'
-          className={selectedLink === 'kitchens' ? 'active' : ''}
-          onClick={() => {
-            handleLinkClick('kitchens')
-            handleNavlinkClose()
-          }}
-        >
-          Kitchens
-        </Link>
-        <Link
-          to='/electronics'
-          className={selectedLink === 'electronics' ? 'active' : ''}
-          onClick={() => {
-            handleLinkClick('electronics')
-            handleNavlinkClose()
-          }}
-        >
-          Electronics
-        </Link>
-        <Link
-          to='/bags'
-          className={selectedLink === 'bags' ? 'active' : ''}
-          onClick={() => {
-            handleLinkClick('bags')
-            handleNavlinkClose()
-          }}
-        >
-          Bags
-        </Link>
+        {navbar.length > 0 ? (
+          navbar.map(navItem => (
+            <Link
+              key={navItem._id}
+              to={`/category${navItem.link}`}
+              className={
+                selectedLink === navItem.nav.toLowerCase() ? 'active' : ''
+              }
+              onClick={() => {
+                handleLinkClick(navItem.nav.toLowerCase())
+                handleNavlinkClose()
+              }}
+            >
+              {navItem.nav}
+            </Link>
+          ))
+        ) : (
+          <p>No found.</p>
+        )}
+
         <Link
           to='/signup'
           className={selectedLink === 'signup' ? 'active' : ''}
@@ -210,7 +213,7 @@ const Navbar = () => {
         <div className='wishlist' onClick={navigateToWishlist}>
           <CiHeart />
         </div>
-        <div className='cart' onClick={navigteToCart}>
+        <div className='cart' onClick={navigateToCart}>
           <CiShoppingCart />
         </div>
         <div className='account' onClick={showDropdown}>
@@ -220,7 +223,7 @@ const Navbar = () => {
             <ul className='dropdown'>
               <li>
                 <Link
-                  to='/myaccount'
+                  to='/myaccount/profile'
                   className={
                     dropdownselectedLink === 'myaccount' ? 'active' : ''
                   }
@@ -231,16 +234,16 @@ const Navbar = () => {
               </li>
               <li>
                 <Link
-                  to='/myorder'
-                  className={dropdownselectedLink === 'myorder' ? 'active' : ''}
-                  onClick={() => handleDropdownClick('myorder')}
+                  to='/myaccount/orders'
+                  className={dropdownselectedLink === 'orders' ? 'active' : ''}
+                  onClick={() => handleDropdownClick('orders')}
                 >
                   <LuShoppingBag /> My Order
                 </Link>
               </li>
               <li>
                 <Link
-                  to='/mycancellations'
+                  to='/myaccount/cancellations'
                   className={
                     dropdownselectedLink === 'mycancellations' ? 'active' : ''
                   }
@@ -275,9 +278,13 @@ const Navbar = () => {
       {searchTerm && suggestions.length > 0 && (
         <div className='suggestions'>
           {suggestions.map(product => (
-            <Link to={`/v/${product._id}`} onClick={handleClose}>
-              <div key={product._id} className='suggestion-item'>
-                <p>{product.itemName}</p>
+            <Link
+              to={`/v/${product._id}`}
+              onClick={handleClose}
+              key={product._id}
+            >
+              <div className='suggestion-item'>
+                <p>{truncateText(product.itemName)}</p>
               </div>
             </Link>
           ))}

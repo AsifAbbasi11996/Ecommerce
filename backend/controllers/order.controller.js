@@ -15,19 +15,20 @@ const createOrder = async (req, res) => {
       paymentMethod,
       shippingFee,
       total,
-      shippingDate
+      orderplacedDate,
+      deliveryDate
     } = req.body
 
-    // Ensure shippingDate is at least 7 days from the current date
-    let adjustedShippingDate = new Date(shippingDate)
+    // Ensure deliveryDate is at least 7 days from the current date
+    let adjustedDeliveryDate = new Date(deliveryDate)
     const currentDate = new Date()
-    const minShippingDate = new Date(
+    const minDeliveryDate = new Date(
       currentDate.setDate(currentDate.getDate() + 7)
     ) // 7 days from now
 
-    // If shippingDate is earlier than 7 days from now, adjust it
-    if (adjustedShippingDate < minShippingDate) {
-      adjustedShippingDate = minShippingDate
+    // If deliveryDate is earlier than 7 days from now, adjust it
+    if (adjustedDeliveryDate < minDeliveryDate) {
+      adjustedDeliveryDate = minDeliveryDate
     }
 
     // Loop through orderDetails to update items
@@ -62,7 +63,8 @@ const createOrder = async (req, res) => {
       paymentMethod,
       shippingFee,
       total,
-      shippingDate: adjustedShippingDate // Use the adjusted shipping date
+      orderplacedDate,
+      deliveryDate: adjustedDeliveryDate // Use the adjusted shipping date
     })
 
     newOrder.save() // Save the new order
@@ -174,8 +176,15 @@ const updateOrderStatus = async (req, res) => {
     } else {
       // For other statuses like "order placed", "shipped", "out for delivery", "delivered"
       order.orderStatus = newStatus
-      if (newStatus === 'delivered') {
-        order.deliveredDate = new Date() // Set delivered date if status is "delivered"
+      // Setting the date fields based on the order status
+      if (newStatus === 'order placed') {
+        order.orderplacedDate = new Date() // Set order placed date
+      } else if (newStatus === 'shipped') {
+        order.shippedDate = new Date() // Set shipped date
+      } else if (newStatus === 'out for delivery') {
+        order.outfordeliveryDate = new Date() // Set out for delivery date
+      } else if (newStatus === 'delivered') {
+        order.deliveredDate = new Date() // Set delivered date
       }
     }
 

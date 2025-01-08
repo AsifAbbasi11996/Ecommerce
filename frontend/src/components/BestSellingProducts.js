@@ -13,6 +13,7 @@ import { useCart } from '../context/CartContext.js'
 import { useWishlist } from '../context/WishlistContext.js'
 import { PiShoppingCartSimple } from 'react-icons/pi'
 import { truncateText } from '../utils/formatText.js'
+import { formatItemNameForUrl } from '../utils/formatItemName.js'
 
 const BestSellingProducts = () => {
   const { handleAddToCart } = useCart()
@@ -110,7 +111,7 @@ const BestSellingProducts = () => {
         {items.map(product => (
           <div className='product'>
             <Link
-              to={`/v/${product._id}`}
+              to={`/v/${product._id}/${formatItemNameForUrl(product.itemName)}`}
               className='view-details'
               key={product._id}
             >

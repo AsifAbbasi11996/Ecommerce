@@ -176,7 +176,8 @@ const Checkout = () => {
       subtotal,
       total,
       paymentMethod,
-      shippingDate: new Date(),
+      orderplacedDate: new Date(),
+      deliveryDate: new Date()
     }
 
     try {

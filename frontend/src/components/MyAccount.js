@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
-import MyProfile from './MyProfile' // Import the components
+import React, { useEffect } from 'react'
+import { Link, useLocation, useNavigate, Routes, Route } from 'react-router-dom'
+import MyProfile from './MyProfile'
 import MyAddress from './MyAddress'
 import MyOrders from './MyOrders'
 import MyReturnOrders from './MyReturnOrders'
@@ -8,11 +8,12 @@ import MyCancelOrders from './MyCancelOrders'
 import '../assets/styles/MyAccount.css'
 
 const MyAccount = () => {
+  const location = useLocation() // Get the current location (URL)
+  const navigate = useNavigate()
+
   useEffect(() => {
     window.scrollTo(0, 0)
   }, [])
-
-  const [selectedSection, setSelectedSection] = useState('profile') // Default to 'profile'
 
   // Get user data from localStorage
   const firstName = localStorage.getItem('firstName')
@@ -20,12 +21,12 @@ const MyAccount = () => {
 
   // Function to handle sidebar clicks
   const handleSidebarClick = section => {
-    setSelectedSection(section)
+    navigate(`/myaccount/${section}`)
   }
 
   // Function to apply active class
   const getActiveClass = section => {
-    return selectedSection === section ? 'active' : ''
+    return location.pathname.includes(section) ? 'active' : ''
   }
 
   return (
@@ -85,12 +86,13 @@ const MyAccount = () => {
         </div>
 
         <div className='right'>
-          {selectedSection === 'profile' && <MyProfile />}
-          {selectedSection === 'address' && <MyAddress />}
-          {selectedSection === 'orders' && <MyOrders />}
-          {selectedSection === 'returns' && <MyReturnOrders />}
-          {selectedSection === 'cancellations' && <MyCancelOrders />}
-          {/* Add more conditions here for other sections */}
+          <Routes>
+            <Route path='profile' element={<MyProfile />} />
+            <Route path='address' element={<MyAddress />} />
+            <Route path='orders' element={<MyOrders />} />
+            <Route path='returns' element={<MyReturnOrders />} />
+            <Route path='cancellations' element={<MyCancelOrders />} />
+          </Routes>
         </div>
       </div>
     </div>
