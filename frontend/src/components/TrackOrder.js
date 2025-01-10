@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import { getOrderByOrderId } from '../api/orderApi.js'
 import '../assets/styles/TrackOrder.css'
 import Loader from './Loader.js'
@@ -62,6 +62,15 @@ const TrackOrder = () => {
 
   return (
     <div className='track-order-container'>
+      <div className='track-order-header'>
+        <div className='nav'>
+          <Link to='/'>Home</Link>
+          <p>/</p>
+          <Link to='/myaccount/orders'>My Orders</Link>
+          <p>/</p>
+          <Link>Track Orders</Link>
+        </div>
+      </div>
       <h2>Track Your Order</h2>
 
       {order && (

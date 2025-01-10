@@ -1,10 +1,31 @@
 .track-order-container {
+  margin: 0 auto;
   padding: 30px;
   max-width: 900px;
   min-height: 550px;
-  margin: 0 auto;
   font-family: 'Arial', sans-serif;
+  
+  .track-order-header {
+    margin-bottom: 1rem;
 
+    .nav {
+      display: flex;
+      align-items: center;
+      column-gap: 0.7rem;
+
+      a {
+        text-decoration: none;
+        color: #6a6a6a;
+        font-size: 0.9rem;
+        font-weight: 500;
+      }
+
+      a:last-child {
+        color: #000;
+      }
+    }
+  }
+  
   h2 {
     text-align: center;
     color: #db4444;
@@ -13,7 +34,7 @@
     margin-bottom: 25px;
     text-transform: capitalize;
   }
-
+  
   .track-status {
     margin: 30px 0;
     padding: 25px;

@@ -1,7 +1,16 @@
 import express from 'express'
 import path from 'path'
 import multer from 'multer'
-import { createUser, deleteUserById, getAllUsers, getUserById, updatePassword, updateUserById, userLogin } from '../controllers/user.controller.js'
+import {
+  createUser,
+  deleteUserById,
+  getAllUsers,
+  getUserById,
+  totalUsers,
+  updatePassword,
+  updateUserById,
+  userLogin
+} from '../controllers/user.controller.js'
 
 const router = express.Router()
 
@@ -11,7 +20,7 @@ const maxSize = 10 * 1024 * 1024 // Maximum file size (10MB) - Adjust as needed
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "uploads/users/") // Directory for storing uploaded files
+    cb(null, 'uploads/users/') // Directory for storing uploaded files
   },
   filename: (req, file, cb) => {
     cb(null, Date.now() + path.extname(file.originalname)) // Unique filename
@@ -30,7 +39,7 @@ const upload = multer({
     if (extname && mimetype) {
       return cb(null, true)
     } else {
-      cb(new Error("Invalid file type. Only images are allowed."))
+      cb(new Error('Invalid file type. Only images are allowed.'))
     }
   }
 })
@@ -38,9 +47,10 @@ const upload = multer({
 router.post('/create', upload.none(), createUser)
 router.post('/login', upload.none(), userLogin)
 router.get('/all', getAllUsers)
-router.put('/update/:id', upload.single("image"), updateUserById)
+router.put('/update/:id', upload.single('image'), updateUserById)
 router.delete('/delete/:id', deleteUserById)
 router.get('/get/:id', getUserById)
 router.put('/update/password/:id', updatePassword)
+router.get('/totalUsers', totalUsers)
 
 export default router

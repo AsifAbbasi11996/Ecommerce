@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react'
 import { FaUserCircle, FaBell, FaCog } from 'react-icons/fa' // Font Awesome Icons
 import '../assets/styles/Navbar.css' // Your custom CSS for styling
 import { useNavigate } from 'react-router-dom' // Import the useNavigate hook for redirection
-import { toast } from 'react-toastify' // Import toast and ToastContainer
+import { ToastContainer, toast } from 'react-toastify' // Import toast and ToastContainer
 import 'react-toastify/dist/ReactToastify.css' // Import toast styles
 
 const Navbar = () => {
@@ -10,6 +10,8 @@ const Navbar = () => {
   const profileRef = useRef(null) // Reference to profile icon dropdown container
   const dropdownRef = useRef(null) // Reference to the dropdown itself
   const navigate = useNavigate() // Hook to navigate programmatically
+
+  const username = localStorage.getItem('username')
 
   // Toggle dropdown visibility
   const toggleDropdown = () => {
@@ -19,10 +21,10 @@ const Navbar = () => {
   // Handle logout
   const handleLogout = () => {
     // Clear authentication token from localStorage
-    localStorage.removeItem('authToken')
-
-    // Optionally, clear other relevant user data (sessionStorage, cookies, etc.)
-    // sessionStorage.removeItem("userSession");
+    localStorage.removeItem('token')
+    localStorage.removeItem('username')
+    localStorage.removeItem('name')
+    localStorage.removeItem('email')
 
     // Show toast for successful logout (optional)
     toast.success('Logged out successfully!', {
@@ -32,8 +34,10 @@ const Navbar = () => {
       draggable: false
     })
 
-    // Redirect user to login page after logout
-    navigate('/login')
+    // Optionally, navigate to the login page after logout
+    setTimeout(() => {
+      navigate('/')
+    }, 2000)
   }
 
   // Close dropdown when clicking outside of the profile section
@@ -56,45 +60,49 @@ const Navbar = () => {
   }, [])
 
   return (
-    <nav className='navbar'>
-      <div className='navbar-container'>
-        {/* Logo Section */}
-        <div className='logo'>
-          <span className='logo-text'>Exclusive</span> {/* Branding Text */}
-        </div>
+    <>
+      <nav className='navbar'>
+        <div className='navbar-container'>
+          {/* Logo Section */}
+          <div className='logo'>
+            <span className='logo-text'>Exclusive</span> {/* Branding Text */}
+          </div>
 
-        {/* Right Side - User Profile and Notifications */}
-        <div className='navbar-actions'>
-          <button className='notification-btn'>
-            <FaBell />
-          </button>
-          <button className='settings-btn'>
-            <FaCog />
-          </button>
+          {/* Right Side - User Profile and Notifications */}
+          <div className='navbar-actions'>
+            <button className='notification-btn'>
+              <FaBell />
+            </button>
+            <button className='settings-btn'>
+              <FaCog />
+            </button>
 
-          {/* Profile Section with Dropdown */}
-          <div className='profile' onClick={toggleDropdown} ref={profileRef}>
-            <FaUserCircle className='profile-icon' />
-            {show && (
-              <div className='profile-dropdown' ref={dropdownRef}>
-                <ul>
-                  <li>
-                    <a href='/profile' className='dropdown-link'>
-                      Profile
-                    </a>
-                  </li>
-                  <li>
-                    <button onClick={handleLogout} className='dropdown-link'>
-                      Logout
-                    </button>
-                  </li>
-                </ul>
-              </div>
-            )}
+            {/* Profile Section with Dropdown */}
+            <div className='profile' onClick={toggleDropdown} ref={profileRef}>
+              <FaUserCircle className='profile-icon' />
+              {show && (
+                <div className='profile-dropdown' ref={dropdownRef}>
+                  <ul>
+                    <li>
+                      <a href='/profile' className='dropdown-link'>
+                        Profile
+                      </a>
+                    </li>
+                    <li>
+                      <button onClick={handleLogout} className='dropdown-link'>
+                        Logout
+                      </button>
+                    </li>
+                  </ul>
+                </div>
+              )}
+              <span>Welcome, {username}</span>
+            </div>
           </div>
         </div>
-      </div>
-    </nav>
+      </nav>
+      <ToastContainer />
+    </>
   )
 }
 

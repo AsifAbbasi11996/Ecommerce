@@ -92,3 +92,13 @@ export const getRelatedProductsByCategory = async category => {
     throw error
   }
 }
+
+// get Total Items count
+export const getTotalItems = async () => {
+  try {
+    const response = await axios.get(`${API_URL}/totalItems`)
+    return response.data
+  } catch (error) {
+    console.error('Error fetching total items ', error)
+  }
+}

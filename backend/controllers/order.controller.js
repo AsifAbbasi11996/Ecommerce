@@ -1,6 +1,7 @@
 import mongoose from 'mongoose'
 import Order from '../models/order.models.js'
 import Item from '../models/item.models.js'
+import User from '../models/user.models.js'
 
 // Create order
 const createOrder = async (req, res) => {
@@ -87,6 +88,32 @@ const getAllOrder = async (req, res) => {
   }
 }
 
+const getAllOrdersWithUserData = async (req, res) => {
+  try {
+    // Fetch all orders and sort by createdAt in descending order
+    const orders = await Order.find().sort({ createdAt: -1 })
+
+    // For each order, fetch the user details using the userId
+    const ordersWithUserData = await Promise.all(
+      orders.map(async order => {
+        // Fetch user data by userId
+        const user = await User.findById(order.userId)
+
+        // Attach user data to the order object
+        order.user = user
+
+        return order
+      })
+    )
+
+    // Send back orders with user data
+    res.status(200).json(ordersWithUserData)
+  } catch (error) {
+    console.error('Error getting all orders with user data:', error)
+    res.status(500).json({ message: 'Error fetching orders with user data' })
+  }
+}
+
 // getByUserId controller
 const getByUserId = async (req, res) => {
   try {
@@ -117,10 +144,9 @@ const getByUserId = async (req, res) => {
 // Update Order Status by orderId
 const updateOrderStatus = async (req, res) => {
   try {
-    const { newStatus, cancellationReason, returnReason } = req.body // Get newStatus, cancellationReason, and returnReason from the request body
-    const { orderId } = req.params // Get orderId from the URL parameter
+    const { newStatus, cancellationReason, returnReason } = req.body
+    const { orderId } = req.params
 
-    // Validate newStatus input
     const validStatuses = [
       'order placed',
       'shipped',
@@ -133,22 +159,20 @@ const updateOrderStatus = async (req, res) => {
       return res.status(400).json({ message: 'Invalid order status' })
     }
 
-    // Find the order by its ID
     const order = await Order.findById(orderId)
     if (!order) {
       return res.status(404).json({ message: 'Order not found' })
     }
 
-    // If the current status is "delivered", you cannot change it anymore
+    // Prevent status change if order is already delivered
     if (order.orderStatus === 'delivered' && newStatus !== 'delivered') {
       return res.status(400).json({
         message: 'Order has already been delivered and cannot be changed'
       })
     }
 
-    // Handle cancellation and return logic
+    // Handle cancellation logic
     if (newStatus === 'canceled') {
-      // Ensure the order can only be canceled if it's not already shipped or delivered
       if (
         ['shipped', 'out for delivery', 'delivered'].includes(order.orderStatus)
       ) {
@@ -157,41 +181,44 @@ const updateOrderStatus = async (req, res) => {
         })
       }
       order.orderStatus = 'canceled'
-      order.canceledDate = new Date() // Set canceled date
+      order.canceledDate = new Date()
       if (cancellationReason) {
-        order.cancellationReason = cancellationReason // Set cancellation reason if provided
+        order.cancellationReason = cancellationReason
       }
-    } else if (newStatus === 'returned') {
-      // Ensure the order can only be returned if it's already delivered
+    }
+
+    // Handle return logic
+    else if (newStatus === 'returned') {
       if (order.orderStatus !== 'delivered') {
         return res
           .status(400)
           .json({ message: 'Can only return delivered orders' })
       }
       order.orderStatus = 'returned'
-      order.returnDate = new Date() // Set return date
+      order.returnDate = new Date()
       if (returnReason) {
-        order.returnReason = returnReason // Set return reason if provided
+        order.returnReason = returnReason
       }
-    } else {
-      // For other statuses like "order placed", "shipped", "out for delivery", "delivered"
+    }
+
+    // Handle other status changes
+    else {
       order.orderStatus = newStatus
-      // Setting the date fields based on the order status
+      // Set appropriate date fields based on the new status
       if (newStatus === 'order placed') {
-        order.orderplacedDate = new Date() // Set order placed date
+        order.orderplacedDate = new Date()
       } else if (newStatus === 'shipped') {
-        order.shippedDate = new Date() // Set shipped date
+        order.shippedDate = new Date()
       } else if (newStatus === 'out for delivery') {
-        order.outfordeliveryDate = new Date() // Set out for delivery date
+        order.outfordeliveryDate = new Date()
       } else if (newStatus === 'delivered') {
-        order.deliveredDate = new Date() // Set delivered date
+        order.deliveredDate = new Date()
       }
     }
 
     // Save the updated order
     await order.save()
 
-    // Return the updated order in the response
     res
       .status(200)
       .json({ message: 'Order status updated successfully', order })
@@ -232,28 +259,6 @@ const cancelOrder = async (req, res) => {
   }
 }
 
-// Get Canceled Orders by User ID
-const getCanceledOrders = async (req, res) => {
-  try {
-    const { userId } = req.params // Get userId from the URL parameter
-
-    // Fetch canceled orders for the given user
-    const canceledOrders = await Order.find({
-      userId,
-      orderStatus: 'canceled'
-    })
-
-    if (!canceledOrders.length) {
-      return res.status(404).json({ message: 'No canceled orders found.' })
-    }
-
-    res.status(200).json(canceledOrders)
-  } catch (error) {
-    console.error('Error fetching canceled orders:', error)
-    res.status(500).json({ message: error.message })
-  }
-}
-
 // Return order
 const returnOrder = async (req, res) => {
   try {
@@ -279,6 +284,28 @@ const returnOrder = async (req, res) => {
     res.status(200).json({ message: 'Order returned successfully', order })
   } catch (error) {
     console.error('Error returning order:', error)
+    res.status(500).json({ message: error.message })
+  }
+}
+
+// Get Canceled Orders by User ID
+const getCanceledOrders = async (req, res) => {
+  try {
+    const { userId } = req.params // Get userId from the URL parameter
+
+    // Fetch canceled orders for the given user
+    const canceledOrders = await Order.find({
+      userId,
+      orderStatus: 'canceled'
+    })
+
+    if (!canceledOrders.length) {
+      return res.status(404).json({ message: 'No canceled orders found.' })
+    }
+
+    res.status(200).json(canceledOrders)
+  } catch (error) {
+    console.error('Error fetching canceled orders:', error)
     res.status(500).json({ message: error.message })
   }
 }
@@ -362,15 +389,160 @@ const deleteOrder = async (req, res) => {
   }
 }
 
+// get total order
+const getTotalOrders = async (req, res) => {
+  try {
+    const totalOrders = await Order.countDocuments()
+    res.status(200).json({ totalOrders })
+  } catch (error) {
+    res.status(500).json({ message: 'Internal Server Error' })
+  }
+}
+
+// get total sales
+const getTotalSales = async (req, res) => {
+  try {
+    // Fetch all orders from the database
+    const orders = await Order.find()
+
+    // Calculate total sales from all orders
+    const totalSales = orders.reduce((sum, order) => {
+      return sum + order.total // Add the totalPrice of each order
+    }, 0)
+
+    // Return the total sales
+    res.json({
+      totalSales // Return the total sales with two decimal points
+    })
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: 'Error calculating total sales', error: error.message })
+  }
+}
+
+// get all order placed orders
+const getAllOrderPlacedOrders = async (req, res) => {
+  try {
+    const orderplacedOrders = await Order.find({ orderStatus: 'order placed' })
+
+    // Count how many orders are in 'order placed' status
+    const orderPlacedCount = await Order.countDocuments({
+      orderStatus: 'order placed'
+    })
+
+    res.status(200).json({ orderplacedOrders, count: orderPlacedCount })
+  } catch (error) {
+    console.error('Error fetching returned orders', error)
+    res.status(500).json({ message: 'Internal server error ' })
+  }
+}
+
+// Get all shipped orders with count
+const getAllShippedOrders = async (req, res) => {
+  try {
+    const shippedOrders = await Order.find({ orderStatus: 'shipped' })
+
+    // Count how many orders are in 'shipped' status
+    const shippedOrderCount = await Order.countDocuments({
+      orderStatus: 'shipped'
+    })
+
+    res.status(200).json({ shippedOrders, count: shippedOrderCount })
+  } catch (error) {
+    console.error('Error fetching shipped orders', error)
+    res.status(500).json({ message: 'Internal server error' })
+  }
+}
+
+// Get all out for delivery orders with count
+const getAllOutForDeliveryOrders = async (req, res) => {
+  try {
+    const outfordeliveryOrders = await Order.find({
+      orderStatus: 'out for delivery'
+    })
+
+    // Count how many orders are in 'out for delivery' status
+    const outForDeliveryCount = await Order.countDocuments({
+      orderStatus: 'out for delivery'
+    })
+
+    res.status(200).json({ outfordeliveryOrders, count: outForDeliveryCount })
+  } catch (error) {
+    console.error('Error fetching out for delivery orders', error)
+    res.status(500).json({ message: 'Internal server error' })
+  }
+}
+
+// Get all delivered orders with count
+const getAllDeliveredOrders = async (req, res) => {
+  try {
+    const deliveredOrders = await Order.find({ orderStatus: 'delivered' })
+
+    // Count how many orders are in 'delivered' status
+    const deliveredOrderCount = await Order.countDocuments({
+      orderStatus: 'delivered'
+    })
+
+    res.status(200).json({ deliveredOrders, count: deliveredOrderCount })
+  } catch (error) {
+    console.error('Error fetching delivered orders', error)
+    res.status(500).json({ message: 'Internal server error' })
+  }
+}
+
+// Get all canceled orders with count
+const getAllCanceledOrders = async (req, res) => {
+  try {
+    const canceledOrders = await Order.find({ orderStatus: 'canceled' })
+
+    // Count how many orders are in 'canceled' status
+    const canceledOrderCount = await Order.countDocuments({
+      orderStatus: 'canceled'
+    })
+
+    res.status(200).json({ canceledOrders, count: canceledOrderCount })
+  } catch (error) {
+    console.error('Error fetching canceled orders', error)
+    res.status(500).json({ message: 'Internal server error' })
+  }
+}
+
+// Get all returned orders with count
+const getAllReturnedOrders = async (req, res) => {
+  try {
+    const returnedOrders = await Order.find({ orderStatus: 'returned' })
+
+    // Count how many orders are in 'returned' status
+    const returnedOrderCount = await Order.countDocuments({
+      orderStatus: 'returned'
+    })
+
+    res.status(200).json({ returnedOrders, count: returnedOrderCount })
+  } catch (error) {
+    console.error('Error fetching returned orders', error)
+    res.status(500).json({ message: 'Internal server error' })
+  }
+}
+
 export {
   createOrder,
   getAllOrder,
+  getAllOrdersWithUserData,
   updateOrderStatus,
   getByUserId,
   cancelOrder,
   getCanceledOrders,
+  getAllCanceledOrders,
   returnOrder,
   getReturnedOrders,
+  getAllReturnedOrders,
   getOrderByOrderId,
-  deleteOrder
+  deleteOrder,
+  getTotalOrders,
+  getTotalSales,
+  getAllDeliveredOrders,
+  getAllOrderPlacedOrders,
+  getAllOutForDeliveryOrders,
+  getAllShippedOrders
 }

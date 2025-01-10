@@ -27,7 +27,6 @@ const ViewUsers = () => {
         const data = await getAllUsers()
         setUsers(data)
         setLoading(false)
-        console.log(data)
       } catch (error) {
         setLoading(false)
         toast.error('Failed to load users.')
@@ -40,6 +39,10 @@ const ViewUsers = () => {
   // Table columns configuration
   const columns = React.useMemo(
     () => [
+      {
+        Header: 'Sr No.',
+        Cell: ({ row }) => row.index + 1
+      },
       {
         Header: 'Name',
         accessor: 'firstName', // We'll display 'firstName' and 'lastName' together
@@ -65,6 +68,11 @@ const ViewUsers = () => {
         Header: 'Account Status',
         accessor: 'accountStatus',
         Cell: ({ value }) => (value === 0 ? 'Active' : 'Inactive')
+      },
+      {
+        Header: 'Created Date',
+        accessor: 'createdAt',
+        Cell: ({ value }) => `${formatDate(value)}`
       },
       {
         Header: 'Action',

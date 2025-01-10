@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { loginUser } from '../api/adminUserApi.js' // Import the login function from your API file
-import { toast } from 'react-toastify' // Import toast for showing messages
+import { toast, ToastContainer } from 'react-toastify' // Import toast for showing messages
 import 'react-toastify/dist/ReactToastify.css'
 import '../assets/styles/SignupAndLogin.css'
 import { useNavigate } from 'react-router-dom'
@@ -29,13 +29,17 @@ const Login = () => {
       // Call the loginUser function and pass the user input data
       const response = await loginUser(formData)
 
+      const { token, userId, username, name, email } = response
+      localStorage.setItem('token', token)
+      localStorage.setItem('userId', userId)
+      localStorage.setItem('username', username)
+      localStorage.setItem('name', name)
+      localStorage.setItem('email', email)
+
       // If login is successful, show success toast
       toast.success('Login successful!')
       console.log('User logged in:', response) // Handle successful login response (e.g., store token)
       navigate('/dashboard')
-
-      // You can store the token and user data in localStorage or state as needed
-      localStorage.setItem('token', response.token)
     } catch (error) {
       toast.error('Invalid credentials or server error')
     } finally {
@@ -44,29 +48,32 @@ const Login = () => {
   }
 
   return (
-    <div id='login-form'>
-      <h2>Login</h2>
-      <form onSubmit={handleSubmit}>
-        <input
-          type='text'
-          name='usernameOrEmail'
-          placeholder='Username or Email'
-          value={formData.usernameOrEmail}
-          onChange={handleChange}
-          required
-        />
-        <input
-          type='password'
-          name='password'
-          placeholder='Password'
-          value={formData.password}
-          onChange={handleChange}
-          required
-        />
-        <button type='submit' disabled={pending}>
-          {pending ? 'Logging...' : 'Login'}
-        </button>
-      </form>
+    <div className='login-container'>
+      <div id='login-form'>
+        <h2>Login</h2>
+        <form onSubmit={handleSubmit}>
+          <input
+            type='text'
+            name='usernameOrEmail'
+            placeholder='Username or Email'
+            value={formData.usernameOrEmail}
+            onChange={handleChange}
+            required
+          />
+          <input
+            type='password'
+            name='password'
+            placeholder='Password'
+            value={formData.password}
+            onChange={handleChange}
+            required
+          />
+          <button type='submit' disabled={pending}>
+            {pending ? 'Logging...' : 'Login'}
+          </button>
+        </form>
+      </div>
+      <ToastContainer />
     </div>
   )
 }

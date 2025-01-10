@@ -281,6 +281,16 @@ const getRelatedItemsByCategory = async (req, res) => {
   }
 }
 
+// Total Item count
+const getTotalItems = async (req, res) => {
+  try {
+    const totalItems = await Item.countDocuments()
+    res.status(200).json({ totalItems })
+  } catch (error) {
+    res.status(500).json({ message: 'Server error' })
+  }
+}
+
 export {
   addItem,
   getAllItems,
@@ -289,5 +299,6 @@ export {
   deleteItemById,
   deleteImageFromItem,
   addImagesToItem,
-  getRelatedItemsByCategory
+  getRelatedItemsByCategory,
+  getTotalItems
 }

@@ -26,6 +26,9 @@ const ViewItems = () => {
   const [categories, setCategories] = useState([])
   const [brands, setBrands] = useState([])
 
+  const [rowsPerPage, setRowsPerPage] = useState(2) // Default: 15 orders per page
+  const [currentPage, setCurrentPage] = useState(1) // Default to page 1
+
   // Fetching all items
   useEffect(() => {
     const fetchitems = async () => {
@@ -54,6 +57,10 @@ const ViewItems = () => {
   // Table columns configuration
   const columns = React.useMemo(
     () => [
+      {
+        Header: 'Sr No.',
+        Cell: ({ row }) => row.index + 1
+      },
       {
         Header: 'Item Image',
         accessor: 'images', // accessing images array for the image
@@ -159,7 +166,10 @@ const ViewItems = () => {
               </Link>
 
               {/* Add more links below */}
-              <Link to={`/edit-item/${row.original._id}/${itemName}`} className='btn-edit'>
+              <Link
+                to={`/edit-item/${row.original._id}/${itemName}`}
+                className='btn-edit'
+              >
                 <MdEdit />
               </Link>
 
@@ -197,6 +207,14 @@ const ViewItems = () => {
     })
   }, [items, searchQuery, categoryFilter, brandFilter])
 
+  // Pagination logic
+  const totalPages = Math.ceil(filteredData.length / rowsPerPage)
+
+  // Calculate the start and end index for slicing the data for current page
+  const startIndex = (currentPage - 1) * rowsPerPage
+  const endIndex = startIndex + rowsPerPage
+  const paginatedData = filteredData.slice(startIndex, endIndex)
+
   // Using react-table hooks with filters
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
     useTable({
@@ -215,6 +233,13 @@ const ViewItems = () => {
     leave: { opacity: 0, transform: 'translateY(20px)' }
   })
 
+  // Go to a specific page
+  const goToPage = page => {
+    if (page < 1) page = 1
+    if (page > totalPages) page = totalPages
+    setCurrentPage(page)
+  }
+
   return (
     <div className='view-items'>
       <div className='head'>
@@ -223,9 +248,18 @@ const ViewItems = () => {
         <p>View Items</p>
       </div>
 
-      <h2>All items</h2>
+      <h2>All Items</h2>
 
       <div className='filters'>
+        <select
+          className='rows'
+          value={rowsPerPage}
+          onChange={e => setRowsPerPage(Number(e.target.value))}
+        >
+          <option value={2}>15 orders</option>
+          <option value={4}>30 orders</option>
+          <option value={8}>50 orders</option>
+        </select>
         <input
           type='text'
           placeholder='Search by Name, Category, or Brand'
@@ -291,6 +325,26 @@ const ViewItems = () => {
           <ToastContainer />
         </>
       )}
+      {/* Pagination */}
+      <div className='pagination'>
+        <button
+          className='prev-page'
+          onClick={() => goToPage(currentPage - 1)}
+          disabled={currentPage === 1}
+        >
+          Prev
+        </button>
+        <span className='page-number'>
+          Page {currentPage} of {totalPages}
+        </span>
+        <button
+          className='next-page'
+          onClick={() => goToPage(currentPage + 1)}
+          disabled={currentPage === totalPages}
+        >
+          Next
+        </button>
+      </div>
     </div>
   )
 }

@@ -9,7 +9,8 @@ import {
   deleteItemById,
   deleteImageFromItem,
   addImagesToItem,
-  getRelatedItemsByCategory
+  getRelatedItemsByCategory,
+  getTotalItems
 } from '../controllers/item.controller.js' // Adjust the path as necessary
 
 const router = express.Router()
@@ -67,5 +68,6 @@ router.delete('/del/:id', deleteItemById) // Delete an item by ID
 router.delete('/del/:id/:imagePath', deleteImageFromItem) // Delete a single image from the images array
 router.put('/add/:id/images', upload.array('images', 5), addImagesToItem) // Add images to the images array
 router.get('/related/:category', getRelatedItemsByCategory)
+router.get('/totalItems', getTotalItems)
 
 export default router

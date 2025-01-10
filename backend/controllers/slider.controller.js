@@ -159,7 +159,6 @@ const updateSliderById = async (req, res) => {
   }
 }
 
-
 // Delete a single image from a slider by ID
 const deleteSliderImage = async (req, res) => {
   const { id } = req.params

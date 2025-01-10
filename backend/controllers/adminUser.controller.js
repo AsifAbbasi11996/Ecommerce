@@ -95,7 +95,7 @@ const loginUser = async (req, res) => {
       email: user.email,
       username: user.username,
       image: user.image,
-      id: user.id
+      userId: user.id
     })
   } catch (error) {
     console.error('Error logging in user:', error)
@@ -190,11 +190,56 @@ const deleteUserById = async (req, res) => {
   }
 }
 
+// Update user password
+const updatePassword = async (req, res) => {
+  const { id } = req.params
+  const { currentPassword, newPassword, confirmNewPassword } = req.body
+
+  // Ensure that password fields are provided
+  if (!currentPassword || !newPassword || !confirmNewPassword) {
+    return res
+      .status(400)
+      .json({ message: 'Please provide all password fields' })
+  }
+
+  try {
+    const user = await AdminUser.findById(id)
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' })
+    }
+
+    // Compare current password
+    const isMatch = await bcrypt.compare(currentPassword, user.password)
+    if (!isMatch) {
+      return res.status(400).json({ message: 'Current password is incorrect' })
+    }
+
+    // Check if new passwords match
+    if (newPassword !== confirmNewPassword) {
+      return res.status(400).json({ message: 'New passwords do not match' })
+    }
+
+    // Hash new password
+    user.password = await bcrypt.hash(newPassword, 10)
+
+    // Save user with updated password
+    user.updatedAt = new Date()
+
+    await user.save()
+
+    return res.status(200).json({ message: 'Password updated successfully' })
+  } catch (error) {
+    console.error('Error updating password:', error)
+    res.status(500).json({ message: 'Internal Server Error' })
+  }
+}
+
 export {
   createUser,
   loginUser,
   updateUserById,
   getAllUsers,
   getUserById,
-  deleteUserById
+  deleteUserById,
+  updatePassword
 }
