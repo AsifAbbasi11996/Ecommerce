@@ -1,11 +1,11 @@
 import axios from 'axios'
+import { API_URL } from '../utils/baseUrl'
 
-const API_URL = 'https://ecommerce-backend-production-f6c3.up.railway.app/wishlist'
 
 // Add item to Wishlist (without quantity)
 export const addToWishlist = async (userId, itemId) => {
   try {
-    const response = await axios.post(`${API_URL}/add`, {
+    const response = await axios.post(`${API_URL}/wishlist/add`, {
       userId,
       itemId
     })
@@ -22,7 +22,7 @@ export const addToWishlist = async (userId, itemId) => {
 // Remove item from Wishlist
 export const removeFromWishlist = async (userId, itemId) => {
   try {
-    const response = await axios.delete(`${API_URL}/remove`, {
+    const response = await axios.delete(`${API_URL}/wishlist/remove`, {
       data: { userId, itemId } // Correctly passing data as the body
     })
     return response.data // returns the updated Wishlist
@@ -38,7 +38,7 @@ export const removeFromWishlist = async (userId, itemId) => {
 // View Wishlist for a specific user
 export const viewWishlist = async userId => {
   try {
-    const response = await axios.get(`${API_URL}/view-wishlist/${userId}`)
+    const response = await axios.get(`${API_URL}/wishlist/view-wishlist/${userId}`)
     return response.data // returns the Wishlist details
   } catch (error) {
     console.error(
@@ -52,7 +52,7 @@ export const viewWishlist = async userId => {
 // Clear entire Wishlist for a user
 export const clearWishlist = async userId => {
   try {
-    const response = await axios.delete(`${API_URL}/clear-wishlist`, {
+    const response = await axios.delete(`${API_URL}/wishlist/clear-wishlist`, {
       data: { userId }
     })
     return response.data // returns the cleared Wishlist
@@ -68,7 +68,7 @@ export const clearWishlist = async userId => {
 // Checkout for a user (e.g., clearing the Wishlist after purchase)
 export const checkout = async userId => {
   try {
-    const response = await axios.post(`${API_URL}/checkout`, {
+    const response = await axios.post(`${API_URL}/wishlist/checkout`, {
       userId
     })
     return response.data // returns the confirmation after checkout
@@ -84,7 +84,7 @@ export const checkout = async userId => {
 // Get Wishlist summary (total items and price)
 export const getWishlistSummary = async userId => {
   try {
-    const response = await axios.get(`${API_URL}/wishlist-summary/${userId}`)
+    const response = await axios.get(`${API_URL}/wishlist/wishlist-summary/${userId}`)
     return response.data // returns the total items and price
   } catch (error) {
     console.error(

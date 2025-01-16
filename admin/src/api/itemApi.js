@@ -1,11 +1,10 @@
 import axios from 'axios'
-
-const API_URL = 'https://ecommerce-backend-production-f6c3.up.railway.app/item' // Update this to match your actual API URL
+import { API_URL } from '../utils/baseUrl'
 
 // Function to fetch all items
 export const getAllItems = async () => {
   try {
-    const response = await axios.get(`${API_URL}/all`)
+    const response = await axios.get(`${API_URL}/item/all`)
     return response.data
   } catch (error) {
     console.error('Error fetching the items:', error.message)
@@ -16,7 +15,7 @@ export const getAllItems = async () => {
 // Function to add a new item
 export const addItem = async formData => {
   try {
-    const response = await axios.post(`${API_URL}/add`, formData, {
+    const response = await axios.post(`${API_URL}/item/add`, formData, {
       headers: { 'Content-Type': 'multipart/form-data' }
     })
     return response.data
@@ -29,7 +28,7 @@ export const addItem = async formData => {
 // Function to get a single item by ID
 export const getItemById = async id => {
   try {
-    const response = await axios.get(`${API_URL}/get/${id}`)
+    const response = await axios.get(`${API_URL}/item/get/${id}`)
     return response.data
   } catch (error) {
     console.error(`Error fetching item with ID ${id}:`, error.message)
@@ -40,7 +39,7 @@ export const getItemById = async id => {
 // Function to update an item by ID
 export const updateItemById = async (id, updates) => {
   try {
-    const response = await axios.put(`${API_URL}/update/${id}`, updates)
+    const response = await axios.put(`${API_URL}/item/update/${id}`, updates)
     return response.data
   } catch (error) {
     console.error(`Error updating item with ID ${id}:`, error.message)
@@ -56,7 +55,7 @@ export const deleteImageById = async (id, imagePath) => {
 
     // Make the delete request to the backend API
     const response = await axios.delete(
-      `${API_URL}/del/${id}/${encodedImagePath}` // Make sure the URL is correct
+      `${API_URL}/item/del/${id}/${encodedImagePath}` // Make sure the URL is correct
     )
 
     return response.data
@@ -72,7 +71,7 @@ export const deleteImageById = async (id, imagePath) => {
 // Function to add images to an item
 export const addImagesToItem = async (id, formData) => {
   try {
-    const response = await axios.post(`${API_URL}/add/${id}/images`, formData, {
+    const response = await axios.post(`${API_URL}/item/add/${id}/images`, formData, {
       headers: { 'Content-Type': 'multipart/form-data' }
     })
     return response.data
@@ -85,7 +84,7 @@ export const addImagesToItem = async (id, formData) => {
 // Function to fetch related products by category
 export const getRelatedProductsByCategory = async category => {
   try {
-    const response = await axios.get(`${API_URL}/items/related/${category}`)
+    const response = await axios.get(`${API_URL}/item/items/related/${category}`)
     return response.data
   } catch (error) {
     console.error('Error fetching related products:', error.message)
@@ -96,7 +95,7 @@ export const getRelatedProductsByCategory = async category => {
 // get Total Items count
 export const getTotalItems = async () => {
   try {
-    const response = await axios.get(`${API_URL}/totalItems`)
+    const response = await axios.get(`${API_URL}/item/totalItems`)
     return response.data
   } catch (error) {
     console.error('Error fetching total items ', error)

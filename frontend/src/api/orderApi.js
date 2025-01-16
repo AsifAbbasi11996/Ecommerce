@@ -1,11 +1,10 @@
 import axios from 'axios'
-
-const API_URL = 'https://ecommerce-backend-production-f6c3.up.railway.app/order'
+import { API_URL } from '../utils/baseUrl'
 
 // create order
 export const createOrder = async orderPayload => {
   try {
-    const response = await axios.post(`${API_URL}/create`, orderPayload)
+    const response = await axios.post(`${API_URL}/order/create`, orderPayload)
     return response
   } catch (error) {
     console.error('Error creating order')
@@ -19,7 +18,7 @@ export const createOrder = async orderPayload => {
 // Get all orders
 export const getAllOrders = async () => {
   try {
-    const response = await axios.get(`${API_URL}/all`)
+    const response = await axios.get(`${API_URL}/order/all`)
     return response.data
   } catch (error) {
     console.error('Error getting all orders', error)
@@ -33,7 +32,7 @@ export const getAllOrders = async () => {
 // Get orders by user ID
 export const getOrdersByUserId = async userId => {
   try {
-    const response = await axios.get(`${API_URL}/get/user/${userId}`)
+    const response = await axios.get(`${API_URL}/order/get/user/${userId}`)
     return response.data
   } catch (error) {
     console.error('Error fetching orders by userId', error)
@@ -47,7 +46,7 @@ export const getOrdersByUserId = async userId => {
 // Get order by order ID
 export const getOrderByOrderId = async orderId => {
   try {
-    const response = await axios.get(`${API_URL}/get/${orderId}`)
+    const response = await axios.get(`${API_URL}/order/get/${orderId}`)
     return response.data
   } catch (error) {
     console.error('Error fetching order by order ID', error)
@@ -61,7 +60,7 @@ export const getOrderByOrderId = async orderId => {
 // Delete order
 export const deleteOrder = async orderId => {
   try {
-    const response = await axios.delete(`${API_URL}/delete/${orderId}`)
+    const response = await axios.delete(`${API_URL}/order/delete/${orderId}`)
     return response.data
   } catch (error) {
     console.error('Error deleting order', error)
@@ -75,7 +74,7 @@ export const deleteOrder = async orderId => {
 // Cancel Order
 export const cancelOrder = async orderId => {
   try {
-    const response = await axios.patch(`${API_URL}/cancel/${orderId}`)
+    const response = await axios.patch(`${API_URL}/order/cancel/${orderId}`)
     return response.data
   } catch (error) {
     console.error('Error canceling order:', error)
@@ -89,7 +88,7 @@ export const cancelOrder = async orderId => {
 // Get Canceled Orders by User ID
 export const getCanceledOrders = async userId => {
   try {
-    const response = await axios.get(`${API_URL}/cancelOrders/${userId}`)
+    const response = await axios.get(`${API_URL}/order/cancelOrders/${userId}`)
     return response.data
   } catch (error) {
     console.error('Error fetching canceled orders:', error)
@@ -103,7 +102,7 @@ export const getCanceledOrders = async userId => {
 // Return Order
 export const returnOrder = async orderId => {
   try {
-    const response = await axios.patch(`${API_URL}/return/${orderId}`)
+    const response = await axios.patch(`${API_URL}/order/return/${orderId}`)
     return response.data
   } catch (error) {
     console.error('Error returning order:', error)
@@ -117,7 +116,7 @@ export const returnOrder = async orderId => {
 // Get Returned Orders by User ID
 export const getReturnedOrders = async userId => {
   try {
-    const response = await axios.get(`${API_URL}/returnOrders/${userId}`)
+    const response = await axios.get(`${API_URL}/order/returnOrders/${userId}`)
     return response.data
   } catch (error) {
     console.error('Error fetching returned orders:', error)

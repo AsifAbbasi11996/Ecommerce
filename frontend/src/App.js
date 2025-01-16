@@ -8,12 +8,9 @@ import Signup from './pages/Signup'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 import Homepage from './pages/Homepage'
-import AddProductForm from './components/AddProduct'
 import NotFound from './components/NotFound'
 import Contact from './components/Contact'
 import MyAccount from './components/MyAccount'
-import AddCategoryForm from './components/AddCategoryForm'
-import UpdateCategoryForm from './components/UpdateCategoryForm'
 import ViewProduct from './components/ViewProduct'
 import Checkout from './components/Checkout'
 import Cart from './components/Cart'
@@ -25,6 +22,7 @@ import MyAddress from './components/MyAddress'
 import MyReturnOrders from './components/MyReturnOrders'
 import MyCancelOrders from './components/MyCancelOrders'
 import CategoryProduct from './components/CategoryProduct'
+import Search from './components/Search'
 
 function App () {
   return (
@@ -37,9 +35,7 @@ function App () {
             <Route path='/signup' element={<Signup />} />
             <Route path='/notfound' element={<NotFound />} />
             <Route path='/' element={<Homepage />} />
-            <Route path='/add' element={<AddProductForm />} />
-            <Route path='/addcategory' element={<AddCategoryForm />} />
-            <Route path='/updatecategory' element={<UpdateCategoryForm />} />
+            <Route path='/search' element={<Search />} />
             <Route path='/contact' element={<Contact />} />
             <Route
               path='/category/:categoryName'

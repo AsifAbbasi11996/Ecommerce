@@ -1,11 +1,11 @@
 import axios from 'axios'
+import { API_URL } from '../utils/baseUrl'
 
-const API_URL = 'https://ecommerce-backend-production-f6c3.up.railway.app/cart'
 
 // Add item to cart (without quantity)
 export const addToCart = async (userId, itemId) => {
   try {
-    const response = await axios.post(`${API_URL}/add`, {
+    const response = await axios.post(`${API_URL}/cart/add`, {
       userId,
       itemId
     })
@@ -22,7 +22,7 @@ export const addToCart = async (userId, itemId) => {
 // Remove item from cart
 export const removeFromCart = async (userId, itemId) => {
   try {
-    const response = await axios.delete(`${API_URL}/remove`, {
+    const response = await axios.delete(`${API_URL}/cart/remove`, {
       data: { userId, itemId } // Correctly passing data as the body
     })
     return response.data // returns the updated cart
@@ -38,7 +38,7 @@ export const removeFromCart = async (userId, itemId) => {
 // View cart for a specific user
 export const viewCart = async userId => {
   try {
-    const response = await axios.get(`${API_URL}/view-cart/${userId}`)
+    const response = await axios.get(`${API_URL}/cart/view-cart/${userId}`)
     return response.data // returns the cart details
   } catch (error) {
     console.error(
@@ -52,7 +52,7 @@ export const viewCart = async userId => {
 // Clear entire cart for a user
 export const clearCart = async userId => {
   try {
-    const response = await axios.delete(`${API_URL}/clear-cart`, {
+    const response = await axios.delete(`${API_URL}/cart/clear-cart`, {
       data: { userId }
     })
     return response.data // returns the cleared cart
@@ -68,7 +68,7 @@ export const clearCart = async userId => {
 // Checkout for a user (e.g., clearing the cart after purchase)
 export const checkout = async userId => {
   try {
-    const response = await axios.post(`${API_URL}/checkout`, {
+    const response = await axios.post(`${API_URL}/cart/checkout`, {
       userId
     })
     return response.data // returns the confirmation after checkout
@@ -84,7 +84,7 @@ export const checkout = async userId => {
 // Get cart summary (total items and price)
 export const getCartSummary = async userId => {
   try {
-    const response = await axios.get(`${API_URL}/cart-summary/${userId}`)
+    const response = await axios.get(`${API_URL}/cart/cart-summary/${userId}`)
     return response.data // returns the total items and price
   } catch (error) {
     console.error(

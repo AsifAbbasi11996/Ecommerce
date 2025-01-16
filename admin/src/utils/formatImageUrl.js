@@ -1,12 +1,13 @@
-// formatImageUrl.js
-
-const API_URL = 'https://ecommerce-backend-production-f6c3.up.railway.app/' // Base URL for the server
+import { API_URL } from "./baseUrl"
 
 export const formatImageUrl = imagePath => {
-  // Format the image path to replace backslashes with forward slashes
-  const formattedUrl = imagePath.replace(/\\+/g, '/') // Converts '\\' to '/'
+  if (!imagePath || typeof imagePath !== 'string') return '' // Return empty if no valid imagePath
 
-  const fullUrl = `${API_URL}${formattedUrl}` // Combine base URL with formatted image path
+  // Normalize the backslashes to forward slashes for URL compatibility
+  const formattedPath = imagePath.replace(/\\/g, '/')
 
-  return fullUrl // Return the full URL
+  // Assuming your server is serving static files from the "uploads" directory
+  const baseUrl = `${API_URL}/`
+
+  return baseUrl + formattedPath // Return the full URL path to the image
 }

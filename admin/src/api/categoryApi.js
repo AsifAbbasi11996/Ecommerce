@@ -1,8 +1,5 @@
-// src/api/categoryApi.js
-
 import axios from 'axios'
-
-const API_URL = 'https://ecommerce-backend-production-f6c3.up.railway.app/category' // Assuming your backend is running on localhost
+import { API_URL } from '../utils/baseUrl'
 
 // Function to add a new category
 export const addCategory = async (categoryName, link, image) => {
@@ -15,7 +12,7 @@ export const addCategory = async (categoryName, link, image) => {
   }
 
   try {
-    const response = await axios.post(`${API_URL}/add`, formData, {
+    const response = await axios.post(`${API_URL}/category/add`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data' // Set content-type as multipart for file uploads
       }
@@ -37,11 +34,15 @@ export const updateCategoryById = async (id, categoryName, image) => {
   }
 
   try {
-    const response = await axios.put(`${API_URL}/update/${id}`, formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data' // Set content-type as multipart for file uploads
+    const response = await axios.put(
+      `${API_URL}/category/update/${id}`,
+      formData,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data' // Set content-type as multipart for file uploads
+        }
       }
-    })
+    )
 
     return response.data // Return the response from the backend
   } catch (error) {
@@ -53,7 +54,7 @@ export const updateCategoryById = async (id, categoryName, image) => {
 // Function to get a category by ID
 export const getCategoryById = async id => {
   try {
-    const response = await axios.get(`${API_URL}/get/${id}`) // Backend endpoint to fetch category by ID
+    const response = await axios.get(`${API_URL}/category/get/${id}`) // Backend endpoint to fetch category by ID
     return response.data // Return the category data
   } catch (error) {
     console.error('Error fetching category by ID:', error)
@@ -64,7 +65,7 @@ export const getCategoryById = async id => {
 // Function to get a category by ID
 export const getAllCategories = async () => {
   try {
-    const response = await axios.get(`${API_URL}/all`) // Backend endpoint to fetch category by ID
+    const response = await axios.get(`${API_URL}/category/all`) // Backend endpoint to fetch category by ID
     return response.data // Return the category data
   } catch (error) {
     console.error('Error fetching categories :', error)
@@ -74,7 +75,7 @@ export const getAllCategories = async () => {
 
 export const deleteCategoryById = async id => {
   try {
-    const response = await axios.delete(`${API_URL}/del/${id}`)
+    const response = await axios.delete(`${API_URL}/category/del/${id}`)
     return response.data // Return the delete confirmation message
   } catch (error) {
     console.error('Error deleting category', error)

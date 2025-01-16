@@ -1,11 +1,11 @@
 import axios from 'axios'
+import { API_URL } from '../utils/baseUrl'
 
-const API_URL = 'https://ecommerce-backend-production-f6c3.up.railway.app/navbar'
 
 // Get all nav items
 export const getNavItems = async () => {
   try {
-    const response = await axios.get(`${API_URL}/all`)
+    const response = await axios.get(`${API_URL}/navbar/all`)
     return response.data // Return the data directly
   } catch (error) {
     console.error('Error fetching nav items', error)
@@ -16,7 +16,7 @@ export const getNavItems = async () => {
 // Get a single nav item by id
 export const getNavItemById = async id => {
   try {
-    const response = await axios.get(`${API_URL}/get/${id}`)
+    const response = await axios.get(`${API_URL}/navbar/get/${id}`)
     return response.data // Return the nav item data
   } catch (error) {
     console.error('Error fetching nav item by ID', error)
@@ -27,7 +27,7 @@ export const getNavItemById = async id => {
 // Create a new nav item
 export const createNavItem = async navItemData => {
   try {
-    const response = await axios.post(`${API_URL}/add`, navItemData)
+    const response = await axios.post(`${API_URL}/navbar/add`, navItemData)
     return response.data // Return the created nav item
   } catch (error) {
     console.error('Error creating nav item', error)
@@ -38,7 +38,7 @@ export const createNavItem = async navItemData => {
 // Update an existing nav item
 export const updateNavItem = async (id, navItemData) => {
   try {
-    const response = await axios.put(`${API_URL}/update/${id}`, navItemData)
+    const response = await axios.put(`${API_URL}/navbar/update/${id}`, navItemData)
     return response.data // Return the updated nav item
   } catch (error) {
     console.error('Error updating nav item', error)
@@ -49,7 +49,7 @@ export const updateNavItem = async (id, navItemData) => {
 // Delete a nav item
 export const deleteNavItem = async id => {
   try {
-    const response = await axios.delete(`${API_URL}/delete/${id}`)
+    const response = await axios.delete(`${API_URL}/navbar/delete/${id}`)
     return response.data // Return the delete confirmation message
   } catch (error) {
     console.error('Error deleting nav item', error)

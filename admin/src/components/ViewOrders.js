@@ -6,6 +6,7 @@ import '../assets/styles/ViewProductsandUsers.css'
 import { truncateText } from '../utils/formatText'
 import { formatPrice } from '../utils/formatPrice'
 import { formatDate } from '../utils/formatDate'
+import { formatImageUrl } from '../utils/formatImageUrl'
 
 const ViewOrders = () => {
   const [orders, setOrders] = useState([])
@@ -142,7 +143,7 @@ const ViewOrders = () => {
                   {order.orderDetails.map(item => (
                     <div key={item.itemId} className='order'>
                       <img
-                        src={item.selectedImage}
+                        src={formatImageUrl(item.selectedImage)}
                         alt={item.itemName}
                         className='order-image'
                       />

@@ -1,10 +1,10 @@
 import axios from 'axios'
+import { API_URL } from '../utils/baseUrl'
 
-const API_URL = 'https://ecommerce-backend-production-f6c3.up.railway.app/navbar'
 
 export const getAllNavbar = async (req, res) => {
   try {
-    const response = await axios.get(`${API_URL}/all`)
+    const response = await axios.get(`${API_URL}/navbar/all`)
     return response.data
   } catch (error) {
     console.error('Error of fetching navbar', error)

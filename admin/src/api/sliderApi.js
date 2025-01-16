@@ -1,11 +1,10 @@
 import axios from 'axios'
-
-const API_URL = 'https://ecommerce-backend-production-f6c3.up.railway.app/slider' // Backend API URL for sliders
+import { API_URL } from '../utils/baseUrl'
 
 // Get all sliders
 export const getSliders = async () => {
   try {
-    const response = await axios.get(`${API_URL}/all`)
+    const response = await axios.get(`${API_URL}/slider/all`)
     return response.data // Return the list of sliders
   } catch (error) {
     console.error('Error fetching sliders:', error.message)
@@ -16,7 +15,7 @@ export const getSliders = async () => {
 // Get a single slider by ID
 export const getSliderById = async id => {
   try {
-    const response = await axios.get(`${API_URL}/get/${id}`)
+    const response = await axios.get(`${API_URL}/slider/get/${id}`)
     return response.data // Return the slider data
   } catch (error) {
     console.error('Error fetching slider:', error.message)
@@ -27,7 +26,7 @@ export const getSliderById = async id => {
 // Delete a slider by ID
 export const deleteSlider = async id => {
   try {
-    await axios.delete(`${API_URL}/delete/${id}`)
+    await axios.delete(`${API_URL}/slider/delete/${id}`)
     return { message: 'Slider deleted successfully' } // Return a success message
   } catch (error) {
     console.error('Error deleting slider:', error.message)
@@ -53,7 +52,7 @@ export const addSlider = async sliderData => {
     formData.append('mobileImage', sliderData.mobileImage[0]) // Use the first mobile image
 
   try {
-    const response = await axios.post(`${API_URL}/add`, formData, {
+    const response = await axios.post(`${API_URL}/slider/add`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data' // This is important for file uploads
       }
@@ -69,7 +68,7 @@ export const addSlider = async sliderData => {
 // Update a slider by ID (including image upload)
 export const updateSlider = async (id, sliderData) => {
   try {
-    const response = await axios.put(`${API_URL}/update/${id}`, sliderData, {
+    const response = await axios.put(`${API_URL}/slider/update/${id}`, sliderData, {
       headers: {
         'Content-Type': 'multipart/form-data' // Ensure the request is sent with the right content type for file uploads
       }
@@ -84,7 +83,7 @@ export const updateSlider = async (id, sliderData) => {
 // Delete an image from a slider by ID
 export const deleteSliderImage = async id => {
   try {
-    const response = await axios.delete(`${API_URL}/del/${id}/image`)
+    const response = await axios.delete(`${API_URL}/slider/del/${id}/image`)
     return response.data // Return a success message
   } catch (error) {
     console.error('Error deleting slider image:', error.message)
