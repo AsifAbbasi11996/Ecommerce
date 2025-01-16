@@ -130,7 +130,7 @@ const AddProductForm = () => {
 
     try {
       const response = await axios.post(
-        'http://localhost:5000/product/add',
+        'https://ecommerce-backend-production-f6c3.up.railway.app/product/add',
         formData,
         {
           headers: {

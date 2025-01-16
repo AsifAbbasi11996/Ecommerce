@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const API_URL = 'http://localhost:5000/wishlist'
+const API_URL = 'https://ecommerce-backend-production-f6c3.up.railway.app/wishlist'
 
 // Add item to Wishlist (without quantity)
 export const addToWishlist = async (userId, itemId) => {

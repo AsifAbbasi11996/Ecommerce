@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const API_URL = 'http://localhost:5000/slider' // Backend API URL for sliders
+const API_URL = 'https://ecommerce-backend-production-f6c3.up.railway.app/slider' // Backend API URL for sliders
 
 // Get all sliders
 export const getSliders = async () => {

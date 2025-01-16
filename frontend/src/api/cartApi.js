@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const API_URL = 'http://localhost:5000/cart'
+const API_URL = 'https://ecommerce-backend-production-f6c3.up.railway.app/cart'
 
 // Add item to cart (without quantity)
 export const addToCart = async (userId, itemId) => {

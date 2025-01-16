@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 // Base URL of your backend API (Make sure this is the correct URL for your server)
-const BASE_URL = 'http://localhost:5000/slider' // Update this based on your API URL
+const BASE_URL = 'https://ecommerce-backend-production-f6c3.up.railway.app/slider' // Update this based on your API URL
 
 // Set up axios instance
 const axiosInstance = axios.create({

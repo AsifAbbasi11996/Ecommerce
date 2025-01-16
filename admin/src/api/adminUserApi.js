@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const API_URL = 'http://localhost:5000/admin'
+const API_URL = 'https://ecommerce-backend-production-f6c3.up.railway.app/admin'
 
 export const loginUser = async userData => {
   try {

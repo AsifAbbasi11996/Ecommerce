@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const API_URL = 'http://localhost:5000/item' // Update this to match your actual API URL
+const API_URL = 'https://ecommerce-backend-production-f6c3.up.railway.app/item' // Update this to match your actual API URL
 
 // Function to fetch all items
 export const getAllItems = async () => {

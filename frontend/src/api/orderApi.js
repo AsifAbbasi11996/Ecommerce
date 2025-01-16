@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const API_URL = 'http://localhost:5000/order'
+const API_URL = 'https://ecommerce-backend-production-f6c3.up.railway.app/order'
 
 // create order
 export const createOrder = async orderPayload => {

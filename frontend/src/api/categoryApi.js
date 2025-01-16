@@ -2,7 +2,7 @@
 
 import axios from 'axios'
 
-const API_URL = 'http://localhost:5000/category' // Assuming your backend is running on localhost
+const API_URL = 'https://ecommerce-backend-production-f6c3.up.railway.app/category' // Assuming your backend is running on localhost
 
 // Function to add a new category
 export const addCategory = async (categoryName, image) => {

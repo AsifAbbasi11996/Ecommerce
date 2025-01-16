@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const API_URL = 'http://localhost:5000/address'
+const API_URL = 'https://ecommerce-backend-production-f6c3.up.railway.app/address'
 
 // Get all addresses for a specific user
 export const getAddressByUserId = async userId => {

@@ -1,6 +1,6 @@
 // formatImageUrl.js
 
-const API_URL = 'http://localhost:5000/' // Base URL for the server
+const API_URL = 'https://ecommerce-backend-production-f6c3.up.railway.app/' // Base URL for the server
 
 export const formatImageUrl = imagePath => {
   // Format the image path to replace backslashes with forward slashes
