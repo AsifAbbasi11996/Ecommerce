@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useTrail, animated } from '@react-spring/web'
-import { getAllOutForDeliveryOrders } from '../api/ordersApi' // Ensure correct path
+import { getAllOutForDeliveryOrders, updateOrderStatus } from '../api/ordersApi' // Ensure correct path
 import { MdKeyboardDoubleArrowRight } from 'react-icons/md'
 import '../assets/styles/ViewProductsandUsers.css'
 import { truncateText } from '../utils/formatText'
@@ -10,6 +10,7 @@ import { formatDate } from '../utils/formatDate'
 const OutForDeliveryOrders = () => {
   const [orders, setOrders] = useState([])
   const [loading, setLoading] = useState(true)
+  const [count, setCount] = useState(0)
 
   // States for filtering and pagination
   const [searchQuery, setSearchQuery] = useState('')
@@ -21,6 +22,7 @@ const OutForDeliveryOrders = () => {
       const data = await getAllOutForDeliveryOrders()
       if (data.success !== false) {
         setOrders(data.outfordeliveryOrders)
+        setCount(data.count)
       }
       setLoading(false)
     }
@@ -59,6 +61,26 @@ const OutForDeliveryOrders = () => {
     setCurrentPage(page)
   }
 
+  const handleStatusChange = async (orderId, newStatus) => {
+    try {
+      // Call API to update the order status
+      const result = await updateOrderStatus(orderId, newStatus)
+      if (result.success) {
+        // Update the status of the order in the local state after successful API call
+        setOrders(prevOrders =>
+          prevOrders.map(order =>
+            order._id === orderId ? { ...order, orderStatus: newStatus } : order
+          )
+        )
+        console.log('Order status updated successfully:', newStatus) // Success log
+      } else {
+        console.error('Error updating status:', result.message)
+      }
+    } catch (error) {
+      console.error('Failed to update order status:', error)
+    }
+  }
+
   if (loading) {
     return <div>Loading...</div>
   }
@@ -75,6 +97,7 @@ const OutForDeliveryOrders = () => {
         <p>Out for Delivery Orders</p>
       </div>
       <h2>Out for Delivery Orders</h2>
+      <p>Total Orders Out for Delivery: {count}</p>
 
       {/* Filters Section */}
       <div className='filters'>
@@ -139,7 +162,19 @@ const OutForDeliveryOrders = () => {
                 </td>
                 <td>{order.totalQuantity}</td>
                 <td>{formatPrice(order.total)}</td>
-                <td className='orderStatus'>{order.orderStatus}</td>
+                <td className='orderStatus'>
+                  {/* Order status dropdown */}
+                  <select
+                    className='updateStatus'
+                    value={order.orderStatus}
+                    onChange={e =>
+                      handleStatusChange(order._id, e.target.value)
+                    }
+                  >
+                    <option value='out for delivery'>Out for Delivery</option>
+                    <option value='delivered'>Delivered</option>
+                  </select>
+                </td>
                 <td>{formatDate(order.deliveryDate)}</td>
               </animated.tr>
             )

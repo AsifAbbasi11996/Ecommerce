@@ -9,6 +9,7 @@ import { formatDate } from '../utils/formatDate'
 
 const OrderPlacedOrders = () => {
   const [orders, setOrders] = useState([]) // Holds the order placed orders
+  const [count, setCount] = useState(0)
   const [loading, setLoading] = useState(true)
 
   // States for filtering and pagination
@@ -22,6 +23,7 @@ const OrderPlacedOrders = () => {
 
       if (data.success !== false) {
         setOrders(data.orderplacedOrders) // Access the correct data
+        setCount(data.count)
       }
 
       setLoading(false)
@@ -97,6 +99,7 @@ const OrderPlacedOrders = () => {
         <p>Order Placed Orders</p>
       </div>
       <h2>Order Placed Orders</h2>
+      <p>Total Orders Placed: {count}</p>
 
       {/* Filters Section */}
       <div className='filters'>
@@ -174,7 +177,6 @@ const OrderPlacedOrders = () => {
                     <option value='out for delivery'>Out for Delivery</option>
                     <option value='delivered'>Delivered</option>
                     <option value='canceled'>Canceled</option>
-                    <option value='returned'>Returned</option>
                   </select>
                 </td>
                 <td>{formatDate(order.deliveryDate)}</td>

@@ -1,10 +1,12 @@
 import React, { useState } from 'react'
 import { createUser } from '../api/adminUserApi.js' // Import the createUser function from your API file
-import { toast } from 'react-toastify' // Import toast for showing messages
+import { ToastContainer, toast } from 'react-toastify' // Import toast for showing messages
 import 'react-toastify/dist/ReactToastify.css'
 import '../assets/styles/SignupAndLogin.css'
+import { useNavigate } from 'react-router-dom'
 
 const Signup = () => {
+  const navigate = useNavigate()
   const [pending, setPending] = useState(false) // For the loading state
   const [formData, setFormData] = useState({
     name: '',
@@ -29,9 +31,24 @@ const Signup = () => {
       // Call createUser function to send the form data to the server
       const response = await createUser(formData)
 
+      const {  userId, username, name, email } = response
+      localStorage.setItem('userId', userId)
+      localStorage.setItem('username', username)
+      localStorage.setItem('name', name)
+      localStorage.setItem('email', email)
+
       // If user creation is successful, show success toast
-      toast.success('User created successfully!')
+      toast.success('User created successfully!', {
+        position: 'top-right', // Position the toast at the top-right
+        autoClose: 2000, // Duration the toast stays visible
+        hideProgressBar: true, // Hide progress bar
+        draggable: false // Make the toast non-draggable
+      })
       console.log('User created:', response) // Handle successful user creation (e.g., redirect)
+
+      setTimeout(() => {
+        navigate('/')
+      }, 2000)
     } catch (error) {
       toast.error('Error registering user')
     } finally {
@@ -81,6 +98,7 @@ const Signup = () => {
           </button>
         </form>
       </div>
+      <ToastContainer />
     </div>
   )
 }

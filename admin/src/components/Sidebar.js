@@ -4,7 +4,8 @@ import { FaHome, FaUser, FaCog, FaShoppingCart } from 'react-icons/fa' // Import
 import { RiMenuUnfoldLine, RiMenuFoldLine } from 'react-icons/ri'
 import { AiFillProduct } from 'react-icons/ai'
 import '../assets/styles/Sidebar.css' // Your custom CSS for styling
-import { MdSpaceDashboard } from 'react-icons/md'
+import { MdAccountCircle, MdSpaceDashboard } from 'react-icons/md'
+import { FaPersonRifle } from 'react-icons/fa6'
 
 const Sidebar = () => {
   const [collapsed, setCollapsed] = useState(false) // To manage sidebar collapsed state
@@ -115,9 +116,6 @@ const Sidebar = () => {
                 <Link to='/add-user'>
                   <li className='dropdown-item'>Add User</li>
                 </Link>
-                <Link>
-                  <li className='dropdown-item'>Manage Users</li>
-                </Link>
               </ul>
             )}
           </li>
@@ -136,6 +134,13 @@ const Sidebar = () => {
               </ul>
             )}
           </li>
+
+          <Link to='/profile'>
+            <li className='sidebar-item' onClick={() => handleItemClick(null)}>
+              <MdAccountCircle className='sidebar-icon' />
+              {!collapsed && <span className='sidebar-text'>Profile</span>}
+            </li>
+          </Link>
 
           <Link>
             <li className='sidebar-item' onClick={() => handleItemClick(null)}>

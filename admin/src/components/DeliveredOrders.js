@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useTrail, animated } from '@react-spring/web'
-import { getAllDeliveredOrders } from '../api/ordersApi' // Ensure correct path
+import { getAllDeliveredOrders, updateOrderStatus } from '../api/ordersApi' // Ensure correct path
 import { MdKeyboardDoubleArrowRight } from 'react-icons/md'
 import '../assets/styles/ViewProductsandUsers.css'
 import { truncateText } from '../utils/formatText'
@@ -9,6 +9,7 @@ import { formatDate } from '../utils/formatDate'
 
 const DeliveredOrders = () => {
   const [orders, setOrders] = useState([])
+  const [count, setCount] = useState(0)
   const [loading, setLoading] = useState(true)
 
   // States for filtering and pagination
@@ -21,6 +22,7 @@ const DeliveredOrders = () => {
       const data = await getAllDeliveredOrders()
       if (data.success !== false) {
         setOrders(data.deliveredOrders)
+        setCount(data.count)
       }
       setLoading(false)
     }
@@ -59,6 +61,26 @@ const DeliveredOrders = () => {
     setCurrentPage(page)
   }
 
+  const handleStatusChange = async (orderId, newStatus) => {
+    try {
+      // Call API to update the order status
+      const result = await updateOrderStatus(orderId, newStatus)
+      if (result.success) {
+        // Update the status of the order in the local state after successful API call
+        setOrders(prevOrders =>
+          prevOrders.map(order =>
+            order._id === orderId ? { ...order, orderStatus: newStatus } : order
+          )
+        )
+        console.log('Order status updated successfully:', newStatus) // Success log
+      } else {
+        console.error('Error updating status:', result.message)
+      }
+    } catch (error) {
+      console.error('Failed to update order status:', error)
+    }
+  }
+
   if (loading) {
     return <div>Loading...</div>
   }
@@ -75,6 +97,7 @@ const DeliveredOrders = () => {
         <p>Delivered Orders</p>
       </div>
       <h2>Delivered Orders</h2>
+      <p>Total Orders Delivered: {count}</p>
 
       {/* Filters Section */}
       <div className='filters'>
@@ -139,8 +162,20 @@ const DeliveredOrders = () => {
                 </td>
                 <td>{order.totalQuantity}</td>
                 <td>{formatPrice(order.total)}</td>
-                <td className='orderStatus'>{order.orderStatus}</td>
-                <td>{formatDate(order.deliveryDate)}</td>
+                <td className='orderStatus'>
+                  {/* Order status dropdown */}
+                  <select
+                    className='updateStatus'
+                    value={order.orderStatus}
+                    onChange={e =>
+                      handleStatusChange(order._id, e.target.value)
+                    }
+                  >
+                    <option value='delivered'>Delivered</option>
+                    <option value='returned'>Returned</option>
+                  </select>
+                </td>
+                <td>{formatDate(order.deliveredDate)}</td>
               </animated.tr>
             )
           })}

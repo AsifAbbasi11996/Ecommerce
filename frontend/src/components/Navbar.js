@@ -16,6 +16,7 @@ import { getAllItems } from '../api/itemApi'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { truncateText } from '../utils/formatText'
+import { formatItemNameForUrl } from '../utils/formatItemName'
 
 const Navbar = () => {
   const [navbar, setNavbar] = useState([]) // Ensure navbar is initialized as an empty array
@@ -279,7 +280,7 @@ const Navbar = () => {
         <div className='suggestions'>
           {suggestions.map(product => (
             <Link
-              to={`/v/${product._id}`}
+              to={`/v/${product._id}/${formatItemNameForUrl(product.itemName)}`}
               onClick={handleClose}
               key={product._id}
             >

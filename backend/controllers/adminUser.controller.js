@@ -42,7 +42,8 @@ const createUser = async (req, res) => {
         name: newUser.name,
         username: newUser.username,
         email: newUser.email,
-        image: newUser.image // Include the image in the response
+        image: newUser.image, // Include the image in the response
+        userId: newUser.id
       }
     })
   } catch (error) {

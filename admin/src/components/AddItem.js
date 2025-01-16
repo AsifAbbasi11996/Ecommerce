@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 import '../assets/styles/AddItem.css'
 import { addItem } from '../api/itemApi.js'
+import { MdKeyboardDoubleArrowRight } from 'react-icons/md'
+import { Link } from 'react-router-dom'
 
 const AddItem = () => {
   const [formData, setFormData] = useState({
@@ -67,6 +69,15 @@ const AddItem = () => {
 
   return (
     <div className='add-item-form'>
+      <div className='head'>
+        <p>Items</p>
+        <MdKeyboardDoubleArrowRight />
+        <p>
+          <Link to='/view-items'>View Items</Link>
+        </p>
+        <MdKeyboardDoubleArrowRight />
+        <p>Add Item</p>
+      </div>
       <h2>Add New Item</h2>
       {error && <p style={{ color: 'red' }}>{error}</p>}
       {success && <p style={{ color: 'green' }}>{success}</p>}
@@ -82,25 +93,59 @@ const AddItem = () => {
           />
         </div>
 
-        <div className='form-group'>
-          <label>Brand:</label>
-          <input
-            type='text'
-            name='brand'
-            value={formData.brand}
-            onChange={handleChange}
-            required
-          />
+        <div className='four'>
+          <div className='form-group'>
+            <label>Brand:</label>
+            <input
+              type='text'
+              name='brand'
+              value={formData.brand}
+              onChange={handleChange}
+              required
+            />
+          </div>
+
+          <div className='form-group'>
+            <label>Category:</label>
+            <input
+              type='text'
+              name='category'
+              value={formData.category}
+              onChange={handleChange}
+              required
+            />
+          </div>
+
+          <div className='form-group'>
+            <label>MRP:</label>
+            <input
+              type='number'
+              name='mrp'
+              value={formData.mrp}
+              onChange={handleChange}
+              required
+            />
+          </div>
+
+          <div className='form-group'>
+            <label>Selling Price (SP):</label>
+            <input
+              type='number'
+              name='sp'
+              value={formData.sp}
+              onChange={handleChange}
+              required
+            />
+          </div>
         </div>
 
         <div className='form-group'>
-          <label>Category:</label>
+          <label>Images (max 5):</label>
           <input
-            type='text'
-            name='category'
-            value={formData.category}
-            onChange={handleChange}
-            required
+            type='file'
+            multiple
+            accept='image/*'
+            onChange={handleFileChange}
           />
         </div>
 
@@ -114,39 +159,50 @@ const AddItem = () => {
           />
         </div>
 
-        <div className='form-group'>
-          <label>Rating:</label>
-          <input
-            type='number'
-            name='rating'
-            value={formData.rating}
-            onChange={handleChange}
-            step='0.1'
-            min='0'
-            max='5'
-          />
-        </div>
+        <div className='four'>
+          <div className='form-group'>
+            <label>Rating:</label>
+            <input
+              type='number'
+              name='rating'
+              value={formData.rating}
+              onChange={handleChange}
+              step='0.1'
+              min='0'
+              max='5'
+            />
+          </div>
+          <div className='form-group'>
+            <label>Stock:</label>
+            <input
+              type='number'
+              name='stock'
+              value={formData.stock}
+              onChange={handleChange}
+              required
+            />
+          </div>
 
-        <div className='form-group'>
-          <label>MRP:</label>
-          <input
-            type='number'
-            name='mrp'
-            value={formData.mrp}
-            onChange={handleChange}
-            required
-          />
-        </div>
-
-        <div className='form-group'>
-          <label>Selling Price (SP):</label>
-          <input
-            type='number'
-            name='sp'
-            value={formData.sp}
-            onChange={handleChange}
-            required
-          />
+          <div className='form-group'>
+            <label>Discount Start Date:</label>
+            <input
+              type='date'
+              name='startDate'
+              value={formData.startDate}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <div className='form-group'>
+            <label>Discount End Date:</label>
+            <input
+              type='date'
+              name='endDate'
+              value={formData.endDate}
+              onChange={handleChange}
+              required
+            />
+          </div>
         </div>
 
         <div className='form-group'>
@@ -159,49 +215,7 @@ const AddItem = () => {
           />
         </div>
 
-        <div className='form-group'>
-          <label>Stock:</label>
-          <input
-            type='number'
-            name='stock'
-            value={formData.stock}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        
-        <div className='form-group'>
-          <label>Discount Start Date:</label>
-          <input
-            type='date'
-            name='startDate'
-            value={formData.startDate}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div className='form-group'>
-          <label>Discount End Date:</label>
-          <input
-            type='date'
-            name='endDate'
-            value={formData.endDate}
-            onChange={handleChange}
-            required
-          />
-        </div>
-
-        <div className='form-group'>
-          <label>Images (max 10):</label>
-          <input
-            type='file'
-            multiple
-            accept='image/*'
-            onChange={handleFileChange}
-          />
-        </div>
-
-        <button type='submit'>Add Item</button>
+        <button type='submit' className='add-item-btn'>Add Item</button>
       </form>
     </div>
   )

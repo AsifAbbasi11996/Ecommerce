@@ -28,11 +28,11 @@ const Profile = () => {
           email: data.user.email,
           image: data.user.image || user // Fallback image if no image is provided
         })
-        setImagePreview(data.user.image || user)
+        setImagePreview(data.user.image || user) // Show image from data
         setLoading(false)
-        console.log(data.user)
       } catch (error) {
         console.error('Error fetching user data:', error)
+        setLoading(false)
       }
     }
     fetchUserData()
@@ -71,8 +71,8 @@ const Profile = () => {
     try {
       const updatedUser = await updateUserById(userId, userData) // Update user data via API
       setUserData(updatedUser) // Update userData state with the new data
-      setImagePreview(updatedUser.image || user) // Update image preview
-      setIsEditing(false) // Only toggle edit mode off after saving successfully
+      setImagePreview(updatedUser.image || user) // Update image preview after save
+      setIsEditing(false) // Toggle off edit mode after saving
       setLoading(false)
     } catch (error) {
       console.error('Error updating user data:', error)
@@ -85,6 +85,11 @@ const Profile = () => {
     setIsEditing(!isEditing)
   }
 
+  // Helper function to handle missing image URL
+  const getImageUrl = image => {
+    return image ? formatImageUrl(image) : user // If no image, use the fallback image
+  }
+
   if (loading) {
     return <div>Loading...</div>
   }
@@ -94,14 +99,16 @@ const Profile = () => {
       <h2>My Profile</h2>
       <div className='profile-info'>
         <div className='profile-picture'>
+          {/* Display the current image if not editing, otherwise show the image preview */}
           <img
-            src={formatImageUrl(imagePreview)}
+            src={isEditing ? imagePreview : getImageUrl(userData.image)}
             alt='Profile Picture'
             width='150'
             height='150'
             style={{ borderRadius: '50%' }}
           />
         </div>
+
         {isEditing ? (
           <form onSubmit={handleSubmit} className='profile-form'>
             <div className='form-group'>

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { MdKeyboardDoubleArrowRight } from 'react-icons/md'
-import { Table, Button, Modal, Form, Input } from 'antd'
+import { Table, Button, Modal, Form, Input, Upload, message } from 'antd'
 import {
   getSliders,
   deleteSlider,
@@ -8,17 +8,24 @@ import {
   updateSlider,
   getSliderById
 } from '../api/sliderApi'
-import '../assets/styles/Ecommerce.css'
 import { formatImageUrl } from '../utils/formatImageUrl'
+import { UploadOutlined } from '@ant-design/icons'
 
 const Slider = () => {
   const [sliders, setSliders] = useState([])
   const [isModalVisible, setIsModalVisible] = useState(false)
   const [editingSlider, setEditingSlider] = useState(null)
   const [loading, setLoading] = useState(false)
-  const [isCreating, setIsCreating] = useState(false) // Check if you're creating or updating
+  const [isCreating, setIsCreating] = useState(false)
 
-  // Fetch sliders on component mount
+  // States to store the selected files for preview
+  const [imagePreview, setImagePreview] = useState(null)
+  const [smallImagePreview, setSmallImagePreview] = useState(null)
+  const [mobileImagePreview, setMobileImagePreview] = useState(null)
+  const [imageFile, setImageFile] = useState(null)
+  const [smallImageFile, setSmallImageFile] = useState(null)
+  const [mobileImageFile, setMobileImageFile] = useState(null)
+
   useEffect(() => {
     const fetchSliders = async () => {
       try {
@@ -32,14 +39,22 @@ const Slider = () => {
     fetchSliders()
   }, [])
 
-  // Show modal for adding a new slider
   const showCreateModal = () => {
     setIsModalVisible(true)
     setIsCreating(true)
-    setEditingSlider(null) // Clear any previous editing data
+    setEditingSlider(null)
+
+    setTimeout(() => {
+      const form = document.querySelector('form')
+      if (form) {
+        const fileInputs = form.querySelectorAll('input[type="file"]')
+        fileInputs.forEach(input => {
+          input.value = ''
+        })
+      }
+    }, 0)
   }
 
-  // Show modal for editing an existing slider
   const showEditModal = async id => {
     setLoading(true)
     try {
@@ -54,21 +69,19 @@ const Slider = () => {
     }
   }
 
-  // Handle form submission for creating or updating a slider
   const handleSubmit = async values => {
     setLoading(true)
     const formData = new FormData()
 
-    // Append the form fields to FormData
+    // Append normal fields like link, smalltext, and bigtext
     formData.append('link', values.link)
     formData.append('smalltext', values.smalltext)
     formData.append('bigtext', values.bigtext)
 
-    // Append the files if available
-    if (values.image) formData.append('image', values.image[0]) // File field
-    if (values.smallimage) formData.append('smallimage', values.smallimage[0])
-    if (values.mobileImage)
-      formData.append('mobileImage', values.mobileImage[0])
+    // Append the image files
+    if (imageFile) formData.append('image', imageFile)
+    if (smallImageFile) formData.append('smallimage', smallImageFile)
+    if (mobileImageFile) formData.append('mobileImage', mobileImageFile)
 
     try {
       if (isCreating) {
@@ -92,17 +105,34 @@ const Slider = () => {
     }
   }
 
-  // Handle slider deletion
   const handleDelete = async id => {
     try {
       await deleteSlider(id)
-      setSliders(sliders.filter(slider => slider._id !== id)) // Remove from state
+      setSliders(sliders.filter(slider => slider._id !== id))
     } catch (error) {
       console.error('Error deleting slider:', error)
     }
   }
 
-  // Define columns for the table
+  const handleImageChange = (file, field) => {
+    const reader = new FileReader()
+    reader.onloadend = () => {
+      if (field === 'image') {
+        setImagePreview(reader.result)
+        setImageFile(file) // Set the file object for submission
+      } else if (field === 'smallimage') {
+        setSmallImagePreview(reader.result)
+        setSmallImageFile(file) // Set the file object for submission
+      } else if (field === 'mobileImage') {
+        setMobileImagePreview(reader.result)
+        setMobileImageFile(file) // Set the file object for submission
+      }
+    }
+    if (file) {
+      reader.readAsDataURL(file)
+    }
+  }
+
   const columns = [
     {
       title: 'Desktop Image',
@@ -113,9 +143,14 @@ const Slider = () => {
       )
     },
     {
+      title: 'Link',
+      dataIndex: 'link',
+      key:'link'
+    },
+    {
       title: 'Mobile Image',
       dataIndex: 'mobileImage',
-      key: 'image',
+      key: 'mobileImage',
       render: text => (
         <img src={formatImageUrl(text)} alt='slider' style={{ width: 100 }} />
       )
@@ -123,7 +158,7 @@ const Slider = () => {
     {
       title: 'Small Image',
       dataIndex: 'smallimage',
-      key: 'image',
+      key: 'smallimage',
       render: text =>
         text ? (
           <img src={formatImageUrl(text)} alt='slider' style={{ width: 100 }} />
@@ -132,12 +167,12 @@ const Slider = () => {
     {
       title: 'Big Text',
       dataIndex: 'bigtext',
-      key: 'text'
+      key: 'bigtext'
     },
     {
       title: 'Small Text',
       dataIndex: 'smalltext',
-      key: 'text'
+      key: 'smalltext'
     },
     {
       title: 'Link',
@@ -214,46 +249,74 @@ const Slider = () => {
             <Input />
           </Form.Item>
 
+          {/* Image Upload Fields with Preview */}
           <Form.Item label='Image' name='image'>
-            {/* Show the existing image as a preview, if available */}
-            {editingSlider && editingSlider.image && (
+            {imagePreview && (
               <div>
                 <img
-                  src={formatImageUrl(editingSlider.image)}
-                  alt='Current Desktop Image'
+                  src={imagePreview}
+                  alt='Desktop Image Preview'
                   style={{ width: 100 }}
                 />
               </div>
             )}
-            <input type='file' accept='image/*' />
+            <Upload
+              accept='image/*'
+              beforeUpload={file => {
+                handleImageChange(file, 'image')
+                return false // Prevent auto-upload
+              }}
+              listType='picture'
+              showUploadList={false}
+            >
+              <Button icon={<UploadOutlined />}>Upload Desktop Image</Button>
+            </Upload>
           </Form.Item>
 
           <Form.Item label='Small Image' name='smallimage'>
-            {/* Show the existing small image as a preview, if available */}
-            {editingSlider && editingSlider.smallimage && (
+            {smallImagePreview && (
               <div>
                 <img
-                  src={formatImageUrl(editingSlider.smallimage)}
-                  alt='Current Small Image'
+                  src={smallImagePreview}
+                  alt='Small Image Preview'
                   style={{ width: 100 }}
                 />
               </div>
             )}
-            <input type='file' accept='image/*' />
+            <Upload
+              accept='image/*'
+              beforeUpload={file => {
+                handleImageChange(file, 'smallimage')
+                return false
+              }}
+              listType='picture'
+              showUploadList={false}
+            >
+              <Button icon={<UploadOutlined />}>Upload Small Image</Button>
+            </Upload>
           </Form.Item>
 
           <Form.Item label='Mobile Image' name='mobileImage'>
-            {/* Show the existing mobile image as a preview, if available */}
-            {editingSlider && editingSlider.mobileImage && (
+            {mobileImagePreview && (
               <div>
                 <img
-                  src={formatImageUrl(editingSlider.mobileImage)}
-                  alt='Current Mobile Image'
+                  src={mobileImagePreview}
+                  alt='Mobile Image Preview'
                   style={{ width: 100 }}
                 />
               </div>
             )}
-            <input type='file' accept='image/*' />
+            <Upload
+              accept='image/*'
+              beforeUpload={file => {
+                handleImageChange(file, 'mobileImage')
+                return false
+              }}
+              listType='picture'
+              showUploadList={false}
+            >
+              <Button icon={<UploadOutlined />}>Upload Mobile Image</Button>
+            </Upload>
           </Form.Item>
 
           <Form.Item>

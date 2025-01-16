@@ -1,7 +1,7 @@
 import Item from '../models/item.models.js'
 
 // Controller to add a new item
-const addItem = async (req, res) => {
+export const addItem = async (req, res) => {
   try {
     // Extracting the fields from the request body
     const {
@@ -58,7 +58,7 @@ const addItem = async (req, res) => {
         percentage: discountPercentage
       },
       status: 'available',
-      orderCount,
+      orderCount: 0,
       sales
     })
 
@@ -75,7 +75,7 @@ const addItem = async (req, res) => {
   }
 }
 
-const getAllItems = async (req, res) => {
+export const getAllItems = async (req, res) => {
   try {
     const items = await Item.find()
     res.status(200).json(items)
@@ -85,8 +85,29 @@ const getAllItems = async (req, res) => {
   }
 }
 
+// Search items by name or description
+export const searchItems = async (req, res) => {
+  const { query } = req.query
+  if (!query) {
+    return res.status(400).json({ message: 'Search query is required.' })
+  }
+
+  try {
+    const items = await Item.find({
+      $or: [
+        { itemName: { $regex: query, $options: 'i' } },
+        { brand: { $regex: query, $options: 'i' } },
+        { itemdetail: { $regex: query, $options: 'i' } }
+      ]
+    })
+    res.json(items)
+  } catch (err) {
+    res.status(500).json({ message: err.message })
+  }
+}
+
 // Delete an item by ID
-const deleteItemById = async (req, res) => {
+export const deleteItemById = async (req, res) => {
   try {
     const { id } = req.params
     const deletedItem = await Item.findByIdAndDelete(id)
@@ -103,7 +124,7 @@ const deleteItemById = async (req, res) => {
 }
 
 // Get an item by ID
-const getItemById = async (req, res) => {
+export const getItemById = async (req, res) => {
   try {
     const { id } = req.params
     const item = await Item.findById(id)
@@ -120,7 +141,7 @@ const getItemById = async (req, res) => {
 }
 
 // Update an item by ID
-const updateItemById = async (req, res) => {
+export const updateItemById = async (req, res) => {
   try {
     const { id } = req.params
 
@@ -198,7 +219,7 @@ const updateItemById = async (req, res) => {
 }
 
 // Delete a single image from the images array
-const deleteImageFromItem = async (req, res) => {
+export const deleteImageFromItem = async (req, res) => {
   try {
     const { id, imagePath } = req.params
 
@@ -238,7 +259,7 @@ const deleteImageFromItem = async (req, res) => {
 }
 
 // Add more images to the images array
-const addImagesToItem = async (req, res) => {
+export const addImagesToItem = async (req, res) => {
   try {
     const { id } = req.params
     const newImages = req.files.map(file => file.path) // Paths of newly uploaded images
@@ -261,7 +282,7 @@ const addImagesToItem = async (req, res) => {
 }
 
 // Controller to get related items based on category
-const getRelatedItemsByCategory = async (req, res) => {
+export const getRelatedItemsByCategory = async (req, res) => {
   try {
     const { category } = req.params // Extract category from the URL parameter
 
@@ -282,7 +303,7 @@ const getRelatedItemsByCategory = async (req, res) => {
 }
 
 // Total Item count
-const getTotalItems = async (req, res) => {
+export const getTotalItems = async (req, res) => {
   try {
     const totalItems = await Item.countDocuments()
     res.status(200).json({ totalItems })
@@ -291,14 +312,33 @@ const getTotalItems = async (req, res) => {
   }
 }
 
-export {
-  addItem,
-  getAllItems,
-  getItemById,
-  updateItemById,
-  deleteItemById,
-  deleteImageFromItem,
-  addImagesToItem,
-  getRelatedItemsByCategory,
-  getTotalItems
+// Controller to update an item's bestseller status
+export const markAsBestseller = async (req, res) => {
+  try {
+    const { bestseller } = req.body
+
+    // Validate that the bestseller field is provided and is a boolean
+    if (typeof bestseller !== 'boolean') {
+      return res
+        .status(400)
+        .json({ error: 'Invalid bestseller value. It should be a boolean.' })
+    }
+
+    // Find the item by ID and update its bestseller status
+    const item = await Item.findById(req.params.id)
+    if (!item) {
+      return res.status(404).json({ error: 'Item not found.' })
+    }
+
+    item.bestseller = bestseller
+    await item.save()
+
+    res.status(200).json({
+      message: 'Item updated successfully',
+      item
+    })
+  } catch (error) {
+    console.error('Error updating bestseller status:', error)
+    res.status(500).json({ error: 'Internal server error.' })
+  }
 }

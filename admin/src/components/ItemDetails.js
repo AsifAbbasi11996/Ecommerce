@@ -42,7 +42,7 @@ const ItemDetails = () => {
         <p>Items</p>
         <MdKeyboardDoubleArrowRight />
         <p>
-          <Link to='/viewitems'>View Items</Link>
+          <Link to='/view-items'>View Items</Link>
         </p>
         <MdKeyboardDoubleArrowRight />
         <p>Item Details</p>

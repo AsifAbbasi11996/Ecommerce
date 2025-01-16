@@ -10,7 +10,7 @@ const itemSchema = new mongoose.Schema(
       type: String
     },
     category: {
-      type: String,
+      type: String
     },
     images: {
       type: [String],
@@ -64,7 +64,8 @@ const itemSchema = new mongoose.Schema(
       default: 'available' // Default product status
     },
     orderCount: { type: Number, default: 0 },
-    sales: { type: Number, default: 0 }
+    sales: { type: Number, default: 0 },
+    bestseller: { type: Boolean, default: false } // Flag to mark bestseller
   },
   { timestamps: true }
 ) // Automatically adds createdAt and updatedAt fields

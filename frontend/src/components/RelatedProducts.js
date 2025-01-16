@@ -10,6 +10,7 @@ import { ToastContainer, toast } from 'react-toastify' // Import toast and Toast
 import 'react-toastify/dist/ReactToastify.css' // Import toast styles
 import { useWishlist } from '../context/WishlistContext'
 import { truncateText } from '../utils/formatText'
+import { formatItemNameForUrl } from '../utils/formatItemName'
 
 const RelatedProducts = ({ products }) => {
   const { handleAddToCart } = useCart() // Access handleAddToCart function from context
@@ -79,7 +80,7 @@ const RelatedProducts = ({ products }) => {
           products.map(product => (
             <div className='product'>
               <Link
-                to={`/v/${product._id}`}
+                to={`/v/${product._id}/${formatItemNameForUrl(product.itemName)}`}
                 key={product._id}
                 className='related-product_item'
                 onClick={handleScrollToTop}

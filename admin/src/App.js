@@ -21,6 +21,7 @@ import OrderPlacedOrders from './components/OrderPlacedOrders'
 import Profile from './components/Profile'
 import Navlinks from './components/Navlinks'
 import Slider from './components/Slider'
+import Category from './components/Category'
 
 function App () {
   return (
@@ -39,24 +40,22 @@ function App () {
           <Route path='/view-orders' element={<ViewOrders />} />
           <Route path='/orderplaced-orders' element={<OrderPlacedOrders />} />
           <Route path='/shipped-orders' element={<ShippedOrders />} />
-          <Route path='/outfordelivery-orders' element={<OutForDeliveryOrders />} />
+          <Route
+            path='/outfordelivery-orders'
+            element={<OutForDeliveryOrders />}
+          />
           <Route path='/delivered-orders' element={<DeliveredOrders />} />
           <Route path='/canceled-orders' element={<CanceledOrders />} />
           <Route path='/returned-orders' element={<ReturnedOrders />} />
           <Route path='/navbar' element={<Navlinks />} />
           <Route path='/slider' element={<Slider />} />
+          <Route path='/category' element={<Category />} />
           <Route
             path='/product-details/:id/:productName'
             element={<ViewDetails />}
           />
-          <Route
-            path='/item-details/:id/:itemName'
-            element={<ItemDetails />}
-          />
-          <Route
-            path='/edit-item/:id/:itemName'
-            element={<EditItem />}
-          />
+          <Route path='/item-details/:id/:itemName' element={<ItemDetails />} />
+          <Route path='/edit-item/:id/:itemName' element={<EditItem />} />
         </Route>
       </Routes>
     </BrowserRouter>

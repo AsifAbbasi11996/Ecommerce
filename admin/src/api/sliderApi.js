@@ -37,12 +37,28 @@ export const deleteSlider = async id => {
 
 // Add a new slider (including image upload)
 export const addSlider = async sliderData => {
+  const formData = new FormData()
+
+  // Append the normal fields (like link, smalltext, etc.) to FormData
+  formData.append('link', sliderData.link)
+  formData.append('smalltext', sliderData.smalltext)
+  formData.append('bigtext', sliderData.bigtext)
+
+  // Append the image fields (files) to FormData
+  if (sliderData.image && sliderData.image[0])
+    formData.append('image', sliderData.image[0]) // Use the first image in the array
+  if (sliderData.smallimage && sliderData.smallimage[0])
+    formData.append('smallimage', sliderData.smallimage[0]) // Use the first small image
+  if (sliderData.mobileImage && sliderData.mobileImage[0])
+    formData.append('mobileImage', sliderData.mobileImage[0]) // Use the first mobile image
+
   try {
-    const response = await axios.post(`${API_URL}/add`, sliderData, {
+    const response = await axios.post(`${API_URL}/add`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data' // This is important for file uploads
       }
     })
+
     return response.data // Return the newly added slider data
   } catch (error) {
     console.error('Error adding slider:', error.message)

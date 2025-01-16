@@ -37,9 +37,16 @@ const Login = () => {
       localStorage.setItem('email', email)
 
       // If login is successful, show success toast
-      toast.success('Login successful!')
+      toast.success('Login successful!', {
+        position: 'top-right', // Position the toast at the top-right
+        autoClose: 2000, // Duration the toast stays visible
+        hideProgressBar: true, // Hide progress bar
+        draggable: false // Make the toast non-draggable
+      })
       console.log('User logged in:', response) // Handle successful login response (e.g., store token)
-      navigate('/dashboard')
+      setTimeout(() => {
+        navigate('/dashboard')
+      }, 2000)
     } catch (error) {
       toast.error('Invalid credentials or server error')
     } finally {

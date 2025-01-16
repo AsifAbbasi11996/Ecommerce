@@ -130,6 +130,10 @@ const Dashboard = () => {
     })
   }
 
+  const handleNavigate = path => {
+    navigate(path)
+  }
+
   return (
     <div className='main_dashboard'>
       <div className='head'>
@@ -141,17 +145,20 @@ const Dashboard = () => {
       <div className='six-cards'>
         <div className='cards grid-container'>
           {/* Total Registered Users Card */}
-          <div className='grid-item'>
-            <div
-              className='card orange'
-              onClick={() => toggleDropdown('totalUsers')}
-            >
+          <div
+            className='grid-item'
+            onClick={() => handleNavigate('/view-users')}
+          >
+            <div className='card orange'>
               <div className='head'>
                 <h4>
                   <span>total registered users</span>
                   {totalusers.totalUsers}
                 </h4>
-                <div className='icon'>
+                <div
+                  className='icon'
+                  onClick={() => toggleDropdown('totalUsers')}
+                >
                   <PiDotsThreeOutlineVerticalFill />
                 </div>
               </div>
@@ -180,7 +187,10 @@ const Dashboard = () => {
           </div>
 
           {/* Total Products Card */}
-          <div className='grid-item'>
+          <div
+            className='grid-item'
+            onClick={() => handleNavigate('/view-items')}
+          >
             <div className='card blue'>
               <div className='head'>
                 <h4>
@@ -193,16 +203,16 @@ const Dashboard = () => {
 
           {/* Total Sales Card */}
           <div className='grid-item'>
-            <div
-              className='card indigo'
-              onClick={() => toggleDropdown('totalSales')}
-            >
+            <div className='card indigo'>
               <div className='head'>
                 <h4>
                   <span>total sales</span>
                   {formatPrice(totalsales.totalSales)}
                 </h4>
-                <div className='icon'>
+                <div
+                  className='icon'
+                  onClick={() => toggleDropdown('totalSales')}
+                >
                   <PiDotsThreeOutlineVerticalFill />
                 </div>
               </div>
@@ -231,17 +241,20 @@ const Dashboard = () => {
           </div>
 
           {/* Order Placed Orders Card */}
-          <div className='grid-item'>
-            <div
-              className='card yellow'
-              onClick={() => toggleDropdown('orderplacedOrders')}
-            >
+          <div
+            className='grid-item'
+            onClick={() => handleNavigate('/orderplaced-orders')}
+          >
+            <div className='card yellow'>
               <div className='head'>
                 <h4>
                   <span>Order Placed orders</span>
                   {totalOrderPlacedCount.count}
                 </h4>
-                <div className='icon'>
+                <div
+                  className='icon'
+                  onClick={() => toggleDropdown('orderplacedOrders')}
+                >
                   <PiDotsThreeOutlineVerticalFill />
                 </div>
               </div>
@@ -270,17 +283,20 @@ const Dashboard = () => {
           </div>
 
           {/* Delivered Orders Card */}
-          <div className='grid-item'>
-            <div
-              className='card green'
-              onClick={() => toggleDropdown('deliveredOrders')}
-            >
+          <div
+            className='grid-item'
+            onClick={() => handleNavigate('/delivered-orders')}
+          >
+            <div className='card green'>
               <div className='head'>
                 <h4>
                   <span>Delivered orders</span>
                   {totalDeliveredCount.count}
                 </h4>
-                <div className='icon'>
+                <div
+                  className='icon'
+                  onClick={() => toggleDropdown('deliveredOrders')}
+                >
                   <PiDotsThreeOutlineVerticalFill />
                 </div>
               </div>
@@ -309,17 +325,20 @@ const Dashboard = () => {
           </div>
 
           {/* Total Orders Card */}
-          <div className='grid-item'>
-            <div
-              className='card purple'
-              onClick={() => toggleDropdown('totalOrders')}
-            >
+          <div
+            className='grid-item'
+            onClick={() => handleNavigate('/view-orders')}
+          >
+            <div className='card purple'>
               <div className='head'>
                 <h4>
                   <span>total orders</span>
                   {totalorders.totalOrders}
                 </h4>
-                <div className='icon'>
+                <div
+                  className='icon'
+                  onClick={() => toggleDropdown('totalOrders')}
+                >
                   <PiDotsThreeOutlineVerticalFill />
                 </div>
               </div>

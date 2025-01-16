@@ -10,7 +10,9 @@ import {
   deleteImageFromItem,
   addImagesToItem,
   getRelatedItemsByCategory,
-  getTotalItems
+  getTotalItems,
+  markAsBestseller,
+  searchItems
 } from '../controllers/item.controller.js' // Adjust the path as necessary
 
 const router = express.Router()
@@ -62,6 +64,7 @@ const upload = multer({
 // Define routes
 router.post('/add', upload.array('images', 5), addItem) // Add a new item
 router.get('/all', getAllItems) // Get all items
+router.get('/search', searchItems) // Get all search items
 router.get('/get/:id', getItemById) // Get a single item by ID
 router.put('/update/:id', upload.array('images', 5), updateItemById) // Update an item by ID
 router.delete('/del/:id', deleteItemById) // Delete an item by ID
@@ -69,5 +72,9 @@ router.delete('/del/:id/:imagePath', deleteImageFromItem) // Delete a single ima
 router.put('/add/:id/images', upload.array('images', 5), addImagesToItem) // Add images to the images array
 router.get('/related/:category', getRelatedItemsByCategory)
 router.get('/totalItems', getTotalItems)
+
+// Update the item to mark as bestseller
+router.put('/:id/bestseller', markAsBestseller);
+
 
 export default router
