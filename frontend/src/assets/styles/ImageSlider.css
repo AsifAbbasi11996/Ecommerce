@@ -147,6 +147,7 @@
     .slider {
       .slider_content {
         position: relative;
+
         .slider_text {
           position: absolute;
           left: 50%;
@@ -171,6 +172,10 @@
 
         .slider_image {
           height: 400px;
+
+          img{
+            height: 100%;
+          }
         }
       }
     }

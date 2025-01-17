@@ -106,31 +106,6 @@ nav {
     }
   }
 
-  .suggestions {
-    position: absolute;
-    background-color: white;
-    border: 1px solid #ddd;
-    max-height: 300px;
-    overflow-y: auto;
-    z-index: 1000;
-    top: 71px;
-    right: 255px;
-
-    a {
-      text-decoration: none;
-      color: #000;
-      font-size: 0.8rem;
-    }
-  }
-
-  .suggestion-item {
-    padding: 7px;
-    cursor: pointer;
-  }
-
-  .suggestion-item:hover {
-    background-color: #f0f0f0;
-  }
 }
 
 /* Hamburger button styling */
@@ -145,7 +120,6 @@ nav {
 @media only screen and (max-width: 946px) {
   nav {
     padding: 1rem;
-    position: relative;
 
     .right {
       .searchbar {
@@ -177,26 +151,6 @@ nav {
 
       input:focus {
         outline: none;
-      }
-    }
-
-    .suggestions {
-      position: absolute;
-      top: 159%;
-      left: 0;
-      background-color: white;
-      border: 1px solid #ddd;
-      max-height: 300px;
-      overflow-y: auto;
-      z-index: 1000;
-
-      .suggestion-item {
-        padding: 10px;
-        cursor: pointer;
-      }
-
-      .suggestion-item:hover {
-        background-color: #f0f0f0;
       }
     }
   }
@@ -241,7 +195,7 @@ nav {
   nav {
     .hamburger {
       svg {
-        font-size: 1.2rem !important;
+        font-size: 1.3rem !important;
       }
     }
     .logo {
@@ -254,12 +208,28 @@ nav {
 
     .right {
       svg {
-        font-size: 1.2rem;
+        font-size: 1.3rem;
       }
 
-      .searchbar {
-        svg {
-          font-size: 1.2rem !important;
+      .searchbar{
+
+        svg{
+          font-size: 1.3rem;
+        }
+      }
+
+      .account{
+
+        .dropdown{
+          top: 30px;
+          padding: 0 0.4rem;
+
+          li{
+
+            a{
+              font-size: 0.8rem;
+            }
+          }
         }
       }
     }

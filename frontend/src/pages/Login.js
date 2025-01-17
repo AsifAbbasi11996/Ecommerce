@@ -54,7 +54,7 @@ const Login = () => {
       // Display success toast message
       toast.success('Successfully logged in!', {
         position: 'top-right', // Position the toast at the top-right
-        autoClose: 3000, // Duration the toast stays visible
+        autoClose: 1000, // Duration the toast stays visible
         hideProgressBar: true, // Hide progress bar
         draggable: false // Make the toast non-draggable
       })
@@ -62,7 +62,7 @@ const Login = () => {
       // Wait for 3 seconds before navigating
       setTimeout(() => {
         navigate('/')
-      }, 3000) // 3 seconds delay before navigating to the home page
+      }, 2000) // 3 seconds delay before navigating to the home page
     } catch (error) {
       // If an error occurs during login
       console.error('Error logging in:', error)

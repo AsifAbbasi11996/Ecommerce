@@ -56,7 +56,6 @@
       height: 350px;
 
       .card {
-
         .card-product {
           background: #f5f5f5;
           padding: 0.8rem;
@@ -169,6 +168,7 @@
 @media only screen and (max-width: 663px) {
   .best_selling_products_container {
     .best_selling_products_title {
+      margin-bottom: 20px;
       .best_selling_products_header {
         p {
           font-size: 0.8rem;
@@ -194,41 +194,47 @@
   .related-products_container {
     .best_selling_products,
     .related-products {
-      gap: 1.2rem 1.5rem;
+      gap: 0.5rem;
 
-      a {
-        .card {
-          width: 150px;
-          height: 220px;
+      .product {
+        width: 180px;
+        height: 290px;
+        a {
+          .card {
+            .card-product {
+              .discount {
+                font-size: 0.6rem;
+              }
 
-          .card-product {
-            .discount {
-              font-size: 0.6rem;
-            }
+              .card-image {
+                width: 150px !important;
+                height: 150px !important;
+                padding: 0;
+              }
 
-            .card-image {
-              width: 150px;
-              height: 110px;
-            }
-
-            .icons {
-              .icon {
-                height: 18px;
-                width: 18px;
+              .icons {
+                .icon {
+                  height: 18px;
+                  width: 18px;
+                }
               }
             }
-          }
 
-          .card-content {
-            p {
-              font-size: 0.8rem;
-              margin-bottom: 5px;
-            }
+            .card-content {
+              p {
+                font-size: 0.7rem;
+                margin-bottom: 5px;
 
-            .rating {
-              svg {
-                height: 12px;
-                width: 12px;
+                .sp {
+                  font-size: 1.1rem;
+                }
+              }
+
+              .rating {
+                svg {
+                  height: 12px;
+                  width: 12px;
+                }
               }
             }
           }
@@ -242,9 +248,10 @@
   }
 }
 
-@media only screen and (max-width: 425px) {
+@media only screen and (max-width: 426px) {
   .best_selling_products_container {
     .best_selling_products_title {
+      padding: 0.8rem;
       .best_selling_products_header {
         p {
           font-size: 0.7rem;
@@ -264,41 +271,33 @@
   }
 }
 
-@media only screen and (max-width: 387px) {
-  .related-products_container {
-    .related-products {
-      .related-product_item {
-        .card {
-          width: 130px;
-          height: 200px;
-
-          .card-product {
-            .card-image {
-              width: 130px;
-              height: 100px;
-            }
-          }
-        }
-      }
-    }
-  }
-}
-
-@media only screen and (max-width: 351px) {
+@media only screen and (max-width: 368px) {
   .best_selling_products_container,
   .related-products_container {
     .best_selling_products,
     .related-products {
-      a,
-      .related-product_item {
+      .product {
+        width: 150px !important;
         .card {
-          width: 130px;
-          height: 200px;
-
           .card-product {
             .card-image {
-              width: 130px;
-              height: 100px;
+              width: 120px !important;
+              height: 100px !important;
+            }
+          }
+
+          .card-content {
+            .price {
+              .sp {
+                font-size: 0.8rem !important;
+              }
+            }
+
+            .rating {
+              svg {
+                height: 9px !important;
+                width: 9px !important;
+              }
             }
           }
         }

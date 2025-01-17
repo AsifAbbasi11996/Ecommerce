@@ -126,4 +126,8 @@
       }
     }
   }
+
+  .no_item_found{
+    min-height: 500px;
+  }
 }

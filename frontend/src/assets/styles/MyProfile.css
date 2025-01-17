@@ -26,9 +26,8 @@
     }
   }
 
-  .address-details{
-
-    p{
+  .address-details {
+    p {
       color: #000;
       font-size: 1rem;
       margin-bottom: 1rem;
@@ -103,5 +102,20 @@
     background: #db4444;
     color: #fff;
     border-radius: 4px;
+  }
+}
+
+.no-user-message {
+  p {
+    margin-bottom: 2rem;
+  }
+  
+  a {
+    text-decoration: none;
+    color: #000;
+  }
+
+  a:hover {
+    text-decoration: underline;
   }
 }

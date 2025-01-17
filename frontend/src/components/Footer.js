@@ -36,10 +36,10 @@ const Footer = () => {
           <h3>Account</h3>
           <ul>
             <li>
-              <Link to='/myaccount'>My Account</Link>
+              <Link to='/myaccount/profile'>My Account</Link>
             </li>
             <li>
-              <Link to='/login'>Login / Register</Link>
+              <Link to='/login'>Login</Link> / <Link to='/signup'>Register</Link>
             </li>
             <li>
               <Link to='/cart'>Cart</Link>

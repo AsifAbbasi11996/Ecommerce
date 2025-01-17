@@ -6,7 +6,9 @@ import {
   CiShoppingCart,
   CiUser,
   CiLogout,
-  CiMenuFries
+  CiMenuFries,
+  CiBoxes,
+  CiLogin
 } from 'react-icons/ci'
 import '../assets/styles/Navbar.css'
 import { getAllNavbar } from '../api/navbarApi'
@@ -81,14 +83,10 @@ const Navbar = () => {
     localStorage.removeItem('token')
     toast.success('Logged out successfully!', {
       position: 'top-right',
-      autoClose: 5000,
+      autoClose: 1000,
       hideProgressBar: false,
       draggable: false
     })
-
-    setTimeout(() => {
-      navigate('/login')
-    }, 2000)
   }
 
   const navigateToWishlist = () => {
@@ -102,6 +100,9 @@ const Navbar = () => {
   const handleNavlinkClose = () => {
     setIsMenuOpen(false)
   }
+
+  // Check if user is logged in by the presence of token in localStorage
+  const isLoggedIn = localStorage.getItem('token') !== null
 
   return (
     <nav>
@@ -129,8 +130,6 @@ const Navbar = () => {
         ) : (
           <p>No found.</p>
         )}
-
-        <Link to='/signup'>Sign Up</Link>
       </div>
 
       <div className='right'>
@@ -155,15 +154,44 @@ const Navbar = () => {
           <CiUser />
           {isShow && (
             <ul className='dropdown'>
-              <li onClick={handleLogout}>
-                <CiLogout /> Logout
-              </li>
+              {isLoggedIn ? (
+                <>
+                  <li>
+                    <Link to='/myaccount/profile'>
+                      <CiUser /> My Account
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to='/myaccount/orders'>
+                      <CiBoxes /> My Orders
+                    </Link>
+                  </li>
+                  <li onClick={handleLogout}>
+                    <Link>
+                      <CiLogout /> Logout
+                    </Link>
+                  </li>
+                </>
+              ) : (
+                <>
+                  <li>
+                    <Link to='/login'>
+                      <CiLogin /> Login
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to='/signup'>
+                      <CiUser /> Register
+                    </Link>
+                  </li>
+                </>
+              )}
             </ul>
           )}
         </div>
       </div>
 
-      <ToastContainer />
+      {/* <ToastContainer /> */}
     </nav>
   )
 }

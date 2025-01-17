@@ -5,6 +5,7 @@ import { ToastContainer, toast } from 'react-toastify' // Import toast and Toast
 import 'react-toastify/dist/ReactToastify.css' // Import toast styles
 import Loader from './Loader'
 import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai'
+import { Link } from 'react-router-dom'
 
 const MyProfile = () => {
   const userId = localStorage.getItem('userId') // Get the userId from localStorage
@@ -29,29 +30,32 @@ const MyProfile = () => {
   const [loading, setLoading] = useState(true) // Loading state while fetching data
   const [error, setError] = useState(null) // Error handling
 
-  // Fetch user data when component mounts
   useEffect(() => {
+    // If no userId found, return early and show message
+    if (!userId) {
+      setLoading(false)
+      return
+    }
+
     const fetchUserData = async () => {
-      if (userId) {
-        try {
-          const data = await getUserById(userId) // Fetch user data by ID
-          setUserData(data) // Set the fetched data
-          setInitialUserData(data) // Store the initial user data
-          setUpdatedData({
-            firstName: data.firstName,
-            lastName: data.lastName,
-            email: data.email,
-            phone: data.phone,
-            currentPassword: '',
-            newPassword: '',
-            confirmNewPassword: ''
-          })
-          setLoading(false) // Set loading to false when data is fetched
-        } catch (error) {
-          setError('Error fetching user data')
-          console.error('Error fetching user data:', error)
-          setLoading(false) // Set loading to false in case of an error
-        }
+      try {
+        const data = await getUserById(userId) // Fetch user data by ID
+        setUserData(data) // Set the fetched data
+        setInitialUserData(data) // Store the initial user data
+        setUpdatedData({
+          firstName: data.firstName,
+          lastName: data.lastName,
+          email: data.email,
+          phone: data.phone,
+          currentPassword: '',
+          newPassword: '',
+          confirmNewPassword: ''
+        })
+        setLoading(false) // Set loading to false when data is fetched
+      } catch (error) {
+        setError('Error fetching user data')
+        console.error('Error fetching user data:', error)
+        setLoading(false) // Set loading to false in case of an error
       }
     }
 
@@ -181,6 +185,16 @@ const MyProfile = () => {
     return (
       <div>
         <Loader />
+      </div>
+    )
+  }
+
+  // If no userId is found, display a message
+  if (!userId) {
+    return (
+      <div className='no-user-message'>
+        <p>No user data available. Please log in.</p>
+        <Link to='/login'>Click here to Login</Link>
       </div>
     )
   }

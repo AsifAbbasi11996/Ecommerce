@@ -113,6 +113,21 @@ const Wishlist = () => {
     })
   }
 
+  if (!userId) {
+    return (
+      <div className='no-user_empty_wishlist'>
+        <p>
+          <FiHeart /> Your Wishlist is empty.
+        </p>
+        <Link to='/login'>
+          <button className='continue_shopping'>
+            Log in to Add to Wishlist
+          </button>
+        </Link>
+      </div>
+    )
+  }
+
   if (loading) return <Loader />
   if (error) return <p>{error}</p>
 
@@ -201,16 +216,14 @@ const Wishlist = () => {
             </div>
           </>
         ) : (
-          <>
-            <div className='empty_wishlist'>
-              <p>
-                <FiHeart /> Your Wishlist is empty.
-              </p>
-              <button className='continue_shopping' onClick={handleNavigate}>
-                Add in your Wishlist
-              </button>
-            </div>
-          </>
+          <div className='empty_wishlist'>
+            <p>
+              <FiHeart /> Your Wishlist is empty.
+            </p>
+            <button className='continue_shopping' onClick={handleNavigate}>
+              Add in your Wishlist
+            </button>
+          </div>
         )}
       </div>
       <ToastContainer />

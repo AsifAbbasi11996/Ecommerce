@@ -129,6 +129,19 @@ const Cart = () => {
     }
   }
 
+  if (!userId) {
+    return (
+      <div className='no-user_empty_cart'>
+        <p>
+          <FiShoppingCart /> Your Cart is empty.
+        </p>
+        <Link to='/login'>
+          <button className='continue_shopping'>Log in to Add to Cart</button>
+        </Link>
+      </div>
+    )
+  }
+
   if (loading) return <Loader />
   if (error) return <p>{error}</p>
 

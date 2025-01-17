@@ -170,12 +170,13 @@ const ViewProduct = () => {
           <div className='product-image'>
             <div className='sm_img'>
               {product.images.map((image, index) => (
-                <img
-                  key={index} // Adding a unique key for each image
-                  src={formatImageUrl(image)} // Use the formatImageUrl to ensure the correct path
-                  alt={`${product.itemName} - Image ${index + 1}`} // Add an appropriate alt text for each image
-                  onClick={() => handleImageClick(image)} // Click handler to update the large image
-                />
+                <div className='image' key={index} >
+                  <img
+                    src={formatImageUrl(image)} // Use the formatImageUrl to ensure the correct path
+                    alt={`${product.itemName} - Image ${index + 1}`} // Add an appropriate alt text for each image
+                    onClick={() => handleImageClick(image)} // Click handler to update the large image
+                  />
+                </div>
               ))}
             </div>
             <div className='lg_img'>
