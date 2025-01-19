@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link, useLocation, useNavigate, Routes, Route } from 'react-router-dom'
 import MyProfile from './MyProfile'
 import MyAddress from './MyAddress'
@@ -6,10 +6,13 @@ import MyOrders from './MyOrders'
 import MyReturnOrders from './MyReturnOrders'
 import MyCancelOrders from './MyCancelOrders'
 import '../assets/styles/MyAccount.css'
+import { BiUser } from 'react-icons/bi'
+import { IoCloseOutline } from 'react-icons/io5'
 
 const MyAccount = () => {
   const location = useLocation() // Get the current location (URL)
   const navigate = useNavigate()
+  const [isAccountOpen, setIsAccountOpen] = useState(false)
 
   useEffect(() => {
     window.scrollTo(0, 0)
@@ -18,6 +21,14 @@ const MyAccount = () => {
   // Get user data from localStorage
   const firstName = localStorage.getItem('firstName')
   const lastName = localStorage.getItem('lastName')
+
+  const openMyAccount = () => {
+    setIsAccountOpen(!isAccountOpen)
+  }
+
+  const closeAccount = () => {
+    setIsAccountOpen(false)
+  }
 
   // Function to handle sidebar clicks
   const handleSidebarClick = section => {
@@ -45,8 +56,14 @@ const MyAccount = () => {
         </p>
       </div>
 
+      <div className='your_account' onClick={openMyAccount}>
+        <button>
+          <BiUser /> My Account
+        </button>
+      </div>
+
       <div className='myaccount_content'>
-        <div className='left'>
+        <div className={`left ${isAccountOpen ? 'active' : ''}`}>
           <p>Manage My Account</p>
           <ul>
             <li
@@ -83,6 +100,10 @@ const MyAccount = () => {
               My Cancellations
             </li>
           </ul>
+
+          <button className='close_account' onClick={closeAccount}>
+            <IoCloseOutline />
+          </button>
         </div>
 
         <div className='right'>

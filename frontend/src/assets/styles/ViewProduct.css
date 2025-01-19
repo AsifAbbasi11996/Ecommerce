@@ -277,6 +277,28 @@
 }
 
 @media only screen and (max-width: 426px) {
+  /* Style the scrollbar itself */
+  ::-webkit-scrollbar {
+    height: 2px; /* Height of horizontal scrollbar */
+  }
+
+  /* Style the track (the background of the scrollbar) */
+  ::-webkit-scrollbar-track {
+    border-radius: 10px;
+  }
+
+  /* Style the thumb (the draggable part of the scrollbar) */
+  ::-webkit-scrollbar-thumb {
+    background: #eaeaea; /* Gray thumb */
+    border-radius: 10px;
+    border: 0.5px solid #f1f1f1; /* Border around thumb */
+  }
+
+  /* Style the thumb on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #555; /* Darker thumb color on hover */
+  }
+
   .view-product_container {
     padding: 2rem 0;
 
@@ -285,6 +307,7 @@
     }
 
     .view-product {
+      margin-top: 1rem;
       .product-details {
         .product-image {
           align-items: center;
@@ -296,11 +319,12 @@
             overflow-x: auto;
             overflow-y: hidden;
             padding: 0 1rem;
+            padding-bottom: 0.5rem;
 
             .image {
               height: 65px;
 
-              img{
+              img {
                 width: auto !important;
               }
             }
@@ -308,8 +332,7 @@
 
           .lg_img {
             width: 100%;
-            height: 350px;
-
+            height: 370px;
           }
         }
 

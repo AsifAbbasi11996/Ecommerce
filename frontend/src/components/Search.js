@@ -13,6 +13,7 @@ import { useWishlist } from '../context/WishlistContext'
 import { PiShoppingCartSimple } from 'react-icons/pi'
 import { truncateText } from '../utils/formatText'
 import { formatItemNameForUrl } from '../utils/formatItemName'
+import '../assets/styles/CategoryProduct.css'
 
 const Search = () => {
   const [results, setResults] = useState([]) // To store search results
@@ -90,8 +91,8 @@ const Search = () => {
   if (error) return <p>{error}</p>
 
   return (
-    <div className='category_product_container'>
-      <div className='category_product_header'>
+    <div className='search_product_container'>
+      <div className='search_product_header'>
         <div className='nav'>
           <Link to='/'>Home</Link>
           <p>/</p>
@@ -101,11 +102,11 @@ const Search = () => {
         </div>
       </div>
 
-      <div className='category_product_list'>
+      <div className='search_product_list'>
         {/* Loop through the search results and render each one */}
         {results.length > 0 ? (
           results.map(product => (
-            <div className='product_item' key={product._id}>
+            <div className='product' key={product._id}>
               <Link
                 to={`/v/${product._id}/${formatItemNameForUrl(
                   product.itemName

@@ -116,7 +116,7 @@ const CategoryProduct = () => {
       <div className='category_product_list'>
         {/* Loop through the items and render each one */}
         {products.map(product => (
-          <div className='product_item' key={product._id}>
+          <div className='product' key={product._id}>
             <Link
               to={`/v/${product._id}/${formatItemNameForUrl(product.itemName)}`}
               className='view-details'

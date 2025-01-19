@@ -14,13 +14,15 @@ import '../assets/styles/Navbar.css'
 import { getAllNavbar } from '../api/navbarApi'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+import { IoCloseOutline } from 'react-icons/io5'
 
 const Navbar = () => {
   const [navbar, setNavbar] = useState([])
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isShow, setIsShow] = useState(false)
-  const [screenWidth, setScreenWidth] = useState(window.innerWidth)
   const [searchTerm, setSearchTerm] = useState('')
+  const [isSearchbarVisible, setIsSearchbarVisible] = useState(false)
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth)
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -33,13 +35,11 @@ const Navbar = () => {
       }
     }
     fetchNavbar()
-  }, [])
 
-  const handleResize = () => {
-    setScreenWidth(window.innerWidth)
-  }
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth)
+    }
 
-  useEffect(() => {
     window.addEventListener('resize', handleResize)
     return () => {
       window.removeEventListener('resize', handleResize)
@@ -66,6 +66,7 @@ const Navbar = () => {
   const handleSearchSubmit = () => {
     if (searchTerm.trim()) {
       navigate(`/search?q=${searchTerm}`) // Navigate to search page with query
+      setIsSearchbarVisible(false) // Close the search bar after search
     }
   }
 
@@ -104,6 +105,15 @@ const Navbar = () => {
   // Check if user is logged in by the presence of token in localStorage
   const isLoggedIn = localStorage.getItem('token') !== null
 
+  // Function to toggle search bar visibility
+  const toggleSearchbar = () => {
+    setIsSearchbarVisible(!isSearchbarVisible) // Toggle visibility on smaller screens
+  }
+
+  const handleCloseSearchbar = () => {
+    setIsSearchbarVisible(false)
+  }
+
   return (
     <nav>
       <div className='hamburger' onClick={toggleMenu}>
@@ -133,16 +143,47 @@ const Navbar = () => {
       </div>
 
       <div className='right'>
-        <div className='searchbar'>
-          <input
-            type='text'
-            placeholder='What are you looking for?'
-            value={searchTerm}
-            onChange={handleSearchChange}
-            onKeyDown={handleKeyPress} // Listen for Enter key press
-          />
-          <CiSearch onClick={handleSearchSubmit} />
-        </div>
+        {/* Show the search bar only when windowWidth <= 946 and isSearchbarVisible is true */}
+        {windowWidth <= 946 && isSearchbarVisible && (
+          <div
+            className='searchbar'
+            style={{
+              backgroundColor: isSearchbarVisible ? '#f1f1f1' : 'transparent', // Change color when active
+              height: isSearchbarVisible ? '100vh' : 'auto', // Set height to 100% of the viewport when visible
+              position: 'absolute', // Make it occupy full screen width/height
+              top: 0, // Align at the top of the page
+              left: 0, // Align to the left edge
+              width: '100%', // Full width of the screen
+              zIndex: 1000 // Ensure it's above other content
+            }}
+          >
+            {/* Conditionally render a message when the search bar is visible */}
+            {isSearchbarVisible && (
+              <div className='search-message'>
+                <p>Search for products, categories, or brands...</p>
+                <button onClick={handleCloseSearchbar}>
+                  <IoCloseOutline />
+                </button>
+              </div>
+            )}
+
+            <input
+              type='text'
+              placeholder='What are you looking for?'
+              value={searchTerm}
+              onChange={handleSearchChange}
+              onKeyDown={handleKeyPress} // Listen for Enter key press
+            />
+            <CiSearch className='searchicon' onClick={handleSearchSubmit} />
+          </div>
+        )}
+
+        {/* Show search icon that toggles the search bar */}
+        {windowWidth <= 946 && (
+          <div className='search_icon' onClick={toggleSearchbar}>
+            <CiSearch />
+          </div>
+        )}
 
         <div className='wishlist' onClick={navigateToWishlist}>
           <CiHeart />

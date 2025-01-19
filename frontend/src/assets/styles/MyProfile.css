@@ -12,7 +12,7 @@
   .header {
     display: flex;
     justify-content: space-between;
-    align-items: end;
+    align-items: center;
 
     button {
       display: flex;
@@ -109,7 +109,7 @@
   p {
     margin-bottom: 2rem;
   }
-  
+
   a {
     text-decoration: none;
     color: #000;
@@ -117,5 +117,95 @@
 
   a:hover {
     text-decoration: underline;
+  }
+}
+
+@media only screen and (max-width: 1140px) {
+  .editprofile,
+  .address {
+    width: 700px;
+  }
+}
+
+@media only screen and (max-width: 1000px) {
+  .editprofile,
+  .address {
+    width: 600px;
+  }
+}
+
+@media only screen and (max-width: 871px) {
+  .editprofile,
+  .address {
+    width: 500px;
+    p {
+      font-size: 1rem;
+    }
+
+    label,
+    input {
+      font-size: 0.8rem;
+    }
+
+    button {
+      padding: 0.5rem 1rem;
+    }
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .editprofile,
+  .address {
+    width: 100%;
+
+    .header {
+      margin-top: 1rem;
+      p {
+        margin-bottom: 0;
+      }
+
+      button{
+        font-size: 0.7rem;
+        padding: 0.5rem;
+        
+      }
+    }
+
+    .address-details{
+      padding: 0.7rem 0;
+
+      p{
+        font-size: 0.9rem;
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 425px) {
+
+  .address{
+
+    .address-details{
+      p{
+        font-size: 0.7rem;
+        margin-bottom: 0.5rem;
+      }
+    }
+
+    form{
+      margin-top: 1rem;
+      label, input{
+        font-size: 0.7rem !important;
+      }
+
+      input{
+        margin-bottom: 0.5rem !important;
+      }
+
+      button{
+        font-size: 0.7rem !important;
+
+      }
+    }
   }
 }
