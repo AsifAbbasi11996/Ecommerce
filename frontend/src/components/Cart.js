@@ -9,6 +9,7 @@ import Loader from './Loader'
 import { formatImageUrl } from '../utils/formatImage'
 import { FiShoppingCart } from 'react-icons/fi'
 import { formatItemNameForUrl } from '../utils/formatItemName'
+import { truncateText } from '../utils/formatText'
 
 const Cart = () => {
   useEffect(() => {
@@ -197,7 +198,7 @@ const Cart = () => {
                       className='view-details'
                       key={item._id}
                     >
-                      <p className='item_name'>{item.item.itemName}</p>
+                      <p className='item_name'>{truncateText(item.item.itemName)}</p>
                     </Link>
                     <p className='item_price'>
                       {formatPrice(item.item.sp)}

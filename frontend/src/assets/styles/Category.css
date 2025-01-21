@@ -46,6 +46,26 @@
   }
 }
 
+@media only screen and (max-width: 1024px) {
+  .category_container {
+    .category_header {
+      h2 {
+        font-size: 24px;
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .category_container {
+    .category_header {
+      h2 {
+        font-size: 1.2rem;
+      }
+    }
+  }
+}
+
 @media only screen and (max-width: 663px) {
   .category_container {
     .category_header {
@@ -53,9 +73,7 @@
 
       p {
         font-size: 0.8rem;
-      }
-      h2 {
-        font-size: 1.2rem;
+        margin-bottom: 5px;
       }
     }
 
@@ -105,9 +123,8 @@
 @media only screen and (max-width: 365px) {
   .category_container {
     .categories {
-
-      .category{
-        .category-image{
+      .category {
+        .category-image {
           width: 85px !important;
           height: 90px !important;
         }

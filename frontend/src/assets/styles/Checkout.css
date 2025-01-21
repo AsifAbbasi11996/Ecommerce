@@ -46,7 +46,7 @@
         cursor: pointer;
       }
 
-      .edit-btn:hover{
+      .edit-btn:hover {
         background: #375326;
       }
     }
@@ -74,14 +74,12 @@
   }
 
   .billing-details {
-
-    .address-details{
-
-      p{
+    .address-details {
+      p {
         margin-bottom: 0.5rem;
       }
 
-      .name{
+      .name {
         font-weight: 550;
       }
     }
@@ -101,7 +99,6 @@
     }
 
     .btns {
-      
       .cancel-btn {
         cursor: pointer;
         border: none;
@@ -173,7 +170,8 @@
 
   .payment-options {
     .payment-method label {
-      display: block;
+      display: flex;
+      align-items: center;
       margin: 5px 0;
       cursor: pointer;
 
@@ -292,6 +290,23 @@
 
       .checkout-row {
         .billing-details {
+          .header {
+            h2 {
+              font-size: 1.2rem;
+            }
+
+            .edit-btn {
+              font-size: 0.65rem;
+              padding: 0.5rem;
+            }
+          }
+
+          .address-details {
+            p {
+              font-size: 0.8rem;
+            }
+          }
+
           form {
             label,
             input {
@@ -320,6 +335,7 @@
 
 @media only screen and (max-width: 633px) {
   .checkout-container {
+    padding: 1rem;
     .nav {
       a,
       p {
@@ -327,6 +343,7 @@
       }
     }
     .checkout {
+      padding: 1rem 0;
       h2 {
         font-size: 1rem;
       }
@@ -345,6 +362,20 @@
                 height: 20px;
               }
             }
+          }
+        }
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 375px) {
+  .checkout-container {
+    .checkout {
+      .billing-details {
+        .header {
+          h2 {
+            font-size: 1rem !important;
           }
         }
       }

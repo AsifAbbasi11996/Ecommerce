@@ -1,4 +1,4 @@
-import { API_URL } from "./baseUrl"
+const url = 'http://localhost:5000'
 
 export const formatImageUrl = imagePath => {
   if (!imagePath || typeof imagePath !== 'string') return '' // Return empty if no valid imagePath
@@ -7,7 +7,7 @@ export const formatImageUrl = imagePath => {
   const formattedPath = imagePath.replace(/\\/g, '/')
 
   // Assuming your server is serving static files from the "uploads" directory
-  const baseUrl = `${API_URL}/`
+  const baseUrl = `${url}/`
 
   return baseUrl + formattedPath // Return the full URL path to the image
 }

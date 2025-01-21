@@ -159,9 +159,34 @@
   }
 }
 
+@media only screen and (max-width: 1024px) {
+  .best_selling_products_container {
+    .best_selling_products_title {
+      .best_selling_products_header {
+        h2 {
+          font-size: 24px;
+        }
+      }
+    }
+  }
+}
+
+
 @media only screen and (max-width: 768px) {
   .related-products_container {
     padding: 2.5rem 0;
+  }
+
+  .best_selling_products_container{
+    .best_selling_products_title {
+
+      .best_selling_products_header{
+
+        h2{
+          font-size: 1.2rem;
+        }
+      }
+    }
   }
 }
 
@@ -172,10 +197,7 @@
       .best_selling_products_header {
         p {
           font-size: 0.8rem;
-        }
-
-        h2 {
-          font-size: 1.2rem;
+          margin-bottom: 5px;
         }
       }
 

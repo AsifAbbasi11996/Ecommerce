@@ -1,7 +1,6 @@
 import axios from 'axios'
 import { API_URL } from '../utils/baseUrl'
 
-
 // Get all orders
 export const getAllOrders = async () => {
   try {

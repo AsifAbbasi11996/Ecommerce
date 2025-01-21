@@ -71,9 +71,13 @@ export const deleteImageById = async (id, imagePath) => {
 // Function to add images to an item
 export const addImagesToItem = async (id, formData) => {
   try {
-    const response = await axios.post(`${API_URL}/item/add/${id}/images`, formData, {
-      headers: { 'Content-Type': 'multipart/form-data' }
-    })
+    const response = await axios.post(
+      `${API_URL}/item/add/${id}/images`,
+      formData,
+      {
+        headers: { 'Content-Type': 'multipart/form-data' }
+      }
+    )
     return response.data
   } catch (error) {
     console.error('Error adding images to item:', error.message)
@@ -84,7 +88,9 @@ export const addImagesToItem = async (id, formData) => {
 // Function to fetch related products by category
 export const getRelatedProductsByCategory = async category => {
   try {
-    const response = await axios.get(`${API_URL}/item/items/related/${category}`)
+    const response = await axios.get(
+      `${API_URL}/item/items/related/${category}`
+    )
     return response.data
   } catch (error) {
     console.error('Error fetching related products:', error.message)

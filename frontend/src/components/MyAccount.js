@@ -8,6 +8,7 @@ import MyCancelOrders from './MyCancelOrders'
 import '../assets/styles/MyAccount.css'
 import { BiUser } from 'react-icons/bi'
 import { IoCloseOutline } from 'react-icons/io5'
+import { MdKeyboardArrowRight } from 'react-icons/md'
 
 const MyAccount = () => {
   const location = useLocation() // Get the current location (URL)
@@ -33,6 +34,7 @@ const MyAccount = () => {
   // Function to handle sidebar clicks
   const handleSidebarClick = section => {
     navigate(`/myaccount/${section}`)
+    closeAccount()
   }
 
   // Function to apply active class
@@ -58,7 +60,7 @@ const MyAccount = () => {
 
       <div className='your_account' onClick={openMyAccount}>
         <button>
-          <BiUser /> My Account
+          <BiUser /> My Account <MdKeyboardArrowRight/>
         </button>
       </div>
 

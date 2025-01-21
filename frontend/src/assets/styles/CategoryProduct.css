@@ -140,7 +140,8 @@
   .search_product_container {
     padding: 2rem 1.5rem;
 
-    .search_product_list, .category_product_list {
+    .search_product_list,
+    .category_product_list {
       gap: 0.8rem 0.2rem;
     }
   }
@@ -275,45 +276,28 @@
               height: 100px !important;
             }
           }
-
-          .card-content {
-            .price {
-              .sp {
-                font-size: 0.8rem !important;
-              }
-            }
-
-            .rating {
-              svg {
-                height: 9px !important;
-                width: 9px !important;
-              }
-            }
-          }
         }
       }
     }
   }
 }
 
-@media only screen and (max-width: 330px){
-.category_product_container,.search_product_container{
+@media only screen and (max-width: 330px) {
+  .category_product_container,
+  .search_product_container {
+    .category_product_list,
+    .search_product_list {
+      .product {
+        width: 150px !important;
 
-  .category_product_list, .search_product_list{
-
-    .product{
-      width: 150px !important;
-
-      .card{
-        .card-product{
-
-          .card-image{
-            width: 130px !important;
-            
+        .card {
+          .card-product {
+            .card-image {
+              width: 130px !important;
+            }
           }
         }
       }
     }
   }
-}
 }

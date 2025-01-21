@@ -207,7 +207,7 @@ const MyProfile = () => {
   return (
     <>
       <form className='editprofile' onSubmit={handleSubmit}>
-        <p>Edit Your Profile</p>
+        <p className='header_text'>Edit Your Profile</p>
 
         {/* Display any errors */}
         {error && <p className='error'>{error}</p>}

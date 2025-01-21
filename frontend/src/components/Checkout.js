@@ -16,6 +16,7 @@ import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css' // Import toast styles
 import { BsPencilFill } from 'react-icons/bs'
 import { createOrder } from '../api/orderApi'
+import { truncateText } from '../utils/formatText'
 
 const Checkout = () => {
   const location = useLocation()
@@ -198,10 +199,6 @@ const Checkout = () => {
       <div className='nav'>
         <Link to='/'>Home</Link>
         <p>/</p>
-        <Link>Product</Link>
-        <p>/</p>
-        <Link>View Product</Link>
-        <p>/</p>
         <Link>Checkout</Link>
       </div>
 
@@ -372,7 +369,7 @@ const Checkout = () => {
                         src={formatImageUrl(item.selectedImage)}
                         alt={item.item.itemName}
                       />
-                      <p className='name'>{item.item.itemName}</p>
+                      <p className='name'>{truncateText(item.item.itemName)}</p>
                       <p>x({item.quantity})</p>
                     </div>
                     <div className='flex2'>

@@ -143,21 +143,9 @@ const Navbar = () => {
       </div>
 
       <div className='right'>
-        {/* Show the search bar only when windowWidth <= 946 and isSearchbarVisible is true */}
-        {windowWidth <= 946 && isSearchbarVisible && (
-          <div
-            className='searchbar'
-            style={{
-              backgroundColor: isSearchbarVisible ? '#f1f1f1' : 'transparent', // Change color when active
-              height: isSearchbarVisible ? '100vh' : 'auto', // Set height to 100% of the viewport when visible
-              position: 'absolute', // Make it occupy full screen width/height
-              top: 0, // Align at the top of the page
-              left: 0, // Align to the left edge
-              width: '100%', // Full width of the screen
-              zIndex: 1000 // Ensure it's above other content
-            }}
-          >
-            {/* Conditionally render a message when the search bar is visible */}
+        {/* Show the search bar when screen width is greater than 946px */}
+        {windowWidth > 946 && (
+          <div className='searchbar'>
             {isSearchbarVisible && (
               <div className='search-message'>
                 <p>Search for products, categories, or brands...</p>
@@ -178,10 +166,41 @@ const Navbar = () => {
           </div>
         )}
 
-        {/* Show search icon that toggles the search bar */}
-        {windowWidth <= 946 && (
+        {/* Show the search icon when screen width is <= 946px */}
+        {windowWidth <= 946 && !isSearchbarVisible && (
           <div className='search_icon' onClick={toggleSearchbar}>
             <CiSearch />
+          </div>
+        )}
+
+        {/* Show the full-screen search bar on smaller screens */}
+        {windowWidth <= 946 && isSearchbarVisible && (
+          <div
+            className='searchbar'
+            style={{
+              backgroundColor: '#f1f1f1', // Color when active
+              height: '100vh', // Full screen height
+              position: 'absolute', // Position it fixed on the screen
+              top: 0,
+              left: 0,
+              width: '100%',
+              zIndex: 1000
+            }}
+          >
+            <div className='search-message'>
+              <p>Search for products, categories, or brands...</p>
+              <button onClick={handleCloseSearchbar}>
+                <IoCloseOutline />
+              </button>
+            </div>
+            <input
+              type='text'
+              placeholder='What are you looking for?'
+              value={searchTerm}
+              onChange={handleSearchChange}
+              onKeyDown={handleKeyPress}
+            />
+            <CiSearch className='searchicon' onClick={handleSearchSubmit} />
           </div>
         )}
 

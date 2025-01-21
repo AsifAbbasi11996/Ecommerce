@@ -144,7 +144,7 @@ const ViewOrders = () => {
                     <div key={item.itemId} className='order'>
                       <img
                         src={formatImageUrl(item.selectedImage)}
-                        alt={item.itemName}
+                        alt='image'
                         className='order-image'
                       />
                       <span>{truncateText(item.itemName)}</span>

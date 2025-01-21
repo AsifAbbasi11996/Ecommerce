@@ -131,7 +131,7 @@ const EditItem = () => {
         <p>Items</p>
         <MdKeyboardDoubleArrowRight />
         <p>
-          <Link to='/viewitems'>View Items</Link>
+          <Link to='/view-items'>View Items</Link>
         </p>
         <MdKeyboardDoubleArrowRight />
         <p>Edit Item</p>
