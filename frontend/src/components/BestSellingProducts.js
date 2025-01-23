@@ -120,10 +120,18 @@ const BestSellingProducts = () => {
                   <p className='discount'>-{product.discount.percentage}%</p>
                   <div className='card-image'>
                     {/* Use the first image of the first color */}
-                    <img
-                      src={formatImageUrl(product.images[0])}
-                      alt={product.itemName}
-                    />
+                    {product.images.length > 0 && (
+                      <>
+                        {console.log(
+                          'Formatted Image URL:',
+                          formatImageUrl(product.images[0])
+                        )}
+                        <img
+                          src={formatImageUrl(product.images[0])}
+                          alt={product.itemName}
+                        />
+                      </>
+                    )}
                   </div>
                 </div>
                 <div className='card-content'>

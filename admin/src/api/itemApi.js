@@ -107,3 +107,14 @@ export const getTotalItems = async () => {
     console.error('Error fetching total items ', error)
   }
 }
+
+
+export const deleteItemById = async (id) => {
+  try {
+    const response = await axios.delete(`${API_URL}/item/del/${id}`)
+    return response.data
+  } catch (error) {
+    console.error(`Error deleting user with ID ${id}:`, error)
+    throw error
+  }
+}

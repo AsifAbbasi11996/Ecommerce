@@ -160,8 +160,6 @@ const ViewProduct = () => {
       <div className='nav'>
         <Link to='/'>Home</Link>
         <p>/</p>
-        <Link>Product</Link>
-        <p>/</p>
         <Link>View Product</Link>
       </div>
 

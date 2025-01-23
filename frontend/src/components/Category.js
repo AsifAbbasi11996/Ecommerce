@@ -37,6 +37,10 @@ const Category = () => {
                 className='category-link'
               >
                 <div className='category'>
+                  {console.log(
+                    'Formatted Image URL:',
+                    formatImageUrl(category.image)
+                  )}
                   <img
                     src={formatImageUrl(category.image)} // Assuming the images are served from the backend
                     alt={category.categoryName}

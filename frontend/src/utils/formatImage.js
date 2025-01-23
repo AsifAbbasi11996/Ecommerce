@@ -1,13 +1,11 @@
-const url = 'http://localhost:5000'
+import { API_URL } from './baseUrl'
 
 export const formatImageUrl = imagePath => {
-  if (!imagePath || typeof imagePath !== 'string') return '' // Return empty if no valid imagePath
+  if (!imagePath || typeof imagePath !== 'string') return '' // Return empty string if imagePath is invalid
 
-  // Normalize the backslashes to forward slashes for URL compatibility
-  const formattedPath = imagePath.replace(/\\/g, '/')
+  // Normalize backslashes to forward slashes for URL compatibility
+  const formattedPath = imagePath.replace(/\\/g, '/') // For Windows-style paths
 
-  // Assuming your server is serving static files from the "uploads" directory
-  const baseUrl = `${url}/`
-
-  return baseUrl + formattedPath // Return the full URL path to the image
+  // Return the full URL path to the image
+  return `${API_URL}/${formattedPath}`
 }

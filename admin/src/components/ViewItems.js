@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { getAllItems } from '../api/itemApi.js' // Adjust the import based on your file structure
+import { deleteImageById, deleteItemById, getAllItems } from '../api/itemApi.js' // Adjust the import based on your file structure
 import { useTable } from 'react-table'
 import { useTransition, animated } from 'react-spring'
 import { ToastContainer, toast } from 'react-toastify'
@@ -18,7 +18,7 @@ import { formatPrice } from '../utils/formatPrice'
 import { truncateText } from '../utils/formatText.js'
 
 const ViewItems = () => {
-  const [items, setitems] = useState([])
+  const [items, setItems] = useState([])
   const [loading, setLoading] = useState(true)
   const [searchQuery, setSearchQuery] = useState('')
   const [categoryFilter, setCategoryFilter] = useState('')
@@ -34,7 +34,8 @@ const ViewItems = () => {
     const fetchitems = async () => {
       try {
         const data = await getAllItems()
-        setitems(data)
+        setItems(data)
+        console.log(data)
         setLoading(false)
 
         // Extract categories and brands dynamically
@@ -53,6 +54,14 @@ const ViewItems = () => {
 
     fetchitems()
   }, [])
+
+  const handleDeleteItem = async id => {
+    try {
+      const response = await deleteItemById(id)
+    } catch (error) {
+      console.log('Error deleting item', error)
+    }
+  }
 
   // Table columns configuration
   const columns = React.useMemo(
@@ -173,10 +182,7 @@ const ViewItems = () => {
                 <MdEdit />
               </Link>
 
-              <Link
-                to={`/delete-item/${row.original._id}`}
-                className='btn-delete'
-              >
+              <Link onClick={handleDeleteItem} className='btn-delete'>
                 <MdDelete />
               </Link>
             </div>
