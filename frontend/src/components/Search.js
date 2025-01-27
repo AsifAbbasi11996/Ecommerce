@@ -16,6 +16,10 @@ import { formatItemNameForUrl } from '../utils/formatItemName'
 import '../assets/styles/CategoryProduct.css'
 
 const Search = () => {
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [])
+  
   const [results, setResults] = useState([]) // To store search results
   const [loading, setLoading] = useState(false) // For loading state
   const [error, setError] = useState(null) // For handling errors

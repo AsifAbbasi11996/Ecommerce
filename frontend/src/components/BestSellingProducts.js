@@ -122,10 +122,6 @@ const BestSellingProducts = () => {
                     {/* Use the first image of the first color */}
                     {product.images.length > 0 && (
                       <>
-                        {console.log(
-                          'Formatted Image URL:',
-                          formatImageUrl(product.images[0])
-                        )}
                         <img
                           src={formatImageUrl(product.images[0])}
                           alt={product.itemName}

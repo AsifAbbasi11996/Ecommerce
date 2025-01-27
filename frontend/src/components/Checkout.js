@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { formatPrice } from '../utils/formatPrice'
 import '../assets/styles/Checkout.css'
 import { formatImageUrl } from '../utils/formatImage'
@@ -17,10 +17,10 @@ import 'react-toastify/dist/ReactToastify.css' // Import toast styles
 import { BsPencilFill } from 'react-icons/bs'
 import { createOrder } from '../api/orderApi'
 import { truncateText } from '../utils/formatText'
+import RazorPay from './RazorPay'
 
 const Checkout = () => {
   const location = useLocation()
-  const navigate = useNavigate()
 
   // Retrieve data passed from either Cart.js or ViewProduct.js
   const cartItems = location.state?.cartItems || []
@@ -137,6 +137,28 @@ const Checkout = () => {
     }
   }
 
+  // Prepare order details outside handlePlaceOrder function
+  const orderDetails =
+    cartItems.length > 0
+      ? cartItems.map(item => ({
+          itemId: item.item._id, // Product ID
+          itemName: item.item.itemName,
+          price: item.item.sp,
+          quantity: item.quantity,
+          selectedColor: item.selectedColor,
+          selectedImage: formatImageUrl(item.selectedImage)
+        }))
+      : [
+          {
+            itemId: product._id, // Single product ID
+            itemName: product.itemName,
+            price: product.sp,
+            quantity,
+            selectedColor,
+            selectedImage: formatImageUrl(selectedImage)
+          }
+        ]
+
   // Handle form submission
   const handlePlaceOrder = async () => {
     // Calculate totalQuantity
@@ -144,28 +166,6 @@ const Checkout = () => {
       cartItems.length > 0
         ? cartItems.reduce((total, item) => total + item.quantity, 0) // Sum up the quantity of each item in the cart
         : quantity // Single product case, just use the quantity
-
-    // Prepare order details
-    const orderDetails =
-      cartItems.length > 0
-        ? cartItems.map(item => ({
-            itemId: item.item._id, // Product ID
-            itemName: item.item.itemName,
-            price: item.item.sp,
-            quantity: item.quantity,
-            selectedColor: item.selectedColor,
-            selectedImage: formatImageUrl(item.selectedImage)
-          }))
-        : [
-            {
-              itemId: product._id, // Single product ID
-              itemName: product.itemName,
-              price: product.sp,
-              quantity,
-              selectedColor,
-              selectedImage: formatImageUrl(selectedImage)
-            }
-          ]
 
     const orderPayload = {
       userId,
@@ -186,7 +186,6 @@ const Checkout = () => {
       if (response?.data) {
         toast.success('Order Placed Successfully')
         console.log('Order placed:', response.data)
-        // navigate('/order-confirmation') // Navigate to order confirmation page
       }
     } catch (error) {
       console.error('Failed to place order:', error)
@@ -422,7 +421,6 @@ const Checkout = () => {
                 <span>{formatPrice(total)}</span>
               </p>
             </div>
-
             {/* Payment Options */}
             <div className='payment-options'>
               <div className='payment-method'>
@@ -454,7 +452,6 @@ const Checkout = () => {
                 </div>
               </div>
             </div>
-
             {/* Place Order Button */}
             <button onClick={handlePlaceOrder} className='place-order-btn'>
               Place Order
