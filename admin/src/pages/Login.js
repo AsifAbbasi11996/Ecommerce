@@ -29,12 +29,13 @@ const Login = () => {
       // Call the loginUser function and pass the user input data
       const response = await loginUser(formData)
 
-      const { token, userId, username, name, email } = response
+      const { token, userId, username, name, email, image } = response
       localStorage.setItem('token', token)
       localStorage.setItem('userId', userId)
       localStorage.setItem('username', username)
       localStorage.setItem('name', name)
       localStorage.setItem('email', email)
+      localStorage.setItem('image', image)
 
       // If login is successful, show success toast
       toast.success('Login successful!', {

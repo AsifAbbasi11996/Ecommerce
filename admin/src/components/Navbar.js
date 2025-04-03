@@ -12,6 +12,7 @@ const Navbar = () => {
   const navigate = useNavigate() // Hook to navigate programmatically
 
   const username = localStorage.getItem('username')
+  const userImage = localStorage.getItem('image')
 
   // Toggle dropdown visibility
   const toggleDropdown = () => {
@@ -25,6 +26,7 @@ const Navbar = () => {
     localStorage.removeItem('username')
     localStorage.removeItem('name')
     localStorage.removeItem('email')
+    localStorage.removeItem('image')
 
     // Show toast for successful logout (optional)
     toast.success('Logged out successfully!', {
@@ -65,7 +67,7 @@ const Navbar = () => {
         <div className='navbar-container'>
           {/* Logo Section */}
           <div className='logo'>
-            <span className='logo-text'>Exclusive</span> {/* Branding Text */}
+            <span className='logo-text'>Ecommerce</span> {/* Branding Text */}
           </div>
 
           {/* Right Side - User Profile and Notifications */}
@@ -79,7 +81,16 @@ const Navbar = () => {
 
             {/* Profile Section with Dropdown */}
             <div className='profile' onClick={toggleDropdown} ref={profileRef}>
-              <FaUserCircle className='profile-icon' />
+              {userImage ? (
+                <img
+                  src={userImage} // This will use the image if available
+                  alt='User Profile'
+                  className='profile-image'
+                />
+              ) : (
+                <FaUserCircle className='profile-icon' /> // This will fallback to the icon if no image
+              )}
+
               {show && (
                 <div className='profile-dropdown' ref={dropdownRef}>
                   <ul>

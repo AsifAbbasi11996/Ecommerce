@@ -52,6 +52,11 @@
   column-gap: 1rem;
   position: relative;
   cursor: pointer;
+
+  .profile-image{
+    width: 40px;
+    height: 40px;
+  }
 }
 
 .profile-icon {

@@ -6,6 +6,7 @@ import '../assets/styles/ViewDetails.css'
 import { formatPrice } from '../utils/formatPrice'
 import { getItemById } from '../api/itemApi'
 import { formatDate } from '../utils/formatDate'
+import UpdateBestSeller from '../components/UpdateBestSeller'
 
 const ItemDetails = () => {
   const { id } = useParams() // Extract item ID from URL
@@ -99,6 +100,16 @@ const ItemDetails = () => {
                 </p>
               </div>
             )}
+
+            <p>
+              <strong>Status :</strong> {item.status}
+            </p>
+            <p>
+              <strong>Stock :</strong> {item.stock}
+            </p>
+            <p>
+              <strong>Best Seller :</strong> {item.bestseller ? 'Yes' : 'No'}
+            </p>
           </div>
         </div>
         <div className='images'>
@@ -107,6 +118,8 @@ const ItemDetails = () => {
           })}
         </div>
       </div>
+
+      <UpdateBestSeller itemId={item._id} />
     </div>
   )
 }

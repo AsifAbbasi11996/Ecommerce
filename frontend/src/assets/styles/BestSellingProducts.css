@@ -186,6 +186,12 @@
           font-size: 1.2rem;
         }
       }
+
+      .btn{
+        button{
+          padding: 0.5rem 1rem;
+        }
+      }
     }
   }
 }

@@ -17,7 +17,7 @@ import 'react-toastify/dist/ReactToastify.css' // Import toast styles
 import { BsPencilFill } from 'react-icons/bs'
 import { createOrder } from '../api/orderApi'
 import { truncateText } from '../utils/formatText'
-import RazorPay from './RazorPay'
+import Razorpay from './RazorPay'
 
 const Checkout = () => {
   const location = useLocation()
@@ -40,6 +40,7 @@ const Checkout = () => {
   const [paymentMethod, setPaymentMethod] = useState('COD') // Default to COD
   const [addressId, setAddressId] = useState(null)
   const [isEditing, setIsEditing] = useState(false)
+  const [isPaymentInProgress, setIsPaymentInProgress] = useState(false)
 
   // Function to calculate discount for each product based on its discount
   const calculateDiscount = (sp, discountPercentage) => {
@@ -182,16 +183,94 @@ const Checkout = () => {
     }
 
     try {
-      const response = await createOrder(orderPayload)
-      if (response?.data) {
+      const orderResponse = await createOrder(orderPayload)
+      if (orderResponse?.data) {
+        // If order is successfully created, proceed with Razorpay payment
+        const razorpayOrderResponse = await fetch(
+          'http://localhost:5000/api/create-order',
+          {
+            method: 'POST',
+            body: JSON.stringify({ totalAmount: total }), // Send total to backend
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          }
+        )
+        const razorpayData = await razorpayOrderResponse.json()
+
         toast.success('Order Placed Successfully')
-        console.log('Order placed:', response.data)
+
+        setIsPaymentInProgress(true) // Show payment UI
+        return (
+          <Razorpay
+            orderDetails={razorpayData}
+            total={total}
+            onSuccess={handlePaymentSuccess}
+            onFailure={handlePaymentFailure}
+          />
+        )
       }
     } catch (error) {
       console.error('Failed to place order:', error)
       toast.error('Error placing order')
     }
   }
+
+  // Handle successful payment
+  const handlePaymentSuccess = async paymentResponse => {
+    try {
+      // Save payment data and order details to your database
+      console.log('Payment successful:', paymentResponse)
+
+      // Call your backend to store payment details
+      const updateOrderResponse = await fetch(
+        'http://localhost:5000/api/update-order',
+        {
+          method: 'POST',
+          body: JSON.stringify({
+            orderId: paymentResponse.orderId,
+            paymentId: paymentResponse.paymentId,
+            paymentStatus: 'PAID',
+            paymentDetails: paymentResponse
+          }),
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        }
+      )
+      const updateData = await updateOrderResponse.json()
+
+      if (updateData?.success) {
+        toast.success('Payment Successful')
+      } else {
+        toast.error('Failed to update payment status')
+      }
+    } catch (error) {
+      console.error('Error during payment success handling:', error)
+      toast.error('Error saving payment details')
+    }
+  }
+
+  // Handle failed payment
+  const handlePaymentFailure = error => {
+    console.error('Payment failed:', error)
+    toast.error('Payment Failed')
+  }
+
+  // // Handle successful payment
+  // const handlePaymentSuccess = paymentResponse => {
+  //   // Save payment data and order details to your database
+  //   console.log('Payment successful:', paymentResponse)
+  //   // You can call your backend to store payment details
+  //   // Then update order status in the backend (e.g., "paid")
+  //   toast.success('Payment Successful')
+  // }
+
+  // // Handle failed payment
+  // const handlePaymentFailure = error => {
+  //   console.error('Payment failed:', error)
+  //   toast.error('Payment Failed')
+  // }
 
   return (
     <div className='checkout-container'>

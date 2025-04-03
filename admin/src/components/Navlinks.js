@@ -164,6 +164,7 @@ const Navlinks = () => {
           >
             <Input />
           </Form.Item>
+          <p className='slash'>Please put "/" first while adding the link</p>
           <Form.Item
             label='Link'
             name='link'

@@ -135,6 +135,11 @@ const ViewProduct = () => {
   }
 
   const handleBuyNow = () => {
+    if (!userId) {
+      toast.error('Please log in to buy.')
+      return
+    }
+
     // Check if the product has color options, and if so, whether a color is selected
     if (product.color && product.color.length > 0 && !selectedColor) {
       alert('Please select a color before proceeding to buy') // Alert if no color is selected
@@ -168,7 +173,7 @@ const ViewProduct = () => {
           <div className='product-image'>
             <div className='sm_img'>
               {product.images.map((image, index) => (
-                <div className='image' key={index} >
+                <div className='image' key={index}>
                   <img
                     src={formatImageUrl(image)} // Use the formatImageUrl to ensure the correct path
                     alt={`${product.itemName} - Image ${index + 1}`} // Add an appropriate alt text for each image

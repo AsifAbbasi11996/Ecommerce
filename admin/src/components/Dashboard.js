@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom'
 import { totalUsers } from '../api/userApi'
 import { getTotalItems } from '../api/itemApi'
 import {
+  getAllCanceledOrders,
   getAllDeliveredOrders,
   getAllOrderPlacedOrders,
   getTotalOrders,
@@ -18,17 +19,16 @@ const Dashboard = () => {
   const navigate = useNavigate()
   const [totalusers, setTotalUsers] = useState([])
   const [totalItems, setTotalItems] = useState([])
-  const [totalorders, setTotalOrders] = useState([])
-  const [totalsales, setTotalSales] = useState([])
   const [totalOrderPlacedCount, setTotalOrderPlacedCount] = useState([])
+  const [totalCanceledCount, setTotalCanceledCount] = useState([])
   const [totalDeliveredCount, setTotalDeliveredCount] = useState([])
 
   const [dropdownOpen, setDropdownOpen] = useState({
     totalUsers: false,
     totalSales: false,
     orderplacedOrders: false,
-    deliveredOrders: false,
-    totalOrders: false
+    canceledOrders: false,
+    deliveredOrders: false
   })
 
   useEffect(() => {
@@ -52,17 +52,9 @@ const Dashboard = () => {
 
     const FetchTotalSales = async () => {
       try {
-        const response = await getTotalSales()
-        setTotalSales(response)
-      } catch (error) {
-        console.log(error)
-      }
-    }
-
-    const FetchTotalOrders = async () => {
-      try {
-        const response = await getTotalOrders()
-        setTotalOrders(response)
+        const response = await getAllDeliveredOrders()
+        setTotalDeliveredCount(response)
+        console.log(response)
       } catch (error) {
         console.log(error)
       }
@@ -72,6 +64,15 @@ const Dashboard = () => {
       try {
         const response = await getAllOrderPlacedOrders()
         setTotalOrderPlacedCount(response)
+      } catch (error) {
+        console.log(error)
+      }
+    }
+
+    const FetchTotalCanceledCount = async () => {
+      try {
+        const response = await getAllCanceledOrders()
+        setTotalCanceledCount(response)
       } catch (error) {
         console.log(error)
       }
@@ -89,8 +90,8 @@ const Dashboard = () => {
     FetchTotalUser()
     FetchTotalItems()
     FetchTotalSales()
-    FetchTotalOrders()
     FetchTotalOrderPlacedCount()
+    FetchTotalCanceledCount()
     FetchTotalDeliveredCount()
   }, [])
 
@@ -124,8 +125,8 @@ const Dashboard = () => {
     setDropdownOpen({
       totalUsers: false,
       totalSales: false,
-      pendingOrders: false,
-      completedOrders: false,
+      orderplacedOrders: false,
+      canceledOrders: false,
       totalOrders: false
     })
   }
@@ -135,7 +136,7 @@ const Dashboard = () => {
   }
 
   return (
-    <div className='main_dashboard'>
+    <div className='dashboard'>
       <div className='head'>
         <p>Home</p>
         <MdKeyboardDoubleArrowRight />
@@ -207,7 +208,7 @@ const Dashboard = () => {
               <div className='head'>
                 <h4>
                   <span>total sales</span>
-                  {formatPrice(totalsales.totalSales)}
+                  {formatPrice(totalDeliveredCount.totalSales)}
                 </h4>
                 <div
                   className='icon'
@@ -282,26 +283,26 @@ const Dashboard = () => {
             )}
           </div>
 
-          {/* Delivered Orders Card */}
+          {/* Canceled Orders Card */}
           <div
             className='grid-item'
-            onClick={() => handleNavigate('/delivered-orders')}
+            onClick={() => handleNavigate('/canceled-orders')}
           >
             <div className='card green'>
               <div className='head'>
                 <h4>
-                  <span>Delivered orders</span>
-                  {totalDeliveredCount.count}
+                  <span>Canceled orders</span>
+                  {totalCanceledCount.count}
                 </h4>
                 <div
                   className='icon'
-                  onClick={() => toggleDropdown('deliveredOrders')}
+                  onClick={() => toggleDropdown('canceledOrders')}
                 >
                   <PiDotsThreeOutlineVerticalFill />
                 </div>
               </div>
             </div>
-            {dropdownOpen.deliveredOrders && (
+            {dropdownOpen.canceledOrders && (
               <div className='dropdown'>
                 <ul>
                   <li onClick={() => handleOptionClick('Today')}>
@@ -324,26 +325,26 @@ const Dashboard = () => {
             )}
           </div>
 
-          {/* Total Orders Card */}
+          {/* Delivered Orders Card */}
           <div
             className='grid-item'
-            onClick={() => handleNavigate('/view-orders')}
+            onClick={() => handleNavigate('/delivered-orders')}
           >
             <div className='card purple'>
               <div className='head'>
                 <h4>
-                  <span>total orders</span>
-                  {totalorders.totalOrders}
+                  <span>delivered orders</span>
+                  {totalDeliveredCount.count}
                 </h4>
                 <div
                   className='icon'
-                  onClick={() => toggleDropdown('totalOrders')}
+                  onClick={() => toggleDropdown('deliveredOrders')}
                 >
                   <PiDotsThreeOutlineVerticalFill />
                 </div>
               </div>
             </div>
-            {dropdownOpen.totalOrders && (
+            {dropdownOpen.deliveredOrders && (
               <div className='dropdown'>
                 <ul>
                   <li onClick={() => handleOptionClick('Today')}>

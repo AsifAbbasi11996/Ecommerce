@@ -108,13 +108,42 @@ export const getTotalItems = async () => {
   }
 }
 
-
-export const deleteItemById = async (id) => {
+export const deleteItemById = async id => {
   try {
     const response = await axios.delete(`${API_URL}/item/del/${id}`)
     return response.data
   } catch (error) {
     console.error(`Error deleting user with ID ${id}:`, error)
+    throw error
+  }
+}
+
+// Function to update the bestseller status of an item
+export const updateBestsellerStatus = async (id, bestsellerStatus) => {
+  try {
+    // Create a new FormData instance
+    const formData = new FormData();
+    formData.append('bestseller', bestsellerStatus); // Append the bestseller status
+
+    const response = await axios.put(
+      `${API_URL}/item/${id}/bestseller`,
+      formData, // Send form data
+      { headers: { 'Content-Type': 'multipart/form-data' } } // Ensure the correct content type for form data
+    );
+    return response.data;
+  } catch (error) {
+    console.error('Error updating bestseller status:', error);
+    throw error;
+  }
+};
+
+// Function to get all bestseller items
+export const getBestsellerItems = async () => {
+  try {
+    const response = await axios.get(`${API_URL}/item/bestsellers`)
+    return response.data
+  } catch (error) {
+    console.error('Error fetching bestseller items:', error)
     throw error
   }
 }

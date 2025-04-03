@@ -143,7 +143,8 @@ const ViewOrders = () => {
                   {order.orderDetails.map(item => (
                     <div key={item.itemId} className='order'>
                       <img
-                        src={formatImageUrl(item.selectedImage)}
+                        // src={formatImageUrl(item.selectedImage)}
+                        src={item.selectedImage}
                         alt='image'
                         className='order-image'
                       />

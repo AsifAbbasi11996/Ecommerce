@@ -1,0 +1,108 @@
+.top_selling_products_container {
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+  h2{
+    color: #424242;
+    font-weight: 550;
+  }
+
+  .filters {
+    margin: 20px 0;
+    display: flex;
+    column-gap: 1.5rem;
+
+    .search-bar,
+    .filter-select {
+      flex: 1;
+    }
+
+    .rows,
+    .search-bar,
+    .filter-select {
+      padding: 10px;
+      font-size: 14px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    select:focus,
+    input:focus {
+      outline: none;
+    }
+  }
+
+  .top-selling-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+  }
+
+  .top-selling-table th,
+  .top-selling-table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: left;
+    font-size: 0.9rem;
+    font-weight: 550;
+  }
+
+  .top-selling-table th {
+    background-color: #f4f4f4;
+  }
+
+  .status {
+    padding: 5px 10px;
+    border-radius: 4px;
+    text-transform: capitalize;
+  }
+
+  .status.available {
+    background-color: #4caf50;
+    color: white;
+  }
+
+  .status.out-of-stock {
+    background-color: #f44336;
+    color: white;
+  }
+
+  .status.coming-soon {
+    background-color: #ff9800;
+    color: white;
+  }
+
+  motion.tr {
+    cursor: pointer;
+  }
+
+  .pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+  }
+
+  .pagination button {
+    padding: 5px 10px;
+    margin: 0 5px;
+    cursor: pointer;
+    border: none;
+  }
+
+  .pagination button.disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+
+  .pagination button.active {
+    font-weight: bold;
+    background-color: #007bff;
+    color: white;
+  }
+
+  .pagination button:disabled {
+    background-color: #e0e0e0;
+  }
+}

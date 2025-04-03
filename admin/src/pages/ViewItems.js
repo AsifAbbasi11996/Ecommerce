@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { deleteImageById, deleteItemById, getAllItems } from '../api/itemApi.js' // Adjust the import based on your file structure
+import { deleteItemById, getAllItems } from '../api/itemApi.js' // Adjust the import based on your file structure
 import { useTable } from 'react-table'
 import { useTransition, animated } from 'react-spring'
 import { ToastContainer, toast } from 'react-toastify'
@@ -13,8 +13,8 @@ import {
   MdRemoveRedEye
 } from 'react-icons/md'
 import { FaStar } from 'react-icons/fa'
-import { formatImageUrl } from '../utils/formatImageUrl'
-import { formatPrice } from '../utils/formatPrice'
+import { formatImageUrl } from '../utils/formatImageUrl.js'
+import { formatPrice } from '../utils/formatPrice.js'
 import { truncateText } from '../utils/formatText.js'
 
 const ViewItems = () => {
